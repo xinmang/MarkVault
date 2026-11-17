@@ -1,0 +1,441 @@
+{
+  "sourceFilter": "按插件来源筛选",
+  "count": "{{count}} 个插件",
+  "summary": {
+    "classic": "经典卡片与列表，熟悉的 MarkVault 界面。",
+    "vibehub": "清晰边框、分栏工作区与快速交互反馈。",
+    "uiux-pro": "柔和表面、克制阴影与更鲜明的视觉层次。",
+    "ascii": "终端风格界面：边框、按钮、背景与动画都用 ASCII 字符绘制，带启动序列。",
+    "liquid-glass": "半透明的玻璃材质界面：按钮与指针水滴靠近时互相吸附、拉丝融合。",
+    "palettes": "选择界面强调色，适配明亮和暗色模式。",
+    "motion": "控制页面切换、悬停和点击时的动态效果。",
+    "theme-transition": "控制明亮与暗色切换时的扩散动画，保持所选配色。",
+    "ocean": "为页面添加海洋生物背景与轻量动画。",
+    "cursor": "为 VibeHub 主题启用指针交互效果。",
+    "tag-heat": "按访问热度突出常用标签，快速识别收藏重点。",
+    "hover-card": "悬停预览书签信息，并调整卡片展示效果。",
+    "url-privacy": "在书签界面隐藏或模糊网址显示。",
+    "animated-icons": "为缺少网站图标的书签提供动态默认图标。",
+    "agent": "在站内与助手对话，检索和整理收藏。",
+    "models": "配置 AI 服务、模型和供应商连接。",
+    "tools": "向助手提供书签与标签的查询和管理能力。",
+    "agent-api": "通过 REST API 连接外部助手与自动化工具。",
+    "mcp-server": "通过 MCP 向授权客户端提供收藏管理工具。",
+    "mcp-client": "连接外部 MCP 服务，选择提供给助手的工具。",
+    "statistics": "查看书签访问趋势、热力图、标签页统计与 Agent 调用分析。",
+    "passkey": "使用指纹、面容、设备 PIN 或安全密钥登录，管理已绑定的通行密钥。",
+    "browser-extension": "下载浏览器扩展、查看安装指南，在浏览器中收藏网页与同步标签页。",
+    "page-speed": "在右上角显示页面加载与站内切换耗时，可展开查看浏览器计时详情。",
+    "view-gallery": "书签页新增画廊视图：封面或网站截图铺成磁贴，悬停查看备注与标签。",
+    "view-timeline": "书签页新增时间线视图：按今天、昨天、近 7 天和月份分段浏览。",
+    "view-domains": "书签页新增站点分组视图：同一网站的书签收进可折叠的分组。",
+    "view-focus": "书签页新增专注视图：一次只看一条书签，用左右方向键逐条浏览。",
+    "tag-cloud": "标签栏新增标签云：字号随使用量变化，常用标签一眼可见。",
+    "tag-bars": "标签栏新增标签排行：每行一个标签，用横条比较书签数量或点击次数。",
+    "tab-board": "标签页组新增看板布局：每组一列，标签页可在列之间拖动。",
+    "tab-compact": "标签页组新增折叠列表：每组收成一行，点击展开查看标签页。",
+    "home-topbar": "首页版式：没有侧栏，标签收成工具栏下方的一条横向标签带，书签占满整个宽度。",
+    "home-launchpad": "首页版式：像浏览器起始页，居中的搜索框、常用标签和快捷访问，下面是全部书签。",
+    "home-reader": "首页版式：三栏排布，左边标签、中间紧凑列表、右边是选中书签的详情。",
+    "home-tagboard": "首页版式：每个标签一列的看板，横向滚动，按主题总览收藏。",
+    "home-canvas": "首页版式：标签和书签铺在可以平移、缩放的无限画布上，不受屏幕大小限制。",
+    "tabs-tabbed": "标签页组版式：分组变成顶部的一条分组栏，内容占满宽度，分组树和待办收进抽屉。",
+    "tabs-wall": "标签页组版式：全部分组铺成多列卡片墙，标签页可在卡片之间拖动。",
+    "tabs-timeline": "标签页组版式：按收纳时间排成时间线，今天、昨天、近 7 天和各个月份。",
+    "tabs-canvas": "标签页组版式：每个分组是无限画布上的一张卡片，可以平移、缩放和自由摆放。"
+  },
+  "title": "自定义插件",
+  "subtitle": "安装并管理第三方插件。内置功能已整合到设置页，在对应分区直接开关和调整。",
+  "all": "已安装",
+  "builtin": "内置",
+  "official": "官方",
+  "community": "社区",
+  "safe": "安全模式",
+  "exitSafe": "退出安全模式",
+  "safeNotice": "本页面已跳过可选插件，可在此停用故障插件。",
+  "search": "搜索名称或插件 ID",
+  "capability": "按能力筛选",
+  "loading": "正在读取插件目录…",
+  "empty": "还没有安装自定义插件，或没有符合筛选条件的插件。",
+  "error": "操作失败",
+  "install": "管理员安装",
+  "installNote": "安装后用户仍需单独授权。自定义安装来源标记为社区；ZIP 最大 16 MiB。",
+  "releaseURL": "固定 GitHub Release 资产地址",
+  "installRelease": "从 Release 安装",
+  "installZip": "上传插件 ZIP",
+  "tooLarge": "插件包超过 16 MiB",
+  "permissions": "权限授权",
+  "noPermissions": "此插件不请求额外业务权限。",
+  "config": "插件设置（JSON）",
+  "enable": "授权并启用",
+  "save": "保存设置并启用",
+  "disable": "停用",
+  "clear": "清除我的插件数据",
+  "clearConfirm": "清除该插件的配置、存储和凭据？此操作不可撤销。",
+  "allowInstance": "允许实例使用",
+  "disableInstance": "全实例停用",
+  "rollback": "回滚至",
+  "uninstall": "卸载",
+  "uninstallConfirm": "从实例卸载插件？用户配置和数据会保留。",
+  "notFound": "插件不存在或已卸载。",
+  "kind": {
+    "all": "全部能力",
+    "theme": "主题",
+    "motion": "动效",
+    "background": "背景",
+    "page": "页面",
+    "panel": "面板",
+    "action": "菜单动作",
+    "agent": "智能体",
+    "provider": "模型供应商",
+    "tool": "工具",
+    "mcp": "MCP 连接"
+  },
+  "status": {
+    "running": "运行中",
+    "disabled": "已停用",
+    "waiting": "等待依赖",
+    "pending-authorization": "等待重新授权",
+    "unavailable": "运行时不可用",
+    "failed": "启动失败"
+  },
+  "permission": {
+    "storage": {
+      "read": "读取本插件存储",
+      "write": "写入本插件存储"
+    },
+    "bookmarks": {
+      "read": "读取我的书签",
+      "write": "修改我的书签（需要确认）"
+    },
+    "tags": {
+      "read": "读取我的标签",
+      "write": "修改我的标签（需要确认）"
+    },
+    "network": {
+      "fetch": "访问公网 HTTPS 目标"
+    },
+    "models": {
+      "call": "使用我的模型配置"
+    }
+  },
+  "imageHosting": {
+    "intro": "按图片用途选择图床，支持 S3、Cloudflare R2、MinIO 和通用 HTTP 图床。上传成功并确认图片可读取后释放本地副本；失败时保留原图。",
+    "enabled": "启用图床插件",
+    "purposes": "哪些图片使用图床",
+    "purpose": {
+      "screenshot": "网站截图",
+      "snapshot": "网页快照内的图片",
+      "cover": "书签封面",
+      "favicon": "网站图标（favicon）",
+      "default": "自定义默认图"
+    },
+    "scope": "仅处理新保存的图片；取消勾选后使用本地存储或原地址。快照 HTML 仍保存在本站，已有图片不会自动迁移。封面和图标只转存明确保存的 HTTPS 图片地址。",
+    "endpoint": "上传接口地址（HTTPS）",
+    "fileField": "上传文件字段名",
+    "urlPath": "响应中的图片 URL 路径",
+    "authHeader": "认证请求头",
+    "authHint": "填写 Authorization 或 X-API-Key 等 X-* 请求头；无需认证时留空。URL 路径支持 data.url、data.0.url 等格式。",
+    "secret": "认证值",
+    "secretSaved": "已加密保存，留空保留",
+    "secretEmpty": "例如 Bearer …，按图床要求填写完整值",
+    "clearSecret": "删除新上传使用的凭据",
+    "grant": "允许把所选用途的图片上传到我配置的图床",
+    "privacy": "所选图片会发送给该存储服务；公开桶或 CDN 的原始链接可能公开可访问。本站仍检查图片访问权限。删除本站图片不会删除存储服务上的副本。",
+    "save": "保存图床设置",
+    "saved": "已保存",
+    "defaultTitle": "书签默认图",
+    "defaultHint": "在当前账号的书签没有可用封面或图标时使用。先保存并启用插件，再上传 PNG、JPEG 或 WebP（最大 2 MiB）；是否上传图床由上方“自定义默认图”开关决定。",
+    "uploadDefault": "上传默认图",
+    "removeDefault": "恢复内置默认图",
+    "tooLarge": "默认图最大 2 MiB",
+    "readFailed": "读取图片失败",
+    "backend": "存储服务",
+    "httpBackend": "通用 HTTP 图床",
+    "s3Endpoint": "S3 API 端点（HTTPS）",
+    "bucket": "桶名（Bucket）",
+    "region": "区域（Region）",
+    "prefix": "对象前缀（可选）",
+    "publicURL": "公开图片 / CDN 基础地址（可选）",
+    "pathStyle": "使用路径式访问（R2 / MinIO 推荐）",
+    "s3Hint": "AWS S3 填写桶所在区域的 API 端点和实际区域；R2 使用账户的 r2.cloudflarestorage.com 端点，区域填 auto；MinIO 填写 HTTPS API 地址，区域通常为 us-east-1。端点中不要包含桶名。",
+    "publicHint": "公开地址留空时，通过服务端签名读取私有桶，无需开放桶权限。填写公开地址时，图片通过该地址匿名读取，地址应对应桶根目录；对象前缀会自动追加。",
+    "s3KeysSaved": "访问密钥已加密保存；两项都留空保留，替换时一起填写",
+    "s3KeysEmpty": "填写图床专用访问密钥，至少具备对象上传和读取权限",
+    "keyRetention": "已有私有桶图片保留上传时的加密读取凭据，以免切换配置后丢图。若在存储服务撤销旧密钥，这些图片将不可读取；删除对应本站图片后会清理其读取凭据。"
+  },
+  "paletteSettingsHint": "配色选择立即保存在当前浏览器，明暗切换会保持同一配色。关闭后显示默认色，重新开启恢复原来的选择。",
+  "themeTransitionHint": "控制明暗切换时的扩散动画，不修改配色方案。关闭后仍可直接切换明暗；关闭界面动效或系统开启“减少动态效果”时也不播放动画。",
+  "currentLightMode": "当前：明亮模式",
+  "currentDarkMode": "当前：暗色模式",
+  "configurePalette": "设置配色方案",
+  "expandSettings": "展开设置",
+  "updatingPlugin": "正在更新…",
+  "collapseSettings": "收起设置",
+  "expandNamedSettings": "展开 {{name}} 的设置",
+  "collapseNamedSettings": "收起 {{name}} 的设置",
+  "toggleNamedPlugin": "启用 {{name}}",
+  "namedSettings": "{{name}} 的设置",
+  "inlineSettingsHint": "开关立即生效。带选项的功能开启后可展开设置，选项修改按面板提示保存，收起不会丢失未保存的内容。",
+  "category": {
+    "all": "全部分类",
+    "appearance": "主题外观",
+    "effects": "动效与增强",
+    "intelligence": "智能助手",
+    "connections": "连接与存储",
+    "insights": "图表统计",
+    "layouts": "布局视图",
+    "other": "其他扩展"
+  },
+  "relatedPlugins": "功能",
+  "openFeature": "打开功能",
+  "configurable": "可配置",
+  "permissionCount": "{{count}} 项权限",
+  "filter": {
+    "status": "按状态筛选",
+    "all": "全部",
+    "enabled": "已启用",
+    "disabled": "已停用",
+    "source": "按来源筛选",
+    "sourceAll": "全部来源"
+  },
+  "form": {
+    "save": "保存",
+    "saving": "正在保存…",
+    "revert": "还原",
+    "restoreDefaults": "恢复默认值",
+    "saved": "设置已保存",
+    "unset": "未设置",
+    "invalidJSON": "不是有效的 JSON"
+  },
+  "settingsOptions": {
+    "ascii": {
+      "background": {
+        "field": "字符场",
+        "rain": "字符雨",
+        "off": "关闭"
+      }
+    }
+  },
+  "detail": {
+    "settings": "插件设置",
+    "advancedJSON": "高级：编辑 JSON",
+    "backToForm": "返回表单",
+    "jsonHint": "直接编辑完整配置，保存时由服务端按插件的设置结构校验。",
+    "jsonDiscardHint": "返回表单会放弃这里未保存的修改。",
+    "author": "作者：{{author}}"
+  },
+  "advanced": {
+    "title": "凭据与对外工具授权",
+    "loadFailed": "读取工具失败",
+    "credentialName": "凭据引用名称",
+    "credentialTarget": "授权 HTTPS 来源",
+    "secret": "密钥",
+    "secretPlaceholder": "留空删除该凭据",
+    "saveCredential": "保存加密凭据",
+    "exposureHint": "选择工具并填写 API Key 的 ID，保存后替换此插件的对外工具选择。既有 Key 不会自动获得权限。",
+    "keyIds": "API Key ID",
+    "keyIdsPlaceholder": "API Key ID，逗号分隔",
+    "saveExposure": "保存对外授权"
+  },
+  "marketplace": {
+    "title": "插件市场",
+    "intro": "随版本提供的官方示例可离线安装。管理员添加的目录始终为社区来源。",
+    "loadFailed": "目录读取失败",
+    "installed": "已安装",
+    "install": "安装",
+    "sourceLabel": "插件目录地址",
+    "sourcePlaceholder": "HTTPS 插件目录 JSON 地址",
+    "refresh": "刷新目录"
+  },
+  "featureUnavailable": "此功能尚未启用",
+  "featureUnavailableHint": "请在设置中开启对应功能后使用。安全模式下会暂时隐藏可选功能。",
+  "pageSpeed": {
+    "document": "页面加载",
+    "route": "页面切换",
+    "details": "页面加载速度",
+    "close": "关闭加载速度详情",
+    "ttfb": "首字节响应 (TTFB)",
+    "domReady": "DOM 就绪",
+    "firstPaint": "首次内容绘制 (FCP)",
+    "documentHint": "从浏览器导航开始计时，至 load 事件结束。不包含之后的异步请求；缓存也会影响结果。",
+    "routeHint": "从站内路由切换到基础页面绘制，包含懒加载模块等待，不包含后续异步数据请求或图片。",
+    "status": {
+      "waiting": "待测量",
+      "measuring": "测量中",
+      "unsupported": "不可用",
+      "interrupted": "已中断",
+      "timeout": "未完成"
+    },
+    "explanation": {
+      "waiting": "请切换到其他页面或刷新，以获得完整计时。",
+      "measuring": "正在等待页面完成加载或渲染。",
+      "unsupported": "当前浏览器未提供完整的导航计时数据。",
+      "interrupted": "测量期间页面进入后台，结果已丢弃，请重新切页或刷新。",
+      "timeout": "30 秒内未完成测量，本次不显示耗时。"
+    }
+  },
+  "layouts": {
+    "timeline": {
+      "today": "今天",
+      "yesterday": "昨天",
+      "week": "近 7 天",
+      "unknown": "时间未知"
+    },
+    "domains": {
+      "other": "其他站点"
+    },
+    "focus": {
+      "previous": "上一条",
+      "next": "下一条",
+      "position": "第 {{current}} 条，共 {{total}} 条",
+      "open": "打开书签",
+      "select": "选中此书签",
+      "deselect": "取消选中"
+    }
+  },
+  "shells": {
+    "switch": "页面版式：{{name}}（点击切换）",
+    "home": {
+      "label": "首页",
+      "default": {
+        "name": "默认版式",
+        "description": "左侧标签栏，右侧书签。"
+      },
+      "topbar": {
+        "name": "顶栏版式",
+        "description": "标签是一条横向标签带，书签占满整个宽度。"
+      },
+      "launchpad": {
+        "name": "起始页版式",
+        "description": "居中的搜索框、常用标签和快捷访问。"
+      },
+      "reader": {
+        "name": "三栏版式",
+        "description": "标签、列表和详情三栏并排，需要桌面宽度。"
+      },
+      "tagboard": {
+        "name": "标签看板",
+        "description": "每个标签一列，横向滚动浏览。"
+      },
+      "canvas": {
+        "name": "无限画布",
+        "description": "标签和书签铺在可以平移、缩放的画布上。"
+      }
+    },
+    "tabs": {
+      "label": "标签页组",
+      "default": {
+        "name": "默认版式",
+        "description": "左侧分组树，中间分组，右侧待办。"
+      },
+      "tabbed": {
+        "name": "顶部分组栏",
+        "description": "分组是顶部的一条分组栏，内容占满宽度。"
+      },
+      "wall": {
+        "name": "卡片墙",
+        "description": "全部分组铺成多列卡片。"
+      },
+      "timeline": {
+        "name": "收纳时间线",
+        "description": "按收纳时间排成一条时间线。"
+      },
+      "canvas": {
+        "name": "无限画布",
+        "description": "每个分组是画布上的一张卡片，可以自由摆放。"
+      }
+    },
+    "picker": {
+      "title": "页面版式",
+      "hint": "版式决定页面的整体排布，和界面主题、配色可以任意搭配。选择后立即生效，选择保存在当前浏览器。",
+      "selected": "使用中",
+      "unavailable": "已被全实例停用",
+      "safe": "安全模式下暂时使用默认版式，退出安全模式后恢复你的选择。",
+      "narrow": "当前窗口较窄，暂时显示默认版式"
+    },
+    "allTags": "全部标签",
+    "clearTags": "清除筛选（{{count}}）",
+    "expandTags": "展开全部标签",
+    "collapseTags": "收起标签",
+    "tagStrip": "标签筛选",
+    "noTags": "还没有标签",
+    "loaded": "已加载 {{count}} 条",
+    "loadMore": "加载更多",
+    "loadingMore": "加载中…",
+    "greeting": {
+      "morning": "早上好",
+      "afternoon": "下午好",
+      "evening": "晚上好",
+      "night": "夜深了",
+      "name": "，{{name}}"
+    },
+    "quickAccess": "快捷访问",
+    "allBookmarks": "全部书签",
+    "results": "筛选结果",
+    "noSelection": "选择一条书签查看详情",
+    "open": "打开",
+    "copyLink": "复制链接",
+    "copied": "已复制",
+    "summary": "AI 摘要",
+    "savedAt": "收藏时间",
+    "visits": "访问次数",
+    "lastVisit": "最近访问",
+    "visibility": "可见性",
+    "public": "公开",
+    "private": "私密",
+    "untagged": "未加标签",
+    "manageGroups": "分组与文件夹",
+    "groupStrip": "分组",
+    "allGroups": "全部",
+    "timelineSummary": "{{groups}} 个分组 · {{tabs}} 个标签页"
+  },
+  "openSettings": "前往设置",
+  "instanceDisabled": "管理员已停用",
+  "asciiOptions": "ASCII 终端选项",
+  "liquidGlass": {
+    "options": "液态玻璃选项",
+    "playground": {
+      "hint": "拖动水滴试试：两颗水滴靠近时会互相吸过去并融合成一个形状，拉开时中间先拉出一段细颈再断开。页面上的按钮和指针水滴用的是同一种融合。",
+      "drop": "水滴 {{index}}，拖动或用方向键移动"
+    }
+  },
+  "canvas": {
+    "label": "无限画布，拖动平移，按住 Ctrl 滚动缩放，方向键移动",
+    "hint": "拖动平移 · Ctrl + 滚轮缩放",
+    "zoomIn": "放大",
+    "zoomOut": "缩小",
+    "resetZoom": "恢复原始大小",
+    "fit": "适应全部内容",
+    "tidy": "重新整理：清除手动摆放的位置",
+    "minimap": "小地图",
+    "moveCard": "移动卡片：{{name}}（拖动或用方向键）",
+    "settings": {
+      "title": "无限画布模式",
+      "hint": "打开后，对应页面的内容铺在一块可以平移和缩放的画布上，标签、书签和标签页组再多也不受屏幕大小限制。拖动空白处平移，按住 Ctrl 滚动或双指捏合缩放，卡片可以拖到任意位置。无限画布是页面版式的一种，开关立即生效，选择保存在当前浏览器。",
+      "toggle": "{{name}}使用无限画布",
+      "home": {
+        "name": "首页",
+        "description": "全部标签一张卡片，每个标签下的书签各一张卡片。"
+      },
+      "tabs": {
+        "name": "标签页组",
+        "description": "每个分组一张卡片，标签页仍可在卡片之间拖动。"
+      }
+    }
+  },
+  "featureNote": {
+    "cursor": "仅在 VibeHub 界面风格下生效，当前主题不会显示指针效果。",
+    "oceanAscii": "海洋背景开启时，ASCII 终端主题的字符背景不再显示。"
+  },
+  "custom": {
+    "installed": "已安装的自定义插件",
+    "manage": "管理与安装",
+    "hint": "自定义插件是另外安装的第三方扩展，在独立页面安装、授权和配置。内置功能不在这里，已分别放进设置的各个分区。",
+    "none": "还没有安装自定义插件。"
+  },
+  "instance": {
+    "title": "全实例功能开关",
+    "hint": "停用后，本实例的所有账号都不能使用该功能；各账号的开关和设置会保留，恢复后继续生效。"
+  }
+}

@@ -1,0 +1,5 @@
+<html lang="zh-CN"><meta charset="utf-8"><style>body{font:16px system-ui;padding:24px;color:#334155;background:#f8fafc}textarea{box-sizing:border-box;width:100%;height:220px;border:1px solid #cbd5e1;border-radius:12px;padding:16px;font:inherit}button{background:#6d28d9;color:white;padding:10px 22px;border:0;border-radius:8px;margin-top:14px}</style><h1>便笺 / Notes</h1><p>只保存在当前账号的插件存储中。</p><textarea id="notes" aria-label="便笺 / Notes"></textarea><button id="save">保存 / Save</button><p id="status" role="status"></p><script>
+const notes=document.getElementById('notes');const status=document.getElementById('status');
+markvault.call('storage.get',{key:'notes'}).then(value=>{notes.value=typeof value==='string'?value:''}).catch(()=>{status.textContent='读取失败 / Load failed'});
+document.getElementById('save').onclick=async()=>{try{await markvault.call('storage.set',{key:'notes',value:notes.value});status.textContent='已保存 / Saved'}catch{status.textContent='保存失败 / Save failed'}};
+</script></html>

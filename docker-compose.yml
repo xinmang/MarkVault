@@ -1,0 +1,50 @@
+name: markvault
+
+services:
+  app:
+    image: "${MARKVAULT_IMAGE:-ghcr.io/xinmang/markvault:latest}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE: "${NODE_IMAGE:-node:24-bookworm-slim}"
+        GO_IMAGE: "${GO_IMAGE:-golang:1.27.4-bookworm}"
+        RUNTIME_IMAGE: "${RUNTIME_IMAGE:-debian:bookworm-slim}"
+    restart: unless-stopped
+    ports:
+      - "${APP_BIND:-127.0.0.1}:${APP_PORT:-8787}:8787"
+    environment:
+      # 容器内固定路径，不要覆盖
+      MARKVAULT_DATA_DIR: "/data"
+      MARKVAULT_WEB_DIR: "/app/dist"
+      PORT: "8787"
+      ENVIRONMENT: "production"
+      # 业务配置，可按需覆盖
+      ALLOW_REGISTRATION: "${ALLOW_REGISTRATION:-true}"
+      JWT_ACCESS_TOKEN_EXPIRES_IN: "${JWT_ACCESS_TOKEN_EXPIRES_IN:-15m}"
+      JWT_REFRESH_TOKEN_EXPIRES_IN: "${JWT_REFRESH_TOKEN_EXPIRES_IN:-30d}"
+      STORAGE_MAX_TOTAL_BYTES: "${STORAGE_MAX_TOTAL_BYTES:-7516192768}"
+      CORS_ALLOWED_ORIGINS: "${CORS_ALLOWED_ORIGINS:-}"
+      # 留空时由 Go 服务在 /data/config/runtime.env 自动生成并持久化
+      JWT_SECRET: "${JWT_SECRET:-}"
+      ENCRYPTION_KEY: "${ENCRYPTION_KEY:-}"
+      AI_ALLOW_PRIVATE_ENDPOINTS: "${AI_ALLOW_PRIVATE_ENDPOINTS:-false}"
+      AI_CHAT_MAX_TOOL_ROUNDS: "${AI_CHAT_MAX_TOOL_ROUNDS:-6}"
+      # 可信反向代理地址；留空时不读取 X-Forwarded-For
+      MARKVAULT_TRUSTED_PROXIES: "${MARKVAULT_TRUSTED_PROXIES:-}"
+    volumes:
+      # 唯一数据目录：数据库、对象存储与运行时配置都在其中
+      - "${MARKVAULT_DATA_DIR:-./data/go}:/data"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

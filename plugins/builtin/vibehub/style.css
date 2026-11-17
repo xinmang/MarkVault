@@ -1,0 +1,964 @@
+/* VibeHub 界面主题
+ * 仅覆盖视觉语言；所有现有图标组件和站点图标保持不变。
+ */
+
+:root[data-experimental-ui='vibehub'],
+:root[data-experimental-ui='vibehub'] [data-color-theme] {
+  --radius: 0.5rem;
+  --background: #ffffff;
+  --foreground: #18181b;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #1e40d8;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #27272a;
+  --muted: #fafafa;
+  --muted-foreground: #52525b;
+  --accent: #eef2ff;
+  --accent-foreground: #1e40d8;
+  --destructive: #b91c1c;
+  --destructive-foreground: #ffffff;
+  --success: #15803d;
+  --success-foreground: #ffffff;
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2f4fe0;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #18181b;
+  --sidebar-primary: #1e40d8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f4f4f5;
+  --sidebar-accent-foreground: #18181b;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #2f4fe0;
+  --vibehub-bg-soft: #fafafa;
+  --vibehub-bg-hover: #f4f4f5;
+  --vibehub-border-light: #f0f0f2;
+  --vibehub-brand-hover: #1a35b0;
+  --vibehub-text-tertiary: #a1a1aa;
+  --vibehub-shadow-card: 0 1px 2px rgb(0 0 0 / 4%), 0 4px 14px rgb(0 0 0 / 5%);
+  --vibehub-shadow-float: 0 8px 30px rgb(0 0 0 / 12%);
+  --vibehub-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --vibehub-duration-fast: 170ms;
+  --vibehub-duration-standard: 240ms;
+  --vibehub-duration-slow: 320ms;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'] {
+  --background: #11151c;
+  --foreground: #f1f4f9;
+  --card: #191f29;
+  --card-foreground: #f1f4f9;
+  --popover: #191f29;
+  --popover-foreground: #f1f4f9;
+  --primary: #6f8cff;
+  --primary-foreground: #11151c;
+  --secondary: #252d39;
+  --secondary-foreground: #f1f4f9;
+  --muted: #202733;
+  --muted-foreground: #aab3c2;
+  --accent: #242e50;
+  --accent-foreground: #dce4ff;
+  --destructive: #f87171;
+  --destructive-foreground: #11151c;
+  --success: #4ade80;
+  --success-foreground: #11151c;
+  --warning: #fbbf24;
+  --warning-foreground: #11151c;
+  --border: #303846;
+  --input: #303846;
+  --ring: #8ca3ff;
+  --sidebar: #151a22;
+  --sidebar-foreground: #f1f4f9;
+  --sidebar-primary: #6f8cff;
+  --sidebar-primary-foreground: #11151c;
+  --sidebar-accent: #252d39;
+  --sidebar-accent-foreground: #f1f4f9;
+  --sidebar-border: #303846;
+  --sidebar-ring: #8ca3ff;
+  --vibehub-bg-soft: #151a22;
+  --vibehub-bg-hover: #252d39;
+  --vibehub-border-light: #252d39;
+  --vibehub-brand-hover: #8ca3ff;
+  --vibehub-text-tertiary: #687181;
+  --vibehub-shadow-card: 0 1px 2px rgb(0 0 0 / 20%), 0 4px 14px rgb(0 0 0 / 18%);
+  --vibehub-shadow-float: 0 8px 30px rgb(0 0 0 / 30%);
+}
+
+:root[data-experimental-ui='vibehub'] *,
+:root[data-experimental-ui='vibehub'] *::before,
+:root[data-experimental-ui='vibehub'] *::after {
+  letter-spacing: 0;
+}
+
+:root[data-experimental-ui='vibehub'] body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    'Manrope Variable',
+    'Avenir Next',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'PingFang SC',
+    'Microsoft YaHei',
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+/* VibeHub 光标仅在脚本确认精细指针与动态效果偏好后接管。 */
+:root[data-experimental-ui='vibehub'] .vibehub-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform;
+  transition: opacity var(--vibehub-duration-fast) ease;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-visible:not(.is-native) {
+  opacity: 1;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-native {
+  opacity: 0;
+  transition: none;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor__arrow,
+:root[data-experimental-ui='vibehub'] .vibehub-cursor__state {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  pointer-events: none;
+  transition:
+    width var(--vibehub-duration-fast) var(--vibehub-ease),
+    height var(--vibehub-duration-fast) var(--vibehub-ease),
+    opacity var(--vibehub-duration-fast) ease,
+    transform var(--vibehub-duration-fast) var(--vibehub-ease),
+    background-color var(--vibehub-duration-fast) ease,
+    border-color var(--vibehub-duration-fast) ease;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor__arrow {
+  overflow: visible;
+  fill: var(--primary);
+  stroke: var(--background);
+  stroke-width: 1.25;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 2px 3px rgb(0 0 0 / 18%));
+  transform: translate(-5px, -3px) scale(1);
+  transform-origin: 5px 3px;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor__state {
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary) 9%, transparent);
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--primary) 22%, transparent);
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.55);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-interactive .vibehub-cursor__arrow,
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__arrow {
+  opacity: 0;
+  transform: translate(-5px, -3px) scale(0.7);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-interactive .vibehub-cursor__state {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__state {
+  width: 2px;
+  height: 22px;
+  border: 0;
+  border-radius: 1px;
+  background: var(--primary);
+  box-shadow: 0 1px 5px color-mix(in srgb, var(--primary) 30%, transparent);
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__state::before,
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__state::after {
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--primary);
+  content: '';
+  transform: translateX(-50%);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__state::before {
+  top: 0;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text .vibehub-cursor__state::after {
+  bottom: 0;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-pressed .vibehub-cursor__arrow {
+  transform: translate(-5px, -3px) scale(0.88);
+}
+
+:root[data-experimental-ui='vibehub']
+  .vibehub-cursor.is-interactive.is-pressed
+  .vibehub-cursor__state,
+:root[data-experimental-ui='vibehub'] .vibehub-cursor.is-text.is-pressed .vibehub-cursor__state {
+  transform: translate(-50%, -50%) scale(0.82);
+}
+
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active body,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active body * {
+    cursor: none !important;
+  }
+
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-grab,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-grab *,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active [draggable='true'],
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active [draggable='true'] * {
+    cursor: grab !important;
+  }
+
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-grabbing,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-grabbing * {
+    cursor: grabbing !important;
+  }
+
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-not-allowed,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active .cursor-not-allowed *,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active [aria-disabled='true'],
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active [aria-disabled='true'] *,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active :disabled,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active :disabled * {
+    cursor: not-allowed !important;
+  }
+}
+
+:root[data-experimental-ui='vibehub'] .themed-root {
+  background-color: var(--background) !important;
+}
+
+:root[data-experimental-ui='vibehub'] .app-main {
+  background-color: var(--background) !important;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 35%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+:root[data-experimental-ui='vibehub'] h1,
+:root[data-experimental-ui='vibehub'] h2,
+:root[data-experimental-ui='vibehub'] h3,
+:root[data-experimental-ui='vibehub'] h4 {
+  color: var(--foreground);
+  font-weight: 700;
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header {
+  height: 4rem !important;
+  background: color-mix(in srgb, var(--card) 96%, transparent) !important;
+  border-bottom: 1px solid var(--border) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header-title {
+  position: relative;
+  padding-bottom: 0.2rem;
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header-title h1 {
+  color: var(--foreground) !important;
+  font-size: 1.125rem;
+  line-height: 1.35;
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header-title::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--primary);
+  content: '';
+  animation: vibehub-underline-in var(--vibehub-duration-slow) var(--vibehub-ease) backwards;
+  transform-origin: left center;
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header button,
+:root[data-experimental-ui='vibehub'] .shell-header-logo-button,
+:root[data-experimental-ui='vibehub'] .color-theme-trigger,
+:root[data-experimental-ui='vibehub'] .color-theme-option,
+:root[data-experimental-ui='vibehub'] .settings-nav-item {
+  transition-duration: var(--vibehub-duration-fast);
+  transition-timing-function: var(--vibehub-ease);
+}
+
+:root[data-experimental-ui='vibehub'] .color-theme-trigger {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='vibehub'] .color-theme-trigger:hover,
+:root[data-experimental-ui='vibehub'] .color-theme-trigger[data-open='true'] {
+  border-color: var(--border);
+  background: var(--vibehub-bg-hover);
+}
+
+:root[data-experimental-ui='vibehub'] .color-theme-menu {
+  border-color: var(--border);
+  background: var(--popover);
+  box-shadow: var(--vibehub-shadow-float);
+}
+
+:root[data-experimental-ui='vibehub'] .settings-toggle,
+:root[data-experimental-ui='vibehub'] .settings-toggle__thumb {
+  transition-duration: var(--vibehub-duration-fast);
+  transition-timing-function: var(--vibehub-ease);
+}
+
+:root[data-experimental-ui='vibehub'] .settings-toggle[data-state='off'] {
+  border-color: var(--border);
+  background: transparent;
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-toggle[data-state='on'] {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 11%, transparent);
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header-logo-button:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+:root[data-experimental-ui='vibehub'] .card,
+:root[data-experimental-ui='vibehub'] .card-solid {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: var(--vibehub-shadow-card);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:root[data-experimental-ui='vibehub'] .bookmark-card:hover,
+:root[data-experimental-ui='vibehub'] .bookmark-list-item:hover {
+  border-color: color-mix(in srgb, var(--primary) 24%, var(--border));
+  box-shadow: 0 5px 18px rgb(0 0 0 / 8%);
+  transform: translateY(-2px);
+}
+
+:root[data-experimental-ui='vibehub'] .shadow-float,
+:root[data-experimental-ui='vibehub'] .shadow-lg,
+:root[data-experimental-ui='vibehub'] .shadow-xl,
+:root[data-experimental-ui='vibehub'] .shadow-2xl {
+  box-shadow: var(--vibehub-shadow-card);
+}
+
+:root[data-experimental-ui='vibehub'] .glass {
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root[data-experimental-ui='vibehub'] .btn {
+  min-height: 2.25rem;
+  padding: 0.625rem 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition:
+    background-color var(--vibehub-duration-fast) ease,
+    border-color var(--vibehub-duration-fast) ease,
+    color var(--vibehub-duration-fast) ease,
+    box-shadow var(--vibehub-duration-fast) ease,
+    transform var(--vibehub-duration-fast) var(--vibehub-ease);
+}
+
+:root[data-experimental-ui='vibehub'] .btn::before {
+  display: none;
+}
+
+:root[data-experimental-ui='vibehub'] .btn:hover {
+  background: var(--vibehub-brand-hover);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+:root[data-experimental-ui='vibehub'] .btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+:root[data-experimental-ui='vibehub'] .shell-header button:not(:disabled):active,
+:root[data-experimental-ui='vibehub'] .color-theme-trigger:not(:disabled):active,
+:root[data-experimental-ui='vibehub'] .color-theme-option:not(:disabled):active,
+:root[data-experimental-ui='vibehub'] .settings-nav-item:not(:disabled):active,
+:root[data-experimental-ui='vibehub'] .vibehub-popover button:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+:root[data-experimental-ui='vibehub'] .btn-sm {
+  min-height: 2rem;
+  padding: 0.45rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.8125rem;
+}
+
+:root[data-experimental-ui='vibehub'] .btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='vibehub'] .btn-ghost:hover {
+  background: var(--vibehub-bg-hover);
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='vibehub'] .btn-secondary {
+  border-color: var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+:root[data-experimental-ui='vibehub'] .btn-outline {
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='vibehub'] .btn-outline:hover {
+  border-color: var(--primary);
+  background: var(--accent);
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='vibehub'] .input,
+:root[data-experimental-ui='vibehub']
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+:root[data-experimental-ui='vibehub'] textarea,
+:root[data-experimental-ui='vibehub'] select {
+  border: 1px solid var(--input);
+  border-radius: 0.5rem;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: none;
+  backdrop-filter: none;
+  transition:
+    border-color var(--vibehub-duration-fast) ease,
+    box-shadow var(--vibehub-duration-fast) ease,
+    background-color var(--vibehub-duration-fast) ease;
+}
+
+:root[data-experimental-ui='vibehub'] .input:hover,
+:root[data-experimental-ui='vibehub'] input:hover,
+:root[data-experimental-ui='vibehub'] textarea:hover,
+:root[data-experimental-ui='vibehub'] select:hover {
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  transform: none;
+}
+
+:root[data-experimental-ui='vibehub'] .input:focus,
+:root[data-experimental-ui='vibehub'] input:focus,
+:root[data-experimental-ui='vibehub'] textarea:focus,
+:root[data-experimental-ui='vibehub'] select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+  transform: none;
+}
+
+:root[data-experimental-ui='vibehub'] :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+:root[data-experimental-ui='vibehub'] .rounded-xl,
+:root[data-experimental-ui='vibehub'] .rounded-2xl,
+:root[data-experimental-ui='vibehub'] .rounded-3xl {
+  border-radius: 0.5rem;
+}
+
+:root[data-experimental-ui='vibehub'] .tag,
+:root[data-experimental-ui='vibehub'] .tag-item {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  box-shadow: none;
+  transition:
+    background-color var(--vibehub-duration-fast) ease,
+    border-color var(--vibehub-duration-fast) ease,
+    color var(--vibehub-duration-fast) ease,
+    box-shadow var(--vibehub-duration-fast) ease,
+    transform var(--vibehub-duration-fast) var(--vibehub-ease);
+}
+
+:root[data-experimental-ui='vibehub'] .tag:hover,
+:root[data-experimental-ui='vibehub'] .tag-item:hover {
+  border-color: color-mix(in srgb, var(--primary) 35%, var(--border));
+  background-color: var(--vibehub-bg-hover);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--primary) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+:root[data-experimental-ui='vibehub'] .tag-sidebar {
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='vibehub'] .bookmark-card,
+:root[data-experimental-ui='vibehub'] .bookmark-list-item {
+  animation: vibehub-card-in var(--vibehub-duration-standard) var(--vibehub-ease) backwards;
+  transition:
+    border-color var(--vibehub-duration-standard) ease,
+    box-shadow var(--vibehub-duration-standard) var(--vibehub-ease),
+    transform var(--vibehub-duration-standard) var(--vibehub-ease);
+}
+
+:root[data-experimental-ui='vibehub'] .bookmark-card:nth-child(3n + 2),
+:root[data-experimental-ui='vibehub'] .bookmark-list-item:nth-child(3n + 2) {
+  animation-delay: 35ms;
+}
+
+:root[data-experimental-ui='vibehub'] .bookmark-card:nth-child(3n),
+:root[data-experimental-ui='vibehub'] .bookmark-list-item:nth-child(3n) {
+  animation-delay: 70ms;
+}
+
+:root[data-experimental-ui='vibehub'] .bookmark-card > [class*='bg-gradient-to-br'],
+:root[data-experimental-ui='vibehub'] .bookmark-list-item [class*='bg-gradient-to-br'] {
+  background-color: var(--vibehub-bg-soft);
+  background-image: none;
+}
+
+:root[data-experimental-ui='vibehub'] .markvault-settings-page {
+  width: 100%;
+  max-width: 80rem;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-page-heading,
+:root[data-experimental-ui='vibehub'] .settings-page-shell {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-page-heading {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-page-shell {
+  padding: 0;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-sidebar {
+  padding-right: 1rem;
+  border-right: 1px solid var(--border);
+}
+
+:root[data-experimental-ui='vibehub'] .settings-nav-item {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-nav-item:hover {
+  background: var(--vibehub-bg-hover);
+  color: var(--foreground);
+  transform: translateX(2px);
+}
+
+:root[data-experimental-ui='vibehub'] .settings-nav-item--active {
+  background: var(--vibehub-bg-hover) !important;
+  color: var(--foreground) !important;
+  font-weight: 700;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-section {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+  box-shadow: var(--vibehub-shadow-card);
+  animation: vibehub-section-in var(--vibehub-duration-slow) var(--vibehub-ease) backwards;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-section-heading > div:first-child {
+  border-radius: 0.5rem;
+}
+
+:root[data-experimental-ui='vibehub'] .settings-item {
+  border-color: var(--vibehub-border-light);
+  background: var(--vibehub-bg-soft);
+}
+
+:root[data-experimental-ui='vibehub'] .settings-divider {
+  display: none;
+}
+
+:root[data-experimental-ui='vibehub'] table {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--card);
+}
+
+:root[data-experimental-ui='vibehub'] thead {
+  background: var(--vibehub-bg-soft);
+}
+
+:root[data-experimental-ui='vibehub'] th,
+:root[data-experimental-ui='vibehub'] td {
+  border-bottom: 1px solid var(--vibehub-border-light);
+}
+
+:root[data-experimental-ui='vibehub'] code,
+:root[data-experimental-ui='vibehub'] pre {
+  border-color: var(--border);
+  background: var(--vibehub-bg-soft);
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+}
+
+:root[data-experimental-ui='vibehub'] ::selection {
+  background: color-mix(in srgb, var(--primary) 22%, transparent);
+}
+
+:root[data-experimental-ui='vibehub'] * {
+  scrollbar-color: color-mix(in srgb, var(--muted-foreground) 35%, transparent) transparent;
+  scrollbar-width: thin;
+}
+
+/* 页面和浮层共用同一套克制的位移、缩放和淡入节奏。 */
+:root[data-experimental-ui='vibehub'] .app-main > * {
+  animation: vibehub-page-in var(--vibehub-duration-slow) var(--vibehub-ease) backwards;
+}
+
+:root[data-experimental-ui='vibehub'] .color-theme-menu,
+:root[data-experimental-ui='vibehub'] .vibehub-popover {
+  transform-origin: top right;
+  animation: vibehub-popover-in var(--vibehub-duration-standard) var(--vibehub-ease) backwards;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-popover button:not(:disabled):hover {
+  transform: translateX(2px);
+}
+
+:root[data-experimental-ui='vibehub'] .color-theme-option:not(:disabled):hover {
+  transform: translateY(-1px) scale(1.03);
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-modal-layer {
+  animation: none;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-modal-backdrop {
+  animation: vibehub-backdrop-in var(--vibehub-duration-standard) ease backwards;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-modal-panel,
+:root[data-experimental-ui='vibehub'] .animate-scale-in:not(.bookmark-tcg-card) {
+  animation: vibehub-modal-in var(--vibehub-duration-slow) var(--vibehub-ease) backwards;
+}
+
+:root[data-experimental-ui='vibehub'] .vibehub-toast {
+  animation: vibehub-toast-in var(--vibehub-duration-slow) var(--vibehub-ease) backwards;
+}
+
+@keyframes vibehub-page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vibehub-section-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vibehub-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vibehub-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vibehub-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vibehub-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vibehub-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vibehub-underline-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* 配色只改变强调色，VibeHub 的中性表面、间距和组件结构保持一致。 */
+:root[data-experimental-ui='vibehub'][data-color-theme='default'],
+:root[data-experimental-ui='vibehub'] [data-color-theme='default'] {
+  --primary: #3f3f46;
+  --primary-foreground: #ffffff;
+  --accent: #f4f4f5;
+  --accent-foreground: #27272a;
+  --ring: #71717a;
+  --sidebar-primary: #3f3f46;
+  --sidebar-primary-foreground: #ffffff;
+  --vibehub-brand-hover: #27272a;
+}
+
+:root[data-experimental-ui='vibehub'][data-color-theme='blue'],
+:root[data-experimental-ui='vibehub'] [data-color-theme='blue'] {
+  --primary: #1e40d8;
+  --primary-foreground: #ffffff;
+  --accent: #eef2ff;
+  --accent-foreground: #1e40d8;
+  --ring: #3b5bdb;
+  --sidebar-primary: #1e40d8;
+  --sidebar-primary-foreground: #ffffff;
+  --vibehub-brand-hover: #1a35b0;
+}
+
+:root[data-experimental-ui='vibehub'][data-color-theme='green'],
+:root[data-experimental-ui='vibehub'] [data-color-theme='green'] {
+  --primary: #15803d;
+  --primary-foreground: #ffffff;
+  --accent: #ecfdf5;
+  --accent-foreground: #166534;
+  --ring: #22c55e;
+  --sidebar-primary: #15803d;
+  --sidebar-primary-foreground: #ffffff;
+  --vibehub-brand-hover: #166534;
+}
+
+:root[data-experimental-ui='vibehub'][data-color-theme='orange'],
+:root[data-experimental-ui='vibehub'] [data-color-theme='orange'] {
+  --primary: #c2410c;
+  --primary-foreground: #ffffff;
+  --accent: #fff7ed;
+  --accent-foreground: #9a3412;
+  --ring: #f97316;
+  --sidebar-primary: #c2410c;
+  --sidebar-primary-foreground: #ffffff;
+  --vibehub-brand-hover: #9a3412;
+}
+
+:root[data-experimental-ui='vibehub'][data-color-theme='violet'],
+:root[data-experimental-ui='vibehub'] [data-color-theme='violet'] {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --accent: #f5f3ff;
+  --accent-foreground: #6d28d9;
+  --ring: #8b5cf6;
+  --sidebar-primary: #7c3aed;
+  --sidebar-primary-foreground: #ffffff;
+  --vibehub-brand-hover: #6d28d9;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'][data-color-theme='default'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'][data-color-theme='default'] {
+  --primary: #d4d4d8;
+  --primary-foreground: #18181b;
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+  --ring: #a1a1aa;
+  --sidebar-primary: #d4d4d8;
+  --sidebar-primary-foreground: #18181b;
+  --vibehub-brand-hover: #f4f4f5;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'][data-color-theme='blue'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'][data-color-theme='blue'] {
+  --primary: #8ca3ff;
+  --primary-foreground: #11151c;
+  --accent: #242e50;
+  --accent-foreground: #dce4ff;
+  --ring: #8ca3ff;
+  --sidebar-primary: #8ca3ff;
+  --sidebar-primary-foreground: #11151c;
+  --vibehub-brand-hover: #a9b8ff;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'][data-color-theme='green'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'][data-color-theme='green'] {
+  --primary: #4ade80;
+  --primary-foreground: #11151c;
+  --accent: #173324;
+  --accent-foreground: #bbf7d0;
+  --ring: #4ade80;
+  --sidebar-primary: #4ade80;
+  --sidebar-primary-foreground: #11151c;
+  --vibehub-brand-hover: #86efac;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'][data-color-theme='orange'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'][data-color-theme='orange'] {
+  --primary: #fb923c;
+  --primary-foreground: #11151c;
+  --accent: #3a2418;
+  --accent-foreground: #fed7aa;
+  --ring: #fb923c;
+  --sidebar-primary: #fb923c;
+  --sidebar-primary-foreground: #11151c;
+  --vibehub-brand-hover: #fdba74;
+}
+
+:root[data-experimental-ui='vibehub'][data-theme='dark'][data-color-theme='violet'],
+:root[data-experimental-ui='vibehub'] [data-theme='dark'][data-color-theme='violet'] {
+  --primary: #a78bfa;
+  --primary-foreground: #11151c;
+  --accent: #30264a;
+  --accent-foreground: #ede9fe;
+  --ring: #a78bfa;
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #11151c;
+  --vibehub-brand-hover: #c4b5fd;
+}
+
+/* 主题页沿用 VibeHub 的清晰边界和短促反馈，选中状态同时提供文字与结构强调。 */
+:root[data-experimental-ui='vibehub'] .interface-theme-card__body {
+  border-radius: 0.5rem;
+  background: var(--card);
+  box-shadow: var(--vibehub-shadow-card);
+}
+
+:root[data-experimental-ui='vibehub'] .interface-theme-card:hover .interface-theme-card__body {
+  border-color: var(--foreground);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--foreground) 22%, transparent);
+}
+
+:root[data-experimental-ui='vibehub'] .interface-theme-card--selected .interface-theme-card__body {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--card) 92%, var(--primary) 8%);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--primary) 42%, transparent);
+}
+
+:root[data-experimental-ui='vibehub'] .interface-theme-card__selected {
+  border: 1px solid var(--primary);
+  border-radius: 0.35rem;
+  background: transparent;
+}
+
+@media (max-width: 639px) {
+  :root[data-experimental-ui='vibehub'] .app-main {
+    background-size: 40px 40px;
+  }
+
+  :root[data-experimental-ui='vibehub'] .card,
+  :root[data-experimental-ui='vibehub'] .card-solid {
+    padding: 1rem;
+  }
+
+  :root[data-experimental-ui='vibehub'] .settings-section {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-experimental-ui='vibehub'] *,
+  :root[data-experimental-ui='vibehub'] *::before,
+  :root[data-experimental-ui='vibehub'] *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  :root[data-experimental-ui='vibehub'] .vibehub-cursor {
+    display: none !important;
+  }
+
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active body,
+  :root[data-experimental-ui='vibehub'].vibehub-cursor-active body * {
+    cursor: auto !important;
+  }
+}

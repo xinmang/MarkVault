@@ -1,0 +1,968 @@
+/*
+ * ASCII 终端界面主题
+ *
+ * - 整个界面使用等宽字体，圆角、渐变、磨砂和柔和阴影全部去掉。
+ * - 容器的边框是真正的字符：AsciiTheme.tsx 按当前主题色生成 +--+ 与 | 拼成的边框图，
+ *   写入 --ascii-frame 等变量，这里用 border-image 沿边平铺。
+ * - 按钮写成 [ 文字 ]，开关写成 [o--] / [--#]，当前项前面是 > 提示符。
+ * - 明亮模式是纸面终端，暗色模式是黑底终端；配色方案只替换强调色。
+ * - 动画都用 steps() 逐格跳变，不做平滑过渡；关闭动效或系统要求减少动态效果时停用。
+ */
+
+/* 设置页的主题预览：即使主题尚未启用也按终端配色显示。 */
+.ascii-theme-preview {
+  display: block;
+  min-height: 8.5rem;
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+  overflow: hidden;
+  border: 1px solid #1f3a33;
+  background: #050807;
+  color: #9fb8ae;
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
+  font-size: 0.625rem;
+  line-height: 1.32;
+  white-space: pre;
+}
+
+.ascii-theme-preview b {
+  color: #3df2cf;
+  font-weight: 700;
+}
+
+.ascii-theme-preview i {
+  color: #54736a;
+  font-style: normal;
+}
+
+/* ---------- 设计变量 ---------- */
+:root[data-experimental-ui='ascii'],
+:root[data-experimental-ui='ascii'] [data-color-theme] {
+  --ascii-font:
+    ui-monospace, 'Cascadia Mono', 'JetBrains Mono', Consolas, 'SF Mono', Menlo, 'Liberation Mono',
+    'Sarasa Mono SC', 'Noto Sans Mono CJK SC', 'Microsoft YaHei UI', monospace;
+  --ascii-line: #a39f8c;
+  --ascii-shadow: #1d2622;
+  --radius: 0;
+  --background: #f1efe4;
+  --foreground: #1d2622;
+  --card: #f8f6ec;
+  --card-foreground: #1d2622;
+  --popover: #fbf9f0;
+  --popover-foreground: #1d2622;
+  --primary: #0a7a66;
+  --primary-foreground: #f8f6ec;
+  --secondary: #e4e1d3;
+  --secondary-foreground: #1d2622;
+  --muted: #e9e6d9;
+  --muted-foreground: #5d665f;
+  --accent: #dcebe3;
+  --accent-foreground: #0a5a4c;
+  --destructive: #b3261e;
+  --destructive-foreground: #f8f6ec;
+  --success: #2f7d32;
+  --success-foreground: #f8f6ec;
+  --warning: #9a5b00;
+  --warning-foreground: #f8f6ec;
+  --border: #a39f8c;
+  --input: #a39f8c;
+  --ring: #0a7a66;
+  --chart-1: #0a7a66;
+  --chart-2: #9a5b00;
+  --chart-3: #2457c8;
+  --chart-4: #7c3aed;
+  --chart-5: #b3261e;
+  --sidebar: #f1efe4;
+  --sidebar-foreground: #1d2622;
+  --sidebar-primary: #0a7a66;
+  --sidebar-primary-foreground: #f8f6ec;
+  --sidebar-accent: #e4e1d3;
+  --sidebar-accent-foreground: #1d2622;
+  --sidebar-border: #a39f8c;
+  --sidebar-ring: #0a7a66;
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'],
+:root[data-experimental-ui='ascii'] [data-theme='dark'] {
+  --ascii-line: #2c4a42;
+  --ascii-shadow: #000000;
+  --background: #040706;
+  --foreground: #cfe3db;
+  --card: #080d0b;
+  --card-foreground: #cfe3db;
+  --popover: #0a110e;
+  --popover-foreground: #cfe3db;
+  --primary: #3df2cf;
+  --primary-foreground: #02110d;
+  --secondary: #101a16;
+  --secondary-foreground: #cfe3db;
+  --muted: #0d1512;
+  --muted-foreground: #7f978d;
+  --accent: #0f2a24;
+  --accent-foreground: #8ff7e2;
+  --destructive: #ff6b5e;
+  --destructive-foreground: #1a0503;
+  --success: #6ee787;
+  --success-foreground: #04140a;
+  --warning: #f2c14e;
+  --warning-foreground: #1a1203;
+  --border: #2c4a42;
+  --input: #2c4a42;
+  --ring: #3df2cf;
+  --chart-1: #3df2cf;
+  --chart-2: #f2c14e;
+  --chart-3: #6fa8dc;
+  --chart-4: #c59bff;
+  --chart-5: #ff6b5e;
+  --sidebar: #040706;
+  --sidebar-foreground: #cfe3db;
+  --sidebar-primary: #3df2cf;
+  --sidebar-primary-foreground: #02110d;
+  --sidebar-accent: #101a16;
+  --sidebar-accent-foreground: #cfe3db;
+  --sidebar-border: #2c4a42;
+  --sidebar-ring: #3df2cf;
+}
+
+/* 配色方案只换强调色：青绿（默认）、蓝、荧光绿、琥珀、紫。 */
+:root[data-experimental-ui='ascii'][data-color-theme='blue'],
+:root[data-experimental-ui='ascii'] [data-color-theme='blue'] {
+  --primary: #1d4ed8;
+  --ring: #1d4ed8;
+  --accent: #dfe7fb;
+  --accent-foreground: #1e3a8a;
+  --sidebar-primary: #1d4ed8;
+  --chart-1: #1d4ed8;
+}
+
+:root[data-experimental-ui='ascii'][data-color-theme='green'],
+:root[data-experimental-ui='ascii'] [data-color-theme='green'] {
+  --primary: #1f7a1f;
+  --ring: #1f7a1f;
+  --accent: #dff0d8;
+  --accent-foreground: #185c18;
+  --sidebar-primary: #1f7a1f;
+  --chart-1: #1f7a1f;
+}
+
+:root[data-experimental-ui='ascii'][data-color-theme='orange'],
+:root[data-experimental-ui='ascii'] [data-color-theme='orange'] {
+  --primary: #a85400;
+  --ring: #a85400;
+  --accent: #f6e7cf;
+  --accent-foreground: #7a3d00;
+  --sidebar-primary: #a85400;
+  --chart-1: #a85400;
+}
+
+:root[data-experimental-ui='ascii'][data-color-theme='violet'],
+:root[data-experimental-ui='ascii'] [data-color-theme='violet'] {
+  --primary: #6d28d9;
+  --ring: #6d28d9;
+  --accent: #ebe3fb;
+  --accent-foreground: #5b21b6;
+  --sidebar-primary: #6d28d9;
+  --chart-1: #6d28d9;
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'][data-color-theme='blue'],
+:root[data-experimental-ui='ascii'] [data-theme='dark'][data-color-theme='blue'] {
+  --primary: #6cb6ff;
+  --ring: #6cb6ff;
+  --accent: #0f2238;
+  --accent-foreground: #b6dbff;
+  --sidebar-primary: #6cb6ff;
+  --chart-1: #6cb6ff;
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'][data-color-theme='green'],
+:root[data-experimental-ui='ascii'] [data-theme='dark'][data-color-theme='green'] {
+  --primary: #5cff6a;
+  --ring: #5cff6a;
+  --accent: #0d2a10;
+  --accent-foreground: #b3ffb9;
+  --sidebar-primary: #5cff6a;
+  --chart-1: #5cff6a;
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'][data-color-theme='orange'],
+:root[data-experimental-ui='ascii'] [data-theme='dark'][data-color-theme='orange'] {
+  --primary: #ffb000;
+  --ring: #ffb000;
+  --accent: #2b1f05;
+  --accent-foreground: #ffd98a;
+  --sidebar-primary: #ffb000;
+  --chart-1: #ffb000;
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'][data-color-theme='violet'],
+:root[data-experimental-ui='ascii'] [data-theme='dark'][data-color-theme='violet'] {
+  --primary: #c59bff;
+  --ring: #c59bff;
+  --accent: #21143a;
+  --accent-foreground: #e4d3ff;
+  --sidebar-primary: #c59bff;
+  --chart-1: #c59bff;
+}
+
+/* ---------- 全局：等宽字体、直角、没有柔和阴影 ---------- */
+/* 等宽字体比比例字体宽，整体缩小一档，原有布局不必逐处调整 */
+:root[data-experimental-ui='ascii'] {
+  font-size: 15px;
+}
+
+:root[data-experimental-ui='ascii'] * {
+  font-family: var(--ascii-font);
+  letter-spacing: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ascii-line) transparent;
+}
+
+/* 加载指示保持圆形，其余一律直角 */
+:root[data-experimental-ui='ascii'] *:not(.animate-spin),
+:root[data-experimental-ui='ascii'] *::before,
+:root[data-experimental-ui='ascii'] *::after {
+  border-radius: 0 !important;
+}
+
+/* 没有专门处理的细边框统一画成虚线，读起来就是 - - - 和 ¦ */
+:root[data-experimental-ui='ascii'] [class*='border']:not(.animate-spin) {
+  border-style: dashed;
+}
+
+:root[data-experimental-ui='ascii'] [class*='shadow'],
+:root[data-experimental-ui='ascii'] :is(.card, .card-solid, .glass, .btn, .input) {
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='ascii']
+  :is(
+    .card,
+    .card-solid,
+    .glass,
+    .shell-header,
+    .mobile-bottom-nav,
+    .input,
+    [class*='backdrop-blur']
+  ) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:root[data-experimental-ui='ascii'] body {
+  background: var(--background);
+  color: var(--foreground);
+  font-variant-ligatures: none;
+}
+
+:root[data-experimental-ui='ascii'] ::selection {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:root[data-experimental-ui='ascii'] :focus-visible {
+  outline: 1px dashed var(--primary);
+  outline-offset: 2px;
+}
+
+/* 页面底色交给 body，内容区透明，字符背景才能从后面透出来 */
+:root[data-experimental-ui='ascii'] .themed-root {
+  background-color: transparent !important;
+}
+
+:root[data-experimental-ui='ascii'] .app-main {
+  background: transparent !important;
+}
+
+:root[data-experimental-ui='ascii'] :is(h1, h2, h3, h4) {
+  font-weight: 700;
+}
+
+/* ---------- 字符边框 ---------- */
+/* 边框图每格 7×10，border-image 把边上的一格沿边平铺成 +------+ */
+:root[data-experimental-ui='ascii']
+  :is(
+    .card,
+    .card-solid,
+    .settings-section,
+    .interface-theme-card__body,
+    .plugin-card,
+    .plugin-install,
+    .plugin-permissions,
+    .vibehub-popover,
+    .color-theme-menu,
+    .vibehub-toast,
+    .modal-box,
+    .input
+  ) {
+  border: solid transparent;
+  border-width: 10px 7px;
+  border-image: var(--ascii-frame) 10 7 / 10px 7px / 0 round;
+  background-color: color-mix(in srgb, var(--card) 92%, transparent);
+  background-clip: padding-box;
+}
+
+:root[data-experimental-ui='ascii'] .card,
+:root[data-experimental-ui='ascii'] .card-solid {
+  padding: 1rem;
+  transform: none;
+}
+
+/* 悬停或获得焦点时边框换成强调色 */
+:root[data-experimental-ui='ascii']
+  :is(.bookmark-card, .plugin-card, .interface-theme-card):is(:hover, :focus-visible),
+:root[data-experimental-ui='ascii'] .interface-theme-card:hover .interface-theme-card__body,
+:root[data-experimental-ui='ascii'] .input:is(:hover, :focus) {
+  border-image-source: var(--ascii-frame-accent);
+}
+
+/* 选中：#====# 的粗边框 */
+:root[data-experimental-ui='ascii'] .interface-theme-card--selected .interface-theme-card__body,
+:root[data-experimental-ui='ascii'] [data-batch-selected='true']:is(.card, .bookmark-card),
+:root[data-experimental-ui='ascii'] .plugin-card[data-enabled='true']:hover {
+  border-image-source: var(--ascii-frame-strong);
+}
+
+:root[data-experimental-ui='ascii'] .interface-theme-card__body,
+:root[data-experimental-ui='ascii'] .interface-theme-card:hover .interface-theme-card__body,
+:root[data-experimental-ui='ascii'] .shadow-float:hover {
+  box-shadow: none;
+  transform: none;
+}
+
+:root[data-experimental-ui='ascii'] [data-batch-selected='true'] {
+  outline: none;
+}
+
+/* 列表里每行一个整框太密，只留一条 - - - 分隔线，悬停时整行反白一格 */
+:root[data-experimental-ui='ascii'] .bookmark-list-item {
+  border: 0;
+  border-bottom: 1px dashed var(--ascii-line);
+  border-image: none;
+  background: transparent;
+  padding: 0.625rem 0.5rem;
+}
+
+:root[data-experimental-ui='ascii'] .bookmark-list-item:hover,
+:root[data-experimental-ui='ascii'] .bookmark-minimal-row:hover {
+  background: color-mix(in srgb, var(--primary) 9%, transparent);
+}
+
+:root[data-experimental-ui='ascii'] .bookmark-list-item[data-batch-selected='true'] {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .card.bookmark-card {
+  padding: 0;
+}
+
+/* 封面占位的渐变换成字符网点 */
+:root[data-experimental-ui='ascii']
+  :is(.bookmark-card, .bookmark-list-item)
+  [class*='bg-gradient-to-br'] {
+  background-color: var(--muted);
+  background-image: var(--ascii-shade);
+}
+
+/* 弹出层与对话框带一块硬边投影，像文本界面里的窗口 */
+:root[data-experimental-ui='ascii']
+  :is(.vibehub-popover, .color-theme-menu, .vibehub-modal-panel, .modal-box, .vibehub-toast) {
+  background-color: var(--popover);
+  box-shadow: 7px 10px 0 color-mix(in srgb, var(--ascii-shadow) 55%, transparent) !important;
+}
+
+/* 浮层用强调色边框：暗色模式下普通边框色与底色接近，菜单要能和下面的卡片分开 */
+:root[data-experimental-ui='ascii'] :is(.vibehub-popover, .color-theme-menu) {
+  border-image-source: var(--ascii-frame-accent);
+}
+
+:root[data-experimental-ui='ascii'] .vibehub-popover {
+  padding: 0;
+}
+
+:root[data-experimental-ui='ascii'] .vibehub-popover button {
+  padding: 0.375rem 0.625rem;
+}
+
+:root[data-experimental-ui='ascii'] .vibehub-popover button:not(:disabled):hover,
+:root[data-experimental-ui='ascii'] .color-theme-option:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* 遮罩是一层字符网点 */
+:root[data-experimental-ui='ascii'] :is(.vibehub-modal-backdrop, .modal-backdrop) {
+  background-color: color-mix(in srgb, var(--background) 82%, transparent) !important;
+  background-image: var(--ascii-shade);
+}
+
+/* ---------- 页头与导航 ---------- */
+:root[data-experimental-ui='ascii'] .shell-header {
+  border: solid transparent !important;
+  border-width: 0 0 10px !important;
+  border-image: var(--ascii-frame) 10 7 / 0 0 10px / 0 round !important;
+  background: color-mix(in srgb, var(--background) 94%, transparent) !important;
+  box-shadow: none !important;
+}
+
+:root[data-experimental-ui='ascii'] .shell-header-logo {
+  border: 1px dashed var(--ascii-line);
+  background: transparent;
+  background-image: none;
+}
+
+:root[data-experimental-ui='ascii'] .shell-header-logo svg {
+  color: var(--primary) !important;
+}
+
+:root[data-experimental-ui='ascii'] .shell-header-title h1 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+
+/* 站点名称后面跟一个闪烁的光标 */
+:root[data-experimental-ui='ascii'] .shell-header-title h1::after {
+  content: '_';
+  animation: ascii-blink 1.1s steps(1) infinite;
+}
+
+:root[data-experimental-ui='ascii'] .mobile-bottom-nav {
+  border: solid transparent;
+  border-width: 10px 0 0;
+  border-image: var(--ascii-frame) 10 7 / 10px 0 0 / 0 round;
+  background: var(--background);
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='ascii'] .mobile-bottom-nav__item[aria-current='page']::before {
+  height: 2px;
+}
+
+/* ---------- 按钮：[ 文字 ] ---------- */
+:root[data-experimental-ui='ascii'] .btn {
+  gap: 0.375rem;
+  padding: 0.3rem 0.375rem;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0;
+  transition: none;
+  transform: none;
+}
+
+:root[data-experimental-ui='ascii'] .btn-sm {
+  padding: 0.2rem 0.3rem;
+}
+
+/* 原有的高光层与扫光层改作左右方括号 */
+:root[data-experimental-ui='ascii'] .btn::before,
+:root[data-experimental-ui='ascii'] .btn::after {
+  position: static !important;
+  inset: auto !important;
+  width: auto;
+  height: auto;
+  background: none !important;
+  opacity: 0.7;
+  translate: none !important;
+  transition: none !important;
+  pointer-events: none;
+}
+
+:root[data-experimental-ui='ascii'] .btn::before {
+  content: '[' !important;
+}
+
+:root[data-experimental-ui='ascii'] .btn::after {
+  content: ']' !important;
+}
+
+/* 只有图标的按钮不加括号，保持原来的点击面积 */
+:root[data-experimental-ui='ascii'] .btn:is(.p-2, .p-0)::before,
+:root[data-experimental-ui='ascii'] .btn:is(.p-2, .p-0)::after {
+  content: none !important;
+}
+
+:root[data-experimental-ui='ascii'] .btn.p-2 {
+  padding: 0.5rem;
+}
+
+/* 手机上固定成方块的按钮放不下两个括号，改为按内容撑开 */
+:root[data-experimental-ui='ascii'] .btn.w-10 {
+  width: auto;
+  min-width: 2.5rem;
+}
+
+:root[data-experimental-ui='ascii'] .btn:not(:disabled):hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  transform: none;
+}
+
+:root[data-experimental-ui='ascii'] .btn:not(:disabled):active {
+  translate: 1px 1px;
+}
+
+:root[data-experimental-ui='ascii'] .btn:disabled {
+  opacity: 0.45;
+}
+
+/* 主按钮是一整块反白，像被选中的菜单项 */
+:root[data-experimental-ui='ascii'] .btn-primary {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:root[data-experimental-ui='ascii'] .btn-primary:not(:disabled):hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+:root[data-experimental-ui='ascii'] .btn-secondary {
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='ascii'] .btn-secondary:not(:disabled):hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+:root[data-experimental-ui='ascii'] .btn-ghost {
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+:root[data-experimental-ui='ascii'] .btn-ghost:not(:disabled):hover {
+  background: color-mix(in srgb, var(--primary) 16%, transparent);
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .btn-outline {
+  border: 0;
+  color: var(--primary);
+}
+
+/* 字符按钮只剩颜色能区分用途，删除、卸载这类操作保持警示色 */
+:root[data-experimental-ui='ascii']
+  .btn:is(.btn-error, .text-error, .text-destructive, .text-red-500) {
+  color: var(--destructive);
+}
+
+:root[data-experimental-ui='ascii']
+  .btn:is(.btn-error, .text-error, .text-destructive, .text-red-500):not(:disabled):hover {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+/* ---------- 表单 ---------- */
+:root[data-experimental-ui='ascii'] .input {
+  padding: 0.2rem 0.5rem;
+  color: var(--foreground);
+  caret-color: var(--primary);
+  transition: none;
+}
+
+:root[data-experimental-ui='ascii'] .input:is(:hover, :focus) {
+  background-color: var(--card);
+  box-shadow: none;
+  transform: none;
+}
+
+:root[data-experimental-ui='ascii'] .input::placeholder {
+  color: color-mix(in srgb, var(--muted-foreground) 75%, transparent);
+}
+
+/* 开关：[o--] 关，[--#] 开 */
+:root[data-experimental-ui='ascii'] .settings-toggle {
+  width: auto;
+  height: auto;
+  border: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--muted-foreground);
+  font-weight: 700;
+  line-height: 1.5;
+  transition: none;
+}
+
+:root[data-experimental-ui='ascii'] .settings-toggle::before {
+  content: '[o--]';
+  white-space: pre;
+}
+
+:root[data-experimental-ui='ascii'] .settings-toggle[data-state='on'] {
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .settings-toggle[data-state='on']::before {
+  content: '[--#]';
+}
+
+:root[data-experimental-ui='ascii'] .settings-toggle__thumb {
+  display: none;
+}
+
+:root[data-experimental-ui='ascii']
+  :is(input[type='checkbox'], input[type='radio'], input[type='range']) {
+  accent-color: var(--primary);
+}
+
+/* 插件设置表单的分段单选：当前项反白 */
+:root[data-experimental-ui='ascii'] .plugin-form__segmented,
+:root[data-experimental-ui='ascii'] .plugins-segmented {
+  gap: 0;
+  padding: 0;
+  border: 1px dashed var(--ascii-line);
+  background: transparent;
+}
+
+:root[data-experimental-ui='ascii'] .plugin-form__segment[data-checked='true'],
+:root[data-experimental-ui='ascii'] .plugins-segmented > button[aria-pressed='true'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='ascii'] .plugin-form__field + .plugin-form__field,
+:root[data-experimental-ui='ascii'] .plugin-form__actions {
+  border-top-style: dashed;
+}
+
+/* 字符边框盖住了边框色，校验失败改用外描边提示 */
+:root[data-experimental-ui='ascii'] .input[aria-invalid='true'] {
+  outline: 1px dashed var(--destructive);
+  outline-offset: 0;
+}
+
+:root[data-experimental-ui='ascii'] .plugin-form__value {
+  border-style: dashed;
+  background: transparent;
+  color: var(--primary);
+}
+
+/* ---------- 标签 ---------- */
+:root[data-experimental-ui='ascii'] .tag,
+:root[data-experimental-ui='ascii'] .bookmark-tag-chip {
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 500;
+  transform: none;
+}
+
+:root[data-experimental-ui='ascii'] .tag::before,
+:root[data-experimental-ui='ascii'] .bookmark-tag-chip::before {
+  content: '#';
+  opacity: 0.6;
+}
+
+:root[data-experimental-ui='ascii'] .bookmark-tag-chip[aria-pressed='true'],
+:root[data-experimental-ui='ascii'] .bookmark-tag-chip--interactive:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+:root[data-experimental-ui='ascii'] .tag-item {
+  border: 1px dashed var(--ascii-line);
+  transition: none;
+}
+
+:root[data-experimental-ui='ascii'] .tag-item:hover {
+  border-color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .tag-item[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--primary);
+}
+
+/* ---------- 设置页与插件页 ---------- */
+/* 外层面板不再套框，每个设置区块各有一个字符框 */
+:root[data-experimental-ui='ascii'] .settings-page-shell {
+  border: 0;
+  border-image: none;
+  background: transparent;
+  padding: 0;
+}
+
+:root[data-experimental-ui='ascii'] .settings-section {
+  padding: 0.75rem 1rem;
+}
+
+:root[data-experimental-ui='ascii'] .settings-section-heading h3::before {
+  content: '## ';
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .settings-category-heading h2::before {
+  content: '> ';
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] .settings-section-icon {
+  border: 1px dashed var(--ascii-line);
+  background: transparent;
+}
+
+:root[data-experimental-ui='ascii'] .settings-sidebar {
+  padding-right: 0.75rem;
+  border-right: 1px dashed var(--ascii-line);
+}
+
+/* 导航当前项前面是提示符 > */
+:root[data-experimental-ui='ascii'] .settings-nav-item {
+  min-height: 2.25rem;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--muted-foreground);
+  transition: none;
+}
+
+:root[data-experimental-ui='ascii'] .settings-nav-item::before {
+  content: ' ';
+  white-space: pre;
+}
+
+:root[data-experimental-ui='ascii'] .settings-nav-item:hover {
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='ascii'] .settings-nav-item--active,
+:root[data-experimental-ui='ascii'] .settings-nav-item--active:hover {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+:root[data-experimental-ui='ascii'] .settings-nav-item--active::before {
+  content: '>';
+}
+
+:root[data-experimental-ui='ascii'] .settings-item,
+:root[data-experimental-ui='ascii'] .settings-plugin-entry,
+:root[data-experimental-ui='ascii'] .settings-category-card {
+  border: 1px dashed var(--ascii-line);
+  background: transparent;
+}
+
+:root[data-experimental-ui='ascii'] .settings-plugin-entry[data-enabled='true'] {
+  border-left: 3px solid var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] :is(.plugins-status, .settings-plugin-status) {
+  border: 0;
+  background: transparent;
+}
+
+:root[data-experimental-ui='ascii'] :is(.plugins-icon, .settings-plugin-icon) {
+  border: 1px dashed var(--ascii-line);
+  background: transparent;
+  color: var(--primary);
+}
+
+:root[data-experimental-ui='ascii'] :is(th, .bookmark-minimal-head) {
+  background: transparent;
+  border-bottom: 1px dashed var(--ascii-line);
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+:root[data-experimental-ui='ascii'] :is(code, pre, kbd) {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+/* ---------- 字符背景、扫描线、故障闪烁、启动序列 ---------- */
+.ascii-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+  pointer-events: none;
+  user-select: none;
+}
+
+:root[data-theme='dark'] .ascii-backdrop {
+  opacity: 0.26;
+}
+
+.ascii-backdrop[data-mode='rain'] {
+  opacity: 0.16;
+}
+
+/* 海洋背景开启时只保留一层字符画面 */
+body:has(.themed-root--ocean) .ascii-backdrop {
+  display: none;
+}
+
+:root[data-experimental-ui='ascii'][data-ascii-scanlines='on'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 2px,
+    color-mix(in srgb, var(--ascii-shadow) 5%, transparent) 2px 3px
+  );
+}
+
+:root[data-experimental-ui='ascii'][data-theme='dark'][data-ascii-scanlines='on'] body::after {
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgb(0 0 0 / 22%) 2px 3px);
+}
+
+.ascii-boot {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483600;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.ascii-boot--loading {
+  background: #000;
+}
+
+/* 切页时闪过三条错位的乱码带 */
+.ascii-glitch {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483500;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--primary);
+  font-family: ui-monospace, 'Cascadia Mono', Consolas, 'SF Mono', Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: nowrap;
+  animation: ascii-glitch-out 240ms steps(1) forwards;
+}
+
+.ascii-glitch > span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  background: var(--background);
+  animation: ascii-glitch-shift 240ms steps(3) forwards;
+}
+
+.ascii-glitch > span:nth-child(1) {
+  top: 18%;
+}
+
+.ascii-glitch > span:nth-child(2) {
+  top: 47%;
+  animation-direction: reverse;
+}
+
+.ascii-glitch > span:nth-child(3) {
+  top: 76%;
+}
+
+/* ---------- 动画：逐格跳变 ---------- */
+:root[data-experimental-ui='ascii'] .app-main > * {
+  animation: ascii-flicker 220ms steps(1) backwards;
+}
+
+:root[data-experimental-ui='ascii'] :is(.vibehub-popover, .color-theme-menu) {
+  transform-origin: top;
+  animation: ascii-unroll 140ms steps(4) backwards;
+}
+
+:root[data-experimental-ui='ascii']
+  :is(.vibehub-modal-panel, .vibehub-toast, .animate-scale-in:not(.bookmark-tcg-card)) {
+  animation: ascii-flicker 200ms steps(1) backwards;
+}
+
+:root[data-experimental-ui='ascii'][data-ascii-glitch='on'] .shell-header-title:hover h1,
+:root[data-experimental-ui='ascii'][data-ascii-glitch='on'] .settings-category-heading h2:hover {
+  animation: ascii-jitter 260ms steps(1);
+}
+
+@keyframes ascii-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes ascii-flicker {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  75% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ascii-unroll {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(-12px -12px -16px -12px);
+  }
+}
+
+@keyframes ascii-jitter {
+  0% {
+    text-shadow:
+      2px 0 var(--destructive),
+      -2px 0 var(--primary);
+    translate: -2px 0;
+  }
+  33% {
+    text-shadow:
+      -3px 0 var(--destructive),
+      3px 0 var(--primary);
+    translate: 3px 0;
+  }
+  66% {
+    text-shadow: 1px 0 var(--primary);
+    translate: -1px 0;
+  }
+  100% {
+    text-shadow: none;
+    translate: 0 0;
+  }
+}
+
+@keyframes ascii-glitch-shift {
+  from {
+    translate: -6% 0;
+    opacity: 0.9;
+  }
+  to {
+    translate: 5% 0;
+    opacity: 0.5;
+  }
+}
+
+@keyframes ascii-glitch-out {
+  to {
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-experimental-ui='ascii'] *:not(.animate-spin):not(.animate-pulse),
+  :root[data-experimental-ui='ascii'] *::before,
+  :root[data-experimental-ui='ascii'] *::after,
+  .ascii-glitch,
+  .ascii-glitch > span {
+    animation: none !important;
+  }
+}

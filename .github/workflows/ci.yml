@@ -1,0 +1,97 @@
+name: 代码检查
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+# 不在此处声明 concurrency：本工作流会被 docker-image.yml 以可复用工作流方式调用，
+# 与独立运行共用同一个并发组会互相取消（main 上的「代码检查」曾被镜像发布取消）。
+
+jobs:
+  check:
+    name: 检查与构建
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.1
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+      - name: 生产依赖安全检查
+        run: pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org
+      - name: 类型检查
+        run: pnpm type-check
+      - name: 代码规范
+        run: pnpm lint
+      - name: 回归测试
+        run: pnpm test
+      - name: 构建前端
+        run: pnpm build
+
+  go:
+    name: Go 后端检查
+    # 本 job 末尾的浏览器插件集成测试需要 Playwright 安装 Chromium。
+    # Playwright 1.56.1 只支持到 Ubuntu 24.04，而 ubuntu-latest 已迁移到 26.04，
+    # 在 26.04 上会直接报 "Playwright does not support chromium on ubuntu26.04-x64"。
+    # 因此固定到 24.04；升级 Playwright 到支持 26.04 的版本后可恢复 ubuntu-latest。
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      - name: 安装 Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.7.1
+      - name: 格式检查
+        run: test -z "$(gofmt -l ./cmd ./internal ./plugins)"
+      - name: 安装隔离脚本运行时
+        run: node scripts/install-deno.mjs
+      - name: 编译
+        run: go build ./...
+      - name: 静态检查
+        run: go vet ./...
+      - name: 单元测试
+        run: go test ./...
+        env:
+          MARKVAULT_DENO_PATH: ${{ github.workspace }}/.data/tools/deno/deno
+      - name: 漏洞扫描
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+          govulncheck ./...
+      - name: 浏览器插件集成测试
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+          npm install --prefix .data/plugin-browser --no-save --ignore-scripts playwright@1.56.1
+          node .data/plugin-browser/node_modules/playwright/cli.js install --with-deps chromium
+          go build -o .data/plugin-browser/markvault ./cmd/markvault
+          MARKVAULT_ADDR=127.0.0.1:18787 MARKVAULT_DATA_DIR=$PWD/.data/plugin-browser/instance MARKVAULT_DENO_PATH=$PWD/.data/tools/deno/deno .data/plugin-browser/markvault >.data/plugin-browser/server.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do curl -fsS http://127.0.0.1:18787/api/v1/health && break || sleep 1; done
+          MARKVAULT_E2E_URL=http://127.0.0.1:18787 MARKVAULT_E2E_DATABASE=$PWD/.data/plugin-browser/instance/database/markvault.sqlite MARKVAULT_PLAYWRIGHT_MODULE=$PWD/.data/plugin-browser/node_modules/playwright/index.mjs node scripts/test-plugin-browser.mjs

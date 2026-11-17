@@ -1,0 +1,33 @@
+# MarkVault
+
+> MarkVault 是一个可自托管的书签与标签管理工具，提供面向 AI Agent 的稳定 REST API、MCP 和站内聊天。
+
+## Agent 接入
+
+- [公开接入指南](/agent)：选择 API Key 权限、安装 Skill、连接 MCP 与调用示例。
+- [站内 Agent](/agent/chat)：登录后通过自然语言查询和整理书签，写操作需要人工确认。
+- [MarkVault Skill](/markvault/SKILL.md)：供 AI Agent 使用的确认流程、安全边界与工作流。
+- [Skill API 参考](/markvault/references/api.md)：REST、MCP、权限、参数和错误处理。
+- [Node.js 客户端](/markvault/scripts/markvault-client.mjs)：Node.js 22 零依赖读写客户端。
+- [OpenAPI 3.1](/openapi-agent.json)：`/api/v1/agent/*` 的机器可读契约。
+
+## 稳定能力
+
+- `GET /api/v1/agent`：公开能力索引。
+- `/api/v1/agent/bookmarks`：读取和创建书签。
+- `/api/v1/agent/bookmarks/:id`：读取、修改和移入回收站。
+- `/api/v1/agent/bookmarks/:id/restore`：恢复书签。
+- `/api/v1/agent/tags`：读取和创建标签。
+- `/api/v1/agent/tags/:id`：读取、修改和删除标签。
+- `POST /api/mcp`：无状态 Streamable HTTP MCP，提供 13 个按权限过滤的工具。
+- 登录后的「数据统计 → Agent 与 MCP」提供调用量、结果、耗时与工具排行；仅记录调用元数据，从升级后开始累积。
+
+## 安全边界
+
+- API Key 使用细粒度权限控制读写能力，可撤销、可过期并独立限流。
+- MCP 写工具必须在用户明确确认后传入 `confirm=true`。
+- 站内 Agent 在确认卡片批准前不会执行写操作。
+- 书签删除为可恢复的软删除；永久删除、账户设置和分享配置不向 Agent 开放。
+- 不要把完整 API Key 放入 URL、日志或对话。
+
+Plugin integration: existing Agent REST and /api/mcp paths remain compatible. Disabled plugins are rejected server-side. Third-party tools require explicit user exposure and per-key tool authorization. Plugin management requires a login session. Chat accepts optional agentId (pluginId/contributionId); the default remains markvault.agent.

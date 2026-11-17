@@ -1,0 +1,365 @@
+/* ===== 数据统计页（/statistics）===== */
+
+/*
+ * 图表色板统一维护，第三条序列用于 MCP；图例与表格同时提供文字标识。
+ * 不要在组件里新增色相，所有序列色通过这些变量取用。
+ */
+.viz-root {
+  --viz-series-1: #2a78d6;
+  --viz-series-2: #eb6834;
+  --viz-series-3: #8b5cc7;
+  /* 序列 1 的面积淡色，仅用于折线下方的 10% 覆盖 */
+  --viz-series-1-wash: rgb(42 120 214 / 10%);
+
+  /* 热力图 5 级顺序色阶（少 -> 多），浅色模式：越深越多 */
+  --viz-heat-1: #b7d3f6;
+  --viz-heat-2: #86b6ef;
+  --viz-heat-3: #5598e7;
+  --viz-heat-4: #256abf;
+  --viz-heat-5: #104281;
+}
+
+:root[data-theme='dark'] .viz-root {
+  --viz-series-1: #3987e5;
+  --viz-series-2: #d95926;
+  --viz-series-3: #b18ae0;
+  --viz-series-1-wash: rgb(57 135 229 / 10%);
+
+  /* 深色模式：越亮越多 */
+  --viz-heat-1: #104281;
+  --viz-heat-2: #1c5cab;
+  --viz-heat-3: #2a78d6;
+  --viz-heat-4: #5598e7;
+  --viz-heat-5: #9ec5f4;
+}
+
+/* ===== 页面与内容入场 ===== */
+
+.viz-page {
+  animation: viz-page-in calc(240ms * var(--motion-speed, 1)) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes viz-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 数据刷新时重播：以响应对象的身份作为 key，只在下发新数据时播放 */
+.viz-content-in {
+  animation: viz-content-in calc(200ms * var(--motion-speed, 1)) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes viz-content-in {
+  from {
+    opacity: 0.5;
+    transform: translateY(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== KPI 条：单卡片 + 发丝分割线 ===== */
+
+/*
+ * 发丝线用「网格间隙 + 背景色」实现：网格背景是 --border，格子背景是 --card，
+ * 1px 的 gap 透出边框色就是分割线。无论折成几列、末行是否填满，
+ * 都不会出现多余或缺失的分割线，也不会和卡片自身的边框叠成双线。
+ */
+.viz-kpi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background-color: var(--border);
+}
+
+.viz-kpi-cell {
+  min-width: 0;
+  padding: 11px 15px 10px;
+  background-color: var(--card);
+  text-align: left;
+}
+
+/* 5 块在 2 列或 3 列布局下最后一行不满：最后一格跨两列补齐，避免露出分割线的底色 */
+.viz-kpi[data-count='5'] > .viz-kpi-cell:last-child {
+  grid-column: span 2;
+}
+
+@media (min-width: 1280px) {
+  .viz-kpi[data-count='5'] > .viz-kpi-cell:last-child {
+    grid-column: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .viz-kpi {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* 标签块被隐藏时只剩 4 块，3 列会留下空洞，改为 4 列 */
+  .viz-kpi[data-count='4'] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .viz-kpi {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .viz-kpi[data-count='4'] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* 峰值日格子是按钮，需要与普通格子视觉一致 */
+button.viz-kpi-cell {
+  border-radius: 0;
+  background-color: var(--card);
+  transition: background-color calc(120ms * var(--motion-speed, 1)) linear;
+}
+
+button.viz-kpi-cell:hover {
+  background-color: var(--muted);
+}
+
+/* ===== 图表容器 ===== */
+
+/* 图表容器：内容溢出只发生在图内，不产生嵌套滚动条 */
+.viz-plot {
+  position: relative;
+  width: 100%;
+}
+
+.viz-plot:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* 折线动画：仅在数据变化时做一次淡入，不使用位移 */
+.viz-series-line,
+.viz-series-area,
+.viz-bar {
+  transition-property: opacity, d;
+  transition-duration: calc(240ms * var(--motion-speed, 1));
+  transition-timing-function: ease-out;
+}
+
+.viz-series-line {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition-duration: calc(180ms * var(--motion-speed, 1));
+}
+
+/* 柱形从基线长出：每列错开 8ms，总延迟不超过 240ms */
+.viz-bar-grow {
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: viz-bar-grow calc(420ms * var(--motion-speed, 1)) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(min(var(--viz-index, 0) * 8ms, 240ms) * var(--motion-speed, 1));
+}
+
+@keyframes viz-bar-grow {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* 排行条从左向右长出 */
+.viz-rank-fill {
+  transform-origin: left center;
+  animation: viz-rank-grow calc(420ms * var(--motion-speed, 1)) cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(min(var(--viz-index, 0) * 8ms, 240ms) * var(--motion-speed, 1));
+}
+
+@keyframes viz-rank-grow {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* 悬停背景带与行悬停：120ms 过渡 */
+.viz-hover-band {
+  transition: opacity calc(120ms * var(--motion-speed, 1)) linear;
+}
+
+.viz-rank-row {
+  transition:
+    background-color calc(120ms * var(--motion-speed, 1)) linear,
+    color calc(120ms * var(--motion-speed, 1)) linear;
+}
+
+/* 热度单元格：颜色与宽度的轻微过渡 */
+.viz-heat-cell {
+  transition-property: fill, opacity, outline-color;
+  transition-duration: calc(200ms * var(--motion-speed, 1));
+  transition-timing-function: ease-out;
+}
+
+.viz-rank-bar-fill {
+  transition-property: width;
+  transition-duration: calc(280ms * var(--motion-speed, 1));
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 刷新中：保留上一份渲染，只降低不透明度，避免布局跳动 */
+.viz-refreshing {
+  opacity: 0.6;
+  transition-property: opacity;
+  transition-duration: calc(160ms * var(--motion-speed, 1));
+}
+
+/* 趋势卡片主体：>=1024px 时为「图表 + 272px 排行」两列 */
+.viz-led-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+}
+
+@media (min-width: 1024px) {
+  .viz-led-body {
+    grid-template-columns: minmax(0, 1fr) 272px;
+  }
+}
+
+/* tooltip：轻微上浮 + 缩放淡入；定位由外层 wrapper 负责 */
+.viz-tooltip {
+  animation: viz-tooltip-in calc(160ms * var(--motion-speed, 1)) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes viz-tooltip-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 热力图网格：窄屏时只允许卡片内部横向滚动 */
+.viz-heat-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.viz-heat-grid {
+  display: grid;
+  grid-template-columns: 30px repeat(24, minmax(13px, 1fr));
+  gap: 2px;
+  min-width: 420px;
+}
+
+.viz-heat-grid:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ===== 动效偏好 ===== */
+
+/* 尊重系统与用户级别的动效偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .viz-root *,
+  .viz-root *::before,
+  .viz-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-motion='off'] .viz-root *,
+:root[data-motion='off'] .viz-root *::before,
+:root[data-motion='off'] .viz-root *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+:root[data-motion='off'] .viz-root {
+  --motion-speed: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root .viz-root {
+    --motion-speed: 0;
+  }
+}
+
+/* ===== 主题色工具类补齐 =====
+   项目的 Tailwind v4 入口没有加载 tailwind.config.js，bg-card、text-muted-foreground 等主题色工具类不会生成。
+   统计页只在自身作用域内补齐用到的几个，不影响其他页面。 */
+.viz-root .text-foreground,
+.viz-root .hover\:text-foreground:hover {
+  color: var(--foreground);
+}
+.viz-root .text-muted-foreground {
+  color: var(--muted-foreground);
+}
+.viz-root .text-muted-foreground\/70 {
+  color: color-mix(in oklab, var(--muted-foreground) 70%, transparent);
+}
+.viz-root .text-primary {
+  color: var(--primary);
+}
+.viz-root .text-destructive {
+  color: var(--destructive);
+}
+.viz-root .text-popover-foreground {
+  color: var(--popover-foreground);
+}
+.viz-root .text-border {
+  color: var(--border);
+}
+.viz-root .bg-card {
+  background-color: var(--card);
+}
+.viz-root .bg-muted,
+.viz-root .hover\:bg-muted:hover {
+  background-color: var(--muted);
+}
+.viz-root .bg-popover {
+  background-color: var(--popover);
+}
+.viz-root .bg-primary\/10 {
+  background-color: color-mix(in oklab, var(--primary) 10%, transparent);
+}
+.viz-root .border-border {
+  border-color: var(--border);
+}
+.viz-root .border-primary {
+  border-color: var(--primary);
+}
+.viz-root .fill-muted-foreground {
+  fill: var(--muted-foreground);
+}
+.viz-root .focus-visible\:outline-ring:focus-visible {
+  outline-color: var(--ring);
+}
+.viz-root .ring-foreground\/40 {
+  --tw-ring-color: color-mix(in oklab, var(--foreground) 40%, transparent);
+}

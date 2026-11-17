@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MarkVault 插件清单 v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "version",
+    "api",
+    "name",
+    "author",
+    "permissions",
+    "contributes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,39}\\.[a-z][a-z0-9-]{1,59}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "api": {
+      "enum": [
+        "1.0.0",
+        "^1.0.0"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 2000
+    },
+    "category": {
+      "enum": [
+        "appearance",
+        "effects",
+        "intelligence",
+        "connections",
+        "insights",
+        "layouts",
+        "other"
+      ]
+    },
+    "icon": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,39}$"
+    },
+    "server": {
+      "type": "string"
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "permissions": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "storage.read",
+          "storage.write",
+          "bookmarks.read",
+          "bookmarks.write",
+          "tags.read",
+          "tags.write",
+          "network.fetch",
+          "models.call"
+        ]
+      }
+    },
+    "settings": {
+      "type": "object"
+    },
+    "contributes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "title"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]{0,47}$"
+          },
+          "kind": {
+            "enum": [
+              "theme",
+              "motion",
+              "background",
+              "page",
+              "panel",
+              "action",
+              "provider",
+              "agent",
+              "tool",
+              "mcp"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120
+          },
+          "entry": {
+            "type": "string"
+          },
+          "slot": {
+            "type": "string"
+          },
+          "tokens": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "inputSchema": {
+            "type": "object"
+          },
+          "animation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "target",
+              "effect",
+              "duration"
+            ],
+            "properties": {
+              "target": {
+                "enum": [
+                  "cards",
+                  "buttons",
+                  "tags"
+                ]
+              },
+              "effect": {
+                "enum": [
+                  "fade",
+                  "rise",
+                  "pulse"
+                ]
+              },
+              "duration": {
+                "type": "integer",
+                "minimum": 100,
+                "maximum": 2000
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

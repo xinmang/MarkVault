@@ -1,0 +1,283 @@
+/*
+ * Schema 驱动的插件设置表单（src/plugins/PluginSettingsForm.tsx）。
+ * 只使用设计变量，不写死颜色与圆角，界面主题和紧凑管理界面都能直接沿用；
+ * 主题需要调整时按 plugin-form* 类名覆盖即可。
+ */
+.plugin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  color: var(--foreground);
+}
+
+.plugin-form__fields {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标签与说明在左、控件在右；空间不足时控件整体换到下一行，不依赖断点 */
+.plugin-form__field {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 20px;
+  min-width: 0;
+  padding: 10px 0;
+}
+
+.plugin-form__field + .plugin-form__field {
+  border-top: 1px solid var(--border);
+}
+
+.plugin-form__field:first-child {
+  padding-top: 0;
+}
+
+.plugin-form__text {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.plugin-form__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.plugin-form__required {
+  margin-left: 2px;
+  color: var(--destructive);
+}
+
+.plugin-form__hint {
+  margin: 2px 0 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+  overflow-wrap: anywhere;
+}
+
+/* 开关很窄，始终与标签同一行、靠右对齐 */
+.plugin-form__field[data-kind='boolean'] {
+  flex-wrap: nowrap;
+}
+
+.plugin-form__field[data-kind='boolean'] > .plugin-form__text {
+  flex-basis: 0;
+}
+
+.plugin-form__control {
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* 文本类控件需要宽度，换行后占满整行 */
+.plugin-form__field:is([data-kind='text'], [data-kind='select'], [data-kind='json'])
+  > .plugin-form__control {
+  flex: 1 1 240px;
+  align-items: stretch;
+}
+
+.plugin-form__field[data-kind='range'] > .plugin-form__control {
+  flex: 1 1 200px;
+  align-items: stretch;
+  max-width: 22rem;
+}
+
+.plugin-form__input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+.plugin-form__input--number {
+  width: 7.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.plugin-form__json {
+  width: 100%;
+  min-height: 4.5rem;
+  padding: 0.5rem 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.plugin-form__json[aria-invalid='true'] {
+  border-color: var(--destructive);
+}
+
+.plugin-form__field-error {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--destructive);
+}
+
+/* 分段单选：原生 radio 负责键盘与读屏语义，视觉上隐藏 */
+.plugin-form__segmented {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
+}
+
+.plugin-form__segment {
+  position: relative;
+  display: inline-flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.875rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: calc(var(--radius) - 3px);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.plugin-form__segment > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.plugin-form__segment:hover {
+  color: var(--foreground);
+}
+
+.plugin-form__segment[data-checked='true'] {
+  background: var(--card);
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow:
+    0 0 0 1px var(--border),
+    0 1px 2px color-mix(in srgb, var(--foreground) 10%, transparent);
+}
+
+.plugin-form__segment:has(> input:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.plugin-form__segment[data-disabled='true'] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.plugin-form__range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.plugin-form__range > input {
+  flex: 1 1 auto;
+  min-width: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.plugin-form__range > input:disabled {
+  cursor: not-allowed;
+}
+
+.plugin-form__value {
+  flex: 0 0 auto;
+  min-width: 2.75rem;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 3px);
+  background: var(--muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--foreground);
+}
+
+.plugin-form__checks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px 14px;
+  max-width: 100%;
+}
+
+.plugin-form__check {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 1.75rem;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.plugin-form__check > input {
+  accent-color: var(--primary);
+}
+
+.plugin-form__check:has(> input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.plugin-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+}
+
+/* 恢复默认值是次要操作，靠右放置并弱化 */
+.plugin-form__reset {
+  margin-left: auto;
+  color: var(--muted-foreground);
+}
+
+.plugin-form__status,
+.plugin-form__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+.plugin-form__status {
+  color: var(--success);
+}
+
+.plugin-form__error {
+  color: var(--destructive);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plugin-form__segment {
+    transition: none;
+  }
+}

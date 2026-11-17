@@ -1,0 +1,83 @@
+name: 清理 GHCR 无标签镜像
+
+# 只支持手动触发：不做定时清理，也不随推送自动执行。
+# 默认 dry_run=true，先预览计划；确认清单后按指纹再次运行并设置 dry_run=false 才会真正删除。
+run-name: GHCR 无标签镜像清理 · ${{ inputs.dry_run && '预览' || '执行删除' }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 仅预览（true）或按计划指纹执行删除（false）
+        type: boolean
+        default: true
+      expected_plan_sha256:
+        description: 执行删除时必填，预览输出的 plan_sha256（64 位十六进制）
+        type: string
+        required: false
+        default: ''
+      min_age_hours:
+        description: 只考虑创建与更新时间都早于该小时数的版本（最小 24）
+        type: number
+        default: 24
+
+# 同一仓库不允许两个清理并行，且不取消正在进行的清理。
+concurrency:
+  group: ghcr-cleanup-${{ github.repository }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  packages: write
+  actions: read
+
+jobs:
+  cleanup:
+    name: 计算清理计划并（可选）删除
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: 检出代码（不持久化凭据）
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # 输入全部通过 env 传递，不拼接进 shell 命令。
+      - name: 计算计划并执行
+        id: cleanup
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_API_URL: ${{ github.api_url }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          EXPECTED_PLAN_SHA256: ${{ inputs.expected_plan_sha256 }}
+          MIN_AGE_HOURS: ${{ inputs.min_age_hours }}
+        run: node scripts/cleanup-ghcr.mjs
+
+      - name: 写入步骤摘要
+        if: always()
+        env:
+          # 摘要只读已落盘的 JSON，不传任何令牌。
+          DRY_RUN_INPUT: ${{ inputs.dry_run }}
+          MIN_AGE_HOURS_INPUT: ${{ inputs.min_age_hours }}
+          PLAN_SHA256_OUT: ${{ steps.cleanup.outputs.plan_sha256 }}
+          CANDIDATE_COUNT_OUT: ${{ steps.cleanup.outputs.candidate_count }}
+          DELETED_COUNT_OUT: ${{ steps.cleanup.outputs.deleted_count }}
+        run: node scripts/cleanup-ghcr.mjs --summary
+
+      - name: 上传计划与结果
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghcr-cleanup-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ghcr-cleanup-plan.json
+            ghcr-cleanup-result.json
+          if-no-files-found: warn
+          retention-days: 30

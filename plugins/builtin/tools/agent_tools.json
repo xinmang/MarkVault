@@ -1,0 +1,430 @@
+[
+  {
+    "name": "markvault_get_account",
+    "title": "读取账户概况",
+    "description": "读取当前 MarkVault 账户及书签、标签数量。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "requiredPermission": "user.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_search",
+    "title": "搜索书签",
+    "description": "按标题、描述、网址或标签名搜索书签和标签。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "query": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "limit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 20
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_list_bookmarks",
+    "title": "列出书签",
+    "description": "分页列出书签，可按关键词、标签、置顶状态和排序方式筛选。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "keyword": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "tag_ids": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "created",
+            "updated",
+            "pinned",
+            "popular"
+          ],
+          "default": "created"
+        },
+        "pinned": {
+          "type": "boolean"
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "default": 50
+        },
+        "page_cursor": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_get_bookmark",
+    "title": "读取书签详情",
+    "description": "按书签 ID 读取完整信息与标签。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_create_bookmark",
+    "title": "创建书签",
+    "description": "创建书签，可同时按标签名或标签 ID 关联标签。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2000
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 1000
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "maxLength": 50
+          }
+        },
+        "tag_ids": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "is_pinned": {
+          "type": "boolean"
+        },
+        "is_public": {
+          "type": "boolean"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "title",
+        "url",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.create",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_update_bookmark",
+    "title": "修改书签",
+    "description": "修改书签字段或替换其标签。未提供的字段保持不变。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2000
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        },
+        "tags": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "maxLength": 50
+          }
+        },
+        "tag_ids": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "is_pinned": {
+          "type": "boolean"
+        },
+        "is_archived": {
+          "type": "boolean"
+        },
+        "is_public": {
+          "type": "boolean"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.update",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_delete_bookmark",
+    "title": "将书签移入回收站",
+    "description": "软删除书签，可通过恢复工具撤销。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.delete",
+    "write": true,
+    "destructive": true
+  },
+  {
+    "name": "markvault_restore_bookmark",
+    "title": "恢复书签",
+    "description": "从回收站恢复一个书签。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.update",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_list_tags",
+    "title": "列出标签",
+    "description": "列出当前账户的全部标签及其书签数量。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {},
+      "additionalProperties": false
+    },
+    "requiredPermission": "tags.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_get_tag",
+    "title": "读取标签详情",
+    "description": "按标签 ID 读取标签及书签数量。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tags.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_create_tag",
+    "title": "创建标签",
+    "description": "创建一个新标签。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "color": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 20
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "name",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tags.create",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_update_tag",
+    "title": "修改标签",
+    "description": "修改标签名称或颜色。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "color": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 20
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tags.update",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_delete_tag",
+    "title": "删除标签",
+    "description": "永久删除标签并解除它与书签之间的关联，删除后无法恢复。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tags.delete",
+    "write": true,
+    "destructive": true
+  }
+]

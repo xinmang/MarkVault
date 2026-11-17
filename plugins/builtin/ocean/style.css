@@ -1,0 +1,68 @@
+/* 海洋字符层位于页面背景之上、内容之下，不参与鼠标和触摸命中。 */
+.themed-root--ocean {
+  position: relative;
+  isolation: isolate;
+}
+
+.ocean-background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 主题的整页网格和底色会盖住鱼群，开启彩蛋时让画布直接透出来。 */
+:root .themed-root--ocean .app-main {
+  background: transparent !important;
+}
+
+/* 只调整表面底色，不对容器使用 opacity，避免图片、文字和操作按钮一起变淡。
+   关闭磨砂才能看清 ASCII 字符；规则放在各主题之后，也覆盖悬停时的实心底色。 */
+:root
+  .themed-root--ocean
+  :is(
+    .card,
+    .card-solid,
+    .glass,
+    .bg-card,
+    .bookmark-minimal-table,
+    .settings-page-heading,
+    .settings-page-shell,
+    .settings-section,
+    .settings-item,
+    .tag-sidebar,
+    .agent-chat-hero,
+    .agent-chat-shell
+  ) {
+  background: color-mix(in srgb, var(--card) 58%, transparent) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 外层面板与内部设置项叠加时，降低外层底色，防止多层透明度叠成实心。 */
+:root .themed-root--ocean :is(.settings-page-shell, .settings-section) {
+  background: color-mix(in srgb, var(--card) 24%, transparent) !important;
+}
+
+:root .themed-root--ocean :is(.bg-background, .bg-base-100) {
+  background-color: color-mix(in srgb, var(--background) 58%, transparent) !important;
+}
+
+:root .themed-root--ocean :is(.bg-muted, .bg-base-200, .bookmark-minimal-head) {
+  background-color: color-mix(in srgb, var(--muted) 48%, transparent) !important;
+}
+
+/* 吸顶导航及输入区域稍厚一些，滚动和输入时仍有足够的文字对比度。 */
+:root .themed-root--ocean :is(.shell-header, .mobile-bottom-nav, .input, .agent-chat-sidebar) {
+  background: color-mix(in srgb, var(--card) 72%, transparent) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 柔光主题给图标封面加了实心底色；只清除这一层，实际图片保留原来的显示效果。 */
+:root .themed-root--ocean :is(.bookmark-card, .bookmark-list-item) [class*='bg-gradient-to-br'] {
+  background-color: transparent !important;
+}

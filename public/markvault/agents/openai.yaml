@@ -1,0 +1,4 @@
+interface:
+  display_name: 'MarkVault'
+  short_description: '安全查询、创建和整理个人书签与标签，所有写操作均需要明确确认'
+  default_prompt: '使用 $markvault 查找我保存的 Docker 相关书签；如果需要修改数据，先向我确认。'

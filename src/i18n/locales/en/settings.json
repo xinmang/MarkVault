@@ -1,0 +1,885 @@
+{
+  "form": {
+    "quickValues": "Common values for {{name}}",
+    "unlimited": "Unlimited",
+    "retry": "Retry"
+  },
+  "organization": {
+    "core": "General",
+    "theme": "Interface & colors",
+    "motion": "Animation & backgrounds",
+    "enhancements": "Browsing enhancements",
+    "ai": "Assistant & models",
+    "api": "API & external access",
+    "connections": "MCP & image storage",
+    "extensions": "Statistics & extensions",
+    "plugins": "Custom plugins",
+    "layouts": "Layouts & views",
+    "interface": "Interface",
+    "services": "Assistant & connections",
+    "hints": {
+      "basic": "Manage your account, security and interface language.",
+      "automation": "Configure list loading, search and tag filter behavior.",
+      "data": "Manage snapshot retention, imports, exports and backups.",
+      "share": "Manage public sharing and access.",
+      "site": "Configure the site name, branding and registration policy.",
+      "theme": "Choose the interface theme and page layout, then adjust colors and tag icons.",
+      "layouts": "Turn on extra bookmark views, tag layouts and tab group layouts. They appear in the switcher menu of the corresponding page.",
+      "motion": "Turn motion and backgrounds on or off and expand their settings. Ocean preferences can be saved per browser or account.",
+      "enhancements": "Turn a feature on and expand its settings to adjust tag heat, URL masking and bookmark hover cards.",
+      "ai": "Turn the assistant and its tools on or off, and expand Model providers to configure AI services.",
+      "api": "Manage API keys and access permissions for external assistants.",
+      "connections": "Configure external MCP connections, image storage and the browser extension.",
+      "statistics": "Turn on to see visit trends, heatmaps and usage analytics. Turning it off keeps historical records.",
+      "plugins": "Install and manage third-party plugins. Built-in features now live in the settings sections."
+    }
+  },
+  "title": "Settings",
+  "description": "Configure app behavior and user experience",
+  "version": {
+    "label": "Version v{{version}}"
+  },
+  "tabs": {
+    "basic": "Account & language",
+    "automation": "Bookmarks & automation",
+    "appearance": "Appearance",
+    "snapshot": "Snapshot",
+    "ai": "AI services",
+    "browser": "Browser",
+    "api": "API & extensions",
+    "share": "Public sharing",
+    "data": "Data & snapshots",
+    "statistics": "Statistics",
+    "language": "Language",
+    "theme": "Appearance & tags",
+    "experimental": "Experimental",
+    "site": "Site settings",
+    "motion": "Motion"
+  },
+  "action": {
+    "save": "Save Settings",
+    "saving": "Saving...",
+    "reset": "Reset",
+    "logout": "Logout",
+    "discard": "Discard"
+  },
+  "message": {
+    "saveSuccess": "Settings saved",
+    "saveFailed": "Failed to save",
+    "saveFailedWithError": "Failed to save: {{error}}",
+    "resetSuccess": "Reset to last saved settings",
+    "logoutFailed": "Failed to logout",
+    "unsavedChanges": "You have unsaved changes"
+  },
+  "language": {
+    "title": "Language Settings",
+    "description": "Select interface language",
+    "label": "Interface Language",
+    "hint": "Interface will switch immediately after changing language"
+  },
+  "permissions": {
+    "bookmarks": "Bookmarks",
+    "tags": "Tags",
+    "tabGroups": "Tab Groups",
+    "other": "Other",
+    "bookmarksCreate": "Create bookmarks",
+    "bookmarksRead": "Read bookmarks",
+    "bookmarksUpdate": "Update bookmarks",
+    "bookmarksDelete": "Delete bookmarks",
+    "bookmarksAll": "All bookmark permissions",
+    "tagsCreate": "Create tags",
+    "tagsRead": "Read tags",
+    "tagsUpdate": "Update tags",
+    "tagsDelete": "Delete tags",
+    "tagsAssign": "Assign tags",
+    "tagsAll": "All tag permissions",
+    "tabGroupsCreate": "Create tab groups",
+    "tabGroupsRead": "Read tab groups",
+    "tabGroupsUpdate": "Update tab groups",
+    "tabGroupsDelete": "Delete tab groups",
+    "tabGroupsAll": "All tab group permissions",
+    "aiSuggest": "AI suggestions",
+    "userRead": "Read user info",
+    "userPreferencesRead": "Read user preferences",
+    "templates": {
+      "readOnly": "Read Only",
+      "readOnlyDesc": "View data only, cannot modify",
+      "basic": "Basic",
+      "basicDesc": "Can add bookmarks and tags, but cannot delete",
+      "full": "Full Access",
+      "fullDesc": "Has all operation permissions"
+    }
+  },
+  "browserPermissions": {
+    "title": "Browser Permissions",
+    "description": "Configure browser permissions required by MarkVault for the best experience",
+    "popup": {
+      "title": "Popup Permission",
+      "description": "Allow MarkVault to open popups to use the \"Open All Tabs\" feature."
+    },
+    "howTo": {
+      "title": "How to allow popups?",
+      "step1": "On the tab group detail page, click the \"Restore All\" button",
+      "step2": "A popup blocked icon will appear in the browser address bar (usually on the right)",
+      "step3": "Click the icon and select \"Always allow popups from [site]\"",
+      "step4": "Refresh the page and click \"Restore All\" again to use normally"
+    },
+    "browsers": {
+      "title": "Browser-specific instructions",
+      "chrome": {
+        "title": "Chrome / Edge",
+        "description": "A 🚫 icon will appear on the right side of the address bar. Click it and select \"Always allow pop-ups and redirects\""
+      },
+      "firefox": {
+        "title": "Firefox",
+        "description": "A popup blocked notification will appear on the left side of the address bar. Click \"Options\" → \"Allow pop-ups for [site]\""
+      },
+      "safari": {
+        "title": "Safari",
+        "description": "Menu bar: Safari → Settings → Websites → Pop-up Windows → Find current site → Select \"Allow\""
+      }
+    },
+    "why": {
+      "title": "💡 Why is popup permission needed?",
+      "description": "The \"Open All Tabs\" feature needs to open multiple web pages simultaneously. Browsers block batch popups by default for security. After allowing MarkVault popup permission, you can open all pages in a tab group at once, greatly improving efficiency."
+    }
+  },
+  "ai": {
+    "loading": "Loading AI settings",
+    "loadFailed": "Failed to load AI settings",
+    "save": "Save AI settings",
+    "saving": "Saving…",
+    "saveFailed": "Failed to save AI settings",
+    "testing": "Testing…",
+    "modelPlaceholder": "Enter a model name from your provider",
+    "apiKeySavedPlaceholder": "Encrypted and saved; leave blank to keep",
+    "apiKeyHint": "The API key is encrypted on the server. Leave blank to keep the saved key, or enter a new key and save to replace it.",
+    "keepApiKey": "Keep existing key",
+    "clearApiKey": "Clear saved key",
+    "customPrompt": "Custom instructions",
+    "customPromptHint": "Add preferences and requirements for organizing your bookmarks.",
+    "customPromptPlaceholder": "Enter preferences and requirements for the assistant",
+    "custom": "Custom",
+    "title": "AI Service Configuration",
+    "description": "Configure AI service for tag suggestions, smart categorization, etc.",
+    "enable": "Enable AI Features",
+    "enabled": "Enabled",
+    "enableHint": "Enable to use AI smart organization features",
+    "provider": "Provider",
+    "apiKey": "API Key",
+    "getApiKey": "Get API Key",
+    "apiKeyPlaceholder": "Enter {{provider}} API Key",
+    "model": "Model",
+    "selectModel": "Select",
+    "refreshModels": "Refresh Models",
+    "refreshingModels": "Fetching...",
+    "modelsFetched": "Fetched {{count}} models, select or enter manually",
+    "modelsFetchError": "Failed to load models: {{error}}",
+    "modelsHint": "Enter API Key to auto-fetch available models, recommended: {{model}}",
+    "modelsRecommend": "Recommended: {{model}}, good value",
+    "apiUrl": "API URL",
+    "apiUrlOptional": "API URL (optional)",
+    "apiUrlHint": "Leave empty for default URL, or enter custom API endpoint",
+    "testConnection": "Test Connection",
+    "testSuccess": "Connected ({{latency}}ms)",
+    "testFailed": "Connection failed",
+    "enterApiKeyFirst": "Please enter a complete API Key first",
+    "saveSuccess": "AI settings saved",
+    "infoBox": {
+      "title": "Usage Guide",
+      "tip1": "Third-party AI API keys are encrypted with the instance key; protect your instance configuration and backups",
+      "tip2": "The in-app Agent calls your configured AI provider through the MarkVault server; review which data you send to that provider",
+      "tip3": "Model names, availability, and usage charges depend on your configured provider",
+      "tip4": "Usage costs depend on the selected model, request length, and number of tool calls"
+    }
+  },
+  "apiKey": {
+    "page": {
+      "title": "API Keys Management",
+      "description": "Manage your API keys for third-party app access",
+      "createNew": "Create New API Key",
+      "info": "API Keys are used by third-party apps (like browser extensions) to securely access your MarkVault data. You can revoke unused keys anytime.",
+      "currentUsage": "Current usage",
+      "unlimited": "Unlimited",
+      "empty": "No API Keys created yet",
+      "createFirst": "Create your first API Key",
+      "tipsTitle": "💡 Tips:",
+      "tip1": "Each account can create up to {{limit}} API Keys",
+      "tip2": "The full key is shown only once when created; copy and save it immediately",
+      "tip3": "If a Key is compromised, revoke it immediately",
+      "revokeTitle": "Revoke API Key",
+      "revokeMessage": "Are you sure you want to revoke this API Key? This action cannot be undone.",
+      "revokeSuccess": "API Key revoked",
+      "revokeFailed": "Failed to revoke, please try again",
+      "deleteTitle": "Delete API Key",
+      "deleteMessage": "Are you sure you want to permanently delete this API Key? This action cannot be undone and will clear all usage records.",
+      "deleteSuccess": "API Key permanently deleted",
+      "deleteFailed": "Failed to delete, please try again"
+    },
+    "status": {
+      "label": "Status",
+      "active": "Active",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "permissions": "Permissions",
+    "permissionsCount": "{{count}} items",
+    "lastUsed": "Last used",
+    "neverUsed": "Never used",
+    "createdAt": "Created at",
+    "expiresAt": "Expires at",
+    "viewDetails": "View Details",
+    "revoke": "Revoke",
+    "delete": "Delete",
+    "agentGuide": {
+      "title": "Agent, MCP, and in-app chat",
+      "description": "Review the Skill, read/write REST API, MCP, and approval flow. Create a least-privilege key for each Agent.",
+      "action": "Open access guide"
+    },
+    "create": {
+      "title": "Create API Key",
+      "step": "Step {{current}}/{{total}}",
+      "name": "Name",
+      "nameRequired": "Name *",
+      "namePlaceholder": "e.g., Chrome Extension - Work PC",
+      "nameHint": "Used to identify the purpose of this Key",
+      "description": "Description (optional)",
+      "descriptionPlaceholder": "e.g., For browser extension access",
+      "quickSelect": "Quick Select:",
+      "recommended": "Recommended",
+      "includedPermissions": "Included Permissions:",
+      "expiration": "Expiration:",
+      "neverExpire": "Never expire",
+      "expireIn30Days": "30 days",
+      "expireIn90Days": "90 days",
+      "cancel": "Cancel",
+      "prev": "← Previous",
+      "next": "Next →",
+      "creating": "Creating...",
+      "createButton": "Create API Key",
+      "failed": "Creation Failed",
+      "failedMessage": "Failed to create, please try again"
+    },
+    "success": {
+      "title": "Created! Please save this Key securely",
+      "yourKey": "Your API Key:",
+      "copy": "📋 Copy",
+      "copied": "✓ Copied",
+      "warning": "⚠️ Important:",
+      "warningList": {
+        "showOnce": "The full key is shown only once and cannot be viewed or copied after closing",
+        "saveNow": "Please copy and save it to a secure location immediately",
+        "prefixOnly": "You will only see the prefix later: {{prefix}}..."
+      },
+      "close": "I've saved it, close"
+    },
+    "detail": {
+      "close": "Close",
+      "basicInfo": "Basic Information:",
+      "keyPrefix": "Key Prefix:",
+      "createdAt": "Created at:",
+      "expiresAt": "Expires at:",
+      "neverExpire": "Never expires",
+      "description": "Description:",
+      "permissions": "Permissions:",
+      "usage": "Usage:",
+      "lastUsed": "Last used:",
+      "neverUsed": "Never used",
+      "totalRequests": "Total requests:",
+      "requestCount": "{{count}} times",
+      "lastIp": "Last IP:",
+      "recentActivity": "Recent Activity:",
+      "recentActivityLimit": "(showing up to {{count}} entries)",
+      "tableTime": "Time",
+      "tableMethod": "Method",
+      "tableEndpoint": "Endpoint",
+      "tableStatus": "Status",
+      "noLogs": "No usage records"
+    },
+    "infoBox": {
+      "usageTitle": "Usage Guide",
+      "usageTip1": "API Keys are used by third-party apps (like browser extensions) to securely access your data",
+      "usageTip2": "Each Key can have different permission scopes",
+      "usageTip3": "Recommended to create different Keys for different purposes",
+      "securityTitle": "Security Tips",
+      "securityTip1": "Do not share your API Key publicly",
+      "securityTip2": "Revoke immediately if a Key is compromised",
+      "securityTip3": "Regularly check Key usage records"
+    }
+  },
+  "snapshot": {
+    "title": "Snapshot Settings",
+    "retention": {
+      "title": "Snapshot Retention Policy",
+      "description": "Control the number of snapshots retained per bookmark",
+      "count": "Retention Count",
+      "countHint": "Maximum snapshot versions per bookmark (-1 for unlimited)",
+      "unit": "",
+      "tip": "Delete the oldest snapshots above the limit; -1 means unlimited."
+    },
+    "maxCount": {
+      "title": "Maximum Snapshots",
+      "description": "Maximum number of snapshots per bookmark",
+      "hint": "When snapshot count exceeds the limit, oldest snapshots will be automatically deleted. Set to -1 for unlimited."
+    },
+    "autoCreate": {
+      "title": "Auto-create Snapshots",
+      "description": "Automatically create webpage snapshot when adding bookmark",
+      "enable": "Enable Auto-create",
+      "enableHint": "Automatically save webpage snapshot when adding new bookmark (requires browser extension)"
+    },
+    "dedup": {
+      "title": "Smart Deduplication",
+      "description": "Avoid saving duplicate snapshot content",
+      "enable": "Enable Smart Deduplication",
+      "tip1": "Detect duplicate snapshots via content hash",
+      "tip2": "Won't create new snapshot if content is identical",
+      "tip3": "Save storage space and improve efficiency"
+    },
+    "autoClean": {
+      "title": "Auto Cleanup",
+      "description": "Periodically clean up expired snapshots",
+      "days": "Auto-cleanup Days",
+      "daysHint": "Automatically delete snapshots older than specified days (0 to disable)",
+      "unit": "days",
+      "warning": "⚠️ Auto-cleanup will permanently delete snapshots, please set carefully. Set to 0 to disable."
+    },
+    "automation": {
+      "title": "Automation Options",
+      "description": "Configure auto-create and deduplication for snapshots"
+    },
+    "infoBox": {
+      "title": "Snapshot Feature Guide",
+      "tip1": "Snapshot feature saves complete webpage content, viewable even if original page is deleted",
+      "tip2": "Enable smart deduplication to avoid duplicate content and save storage space"
+    }
+  },
+  "site": {
+    "title": "Site settings",
+    "subtitle": "Global branding shown in the header, sign-in pages and shared pages; only administrators can edit it",
+    "savedHint": "Matches the saved site settings",
+    "name": {
+      "label": "Site name",
+      "placeholder": "e.g. MarkVault",
+      "hint": "1–80 characters, used in the header, browser title and shared pages"
+    },
+    "descriptionField": {
+      "label": "Site description",
+      "placeholder": "One line about this site",
+      "hint": "Up to 300 characters, also written to the description meta tag"
+    },
+    "images": {
+      "title": "Site icons",
+      "hint": "Use an HTTP(S) image URL or upload a PNG/JPEG/GIF/WebP no larger than 256 KiB",
+      "upload": "Upload image",
+      "clear": "Clear"
+    },
+    "logo": {
+      "label": "Site logo",
+      "placeholder": "https://example.com/logo.png"
+    },
+    "favicon": {
+      "label": "Browser icon (favicon)",
+      "placeholder": "https://example.com/favicon.png"
+    },
+    "preview": {
+      "title": "Live preview",
+      "hint": "The preview only reflects the current draft; the whole site updates after saving",
+      "browserTitle": "Browser title",
+      "metaDescription": "Site description"
+    },
+    "action": {
+      "restoreDefaults": "Restore defaults",
+      "saveSite": "Save site settings"
+    },
+    "message": {
+      "saveSuccess": "Site settings saved",
+      "saveFailed": "Failed to save site settings",
+      "defaultsNotice": "Defaults filled in; they apply to the whole site after saving",
+      "invalidName": "Site name must be 1–80 characters",
+      "invalidDescription": "Site description must be at most 300 characters",
+      "invalidLogo": "Logo must be an HTTP(S) image URL or a bitmap no larger than 256 KiB",
+      "invalidFavicon": "Favicon must be an HTTP(S) image URL or a bitmap no larger than 256 KiB",
+      "invalidUpload": "Upload failed: choose a PNG/JPEG/GIF/WebP image no larger than 256 KiB"
+    },
+    "readOnly": {
+      "title": "Only administrators can change site settings",
+      "description": "This account can view the site branding. The first registered account is the administrator. Sign in with an administrator account to make changes."
+    },
+    "loadFailed": "Failed to load site settings",
+    "loading": "Loading...",
+    "retry": "Retry"
+  },
+  "share": {
+    "savedHint": "Save to apply changes",
+    "savedLinkHint": "This is the saved share link. Save changes to the suffix before copying.",
+    "loadFailed": "Could not load sharing settings. Please retry.",
+    "title": "Share Settings",
+    "publicShare": {
+      "title": "Public Share",
+      "description": "Create a public link for others to view your bookmarks",
+      "enable": "Enable Public Share",
+      "enableHint": "When enabled, others can access your public bookmarks via link"
+    },
+    "slug": {
+      "label": "Share Link Suffix",
+      "placeholder": "e.g., my-bookmarks",
+      "hint": "Only letters, numbers, and hyphens allowed. Leave empty to auto-generate",
+      "regenerate": "Regenerate"
+    },
+    "pageTitle": {
+      "label": "Page Title",
+      "placeholder": "Public page title to introduce to visitors"
+    },
+    "pageDescription": {
+      "label": "Page Description",
+      "placeholder": "Optional description to explain the bookmark collection"
+    },
+    "shareLink": {
+      "label": "Share Link",
+      "placeholder": "Link will appear after generation",
+      "copy": "Copy",
+      "copied": "Copied"
+    },
+    "reset": "Reset",
+    "saveSuccess": "Share settings saved",
+    "saveFailed": "Failed to save",
+    "regenerateSuccess": "Link regenerated",
+    "regenerateFailed": "Failed to generate",
+    "copySuccess": "Link copied",
+    "copyFailed": "Failed to copy",
+    "resetSuccess": "Reset to last saved settings",
+    "infoBox": {
+      "title": "Share Feature Guide",
+      "tip1": "Only bookmarks marked as \"public\" will be shown on the share page",
+      "tip2": "You can modify the share link or disable sharing anytime",
+      "tip3": "Share page can be accessed without login"
+    }
+  },
+  "data": {
+    "title": "Data Management",
+    "r2Storage": {
+      "title": "File storage",
+      "description": "Total local object storage used by snapshots and cover images",
+      "currentUsage": "Current usage",
+      "unlimited": "Unlimited"
+    },
+    "import": {
+      "title": "Import Data",
+      "description": "Restore bookmarks, tags, and tab groups from a MarkVault JSON backup"
+    },
+    "export": {
+      "title": "Export Data",
+      "description": "Export bookmark data to file for backup",
+      "tip1": "Contains complete data, suitable for backup and migration",
+      "tip2": "Can choose to include tags, metadata, etc.",
+      "htmlTip1": "Compatible with browser standard format",
+      "htmlTip2": "Can be exported as browser bookmark format",
+      "htmlTip3": "Preserve folder structure and bookmark hierarchy"
+    },
+    "importSuccess": "Import complete: processed {{bookmarks}} bookmarks and {{groups}} tab groups",
+    "exportSuccess": "Export successful: {{details}}",
+    "lastOperation": {
+      "export": "Data Export",
+      "cleanup": "Snapshot Cleanup"
+    },
+    "snapshotManagement": {
+      "title": "Snapshot Management",
+      "description": "Clean up and maintain bookmark snapshot data",
+      "cleanOrphan": "Clean Orphan Snapshot Records",
+      "cleaning": "Cleaning...",
+      "cleanButton": "Clean Orphan Records"
+    },
+    "exportFeature": {
+      "title": "Export Features",
+      "description": "Multiple formats to meet different needs",
+      "jsonTitle": "JSON Format",
+      "htmlTitle": "HTML Format"
+    },
+    "fetchBookmarksFailed": "Failed to fetch bookmark list",
+    "cleanSnapshotsFailed": "Failed to clean snapshots",
+    "cleanSnapshotsSuccess": "Successfully cleaned {{count}} orphan snapshot records",
+    "cleanSnapshotsNone": "No orphan snapshot records found",
+    "cleanSnapshotsConfirmTitle": "Clean Snapshot Records",
+    "cleanSnapshotsConfirmMessage": "Are you sure you want to clean all orphan snapshot records?\n\nThis will check all snapshot records and delete those whose object files no longer exist.",
+    "loading": "Loading...",
+    "cleanSnapshots": {
+      "title": "Clean Orphan Snapshots",
+      "tip1": "Check all snapshot records and verify object-file existence",
+      "tip2": "Delete database records for missing object files",
+      "tip3": "Automatically update bookmark snapshot counts",
+      "tip4": "Useful for data repair after manually deleting object files"
+    }
+  },
+  "browser": {
+    "title": "Browser Settings",
+    "download": {
+      "title": "Browser Extension Download",
+      "description": "Download the Chrome/Chromium universal extension (for Chromium-based browsers)",
+      "clickToDownload": "Click to download",
+      "tip": "💡 Only the Chrome/Chromium universal package is provided (Chrome, Edge, Brave, Opera, 360, QQ, Sogou, etc.)"
+    },
+    "permissions": {
+      "title": "Browser Permissions",
+      "description": "Configure browser permissions required by MarkVault for the best experience",
+      "bookmarks": {
+        "title": "Bookmark Access Permission",
+        "description": "Allow extension to read and save browser bookmarks"
+      },
+      "tabs": {
+        "title": "Tab Access Permission",
+        "description": "Allow extension to access current open tab information"
+      },
+      "storage": {
+        "title": "Storage Permission",
+        "description": "Allow extension to store data locally"
+      }
+    },
+    "popup": {
+      "title": "Popup Permission",
+      "description": "Allow MarkVault to open popups to use the \"Open All Tabs\" feature.",
+      "howTo": "How to allow popups?",
+      "step1": "On the tab group detail page, click the \"Restore All\" button",
+      "step2": "A popup blocked icon will appear in the browser address bar (usually on the right)",
+      "step3": "Click the icon and select \"Always allow popups\"",
+      "step4": "Refresh the page and click \"Restore All\" again to use normally",
+      "chromeTitle": "Chrome / Edge",
+      "chromeDesc": "A 🚫 icon will appear on the right side of the address bar. Click it and select \"Always allow pop-ups and redirects\"",
+      "firefoxTitle": "Firefox",
+      "firefoxDesc": "A popup blocked notification will appear on the left side of the address bar. Click \"Options\" → \"Allow pop-ups\"",
+      "safariTitle": "Safari",
+      "safariDesc": "Menu bar: Safari → Settings → Websites → Pop-up Windows → Find current site → Select \"Allow\"",
+      "whyTitle": "💡 Why is popup permission needed?",
+      "whyDesc": "The \"Open All Tabs\" feature needs to open multiple web pages simultaneously. Browsers block batch popups by default for security. After allowing MarkVault popup permission, you can open all pages in a tab group at once, greatly improving efficiency."
+    },
+    "install": {
+      "title": "Installation Steps",
+      "description": "Follow these steps to install the browser extension",
+      "step1Title": "Download extension package",
+      "step1Desc": "Click the download button above to get the extension file for your browser",
+      "step2Title": "Extract files",
+      "step2Desc": "Extract the downloaded zip file to any folder (preferably a permanent location)",
+      "step3Title": "Open extension management page",
+      "step3Desc": "Chrome: chrome://extensions/ | Edge: edge://extensions/",
+      "step4Title": "Enable developer mode",
+      "step4Desc": "In the extension management page, turn on \"Developer mode\" switch in the top right",
+      "step5Title": "Load extension",
+      "step5Desc": "Click \"Load unpacked\" and select the extracted folder",
+      "step6Title": "Installation complete",
+      "step6Desc": "Extension icon will appear in browser toolbar, click to use"
+    },
+    "faq": {
+      "title": "FAQ",
+      "iconNotFound": "Q: Can't find the extension icon after installation?",
+      "iconNotFoundAnswer": "A: Click the puzzle icon on the right side of browser toolbar, find MarkVault extension and click the pin button to show it in toolbar.",
+      "howToGetApiKey": "Q: How to get API Key?",
+      "howToGetApiKeyAnswer": "A: Create a new API Key in the \"API\" tab of General Settings and copy it to the extension configuration.",
+      "supportedBrowsers": "Q: Which browsers are supported?",
+      "supportedBrowsersAnswer": "A: Only the Chrome/Chromium version is provided. It works on Chromium-based browsers like Chrome, Edge, Brave, Opera, 360, QQ and Sogou.",
+      "whereToView": "Where to view saved tab groups?",
+      "whereToViewAnswer": "View and manage all saved tab groups on the \"Tab Groups\" page of MarkVault website."
+    },
+    "infoBox": {
+      "title": "Usage Tips",
+      "tip1": "First-time use requires configuring MarkVault website URL and API Key in the extension",
+      "tip2": "Recommended to pin the extension icon to toolbar for quick access",
+      "tip3": "Extension automatically saves tab titles, URLs, and favicons",
+      "tip4": "Saved data syncs to your configured MarkVault instance and can be accessed on multiple devices with the same account"
+    }
+  },
+  "basic": {
+    "accountInfo": {
+      "title": "Account Information",
+      "description": "View your account details"
+    },
+    "username": "Username",
+    "email": "Email",
+    "registeredAt": "Registered at",
+    "role": "Account Role",
+    "roleAdmin": "Administrator",
+    "roleUser": "Regular User",
+    "notSet": "Not set",
+    "unknown": "Unknown",
+    "security": {
+      "title": "Security Settings",
+      "description": "Change your login password"
+    },
+    "password": {
+      "change": "Change Password",
+      "current": "Current Password",
+      "currentPlaceholder": "Enter current password",
+      "new": "New Password",
+      "newPlaceholder": "Enter new password (at least 8 characters)",
+      "confirm": "Confirm New Password",
+      "confirmPlaceholder": "Enter new password again",
+      "cancel": "Cancel",
+      "submit": "Confirm Change",
+      "changing": "Changing...",
+      "changeSuccess": "Password changed. Please sign in again.",
+      "changeFailed": "Failed to change password",
+      "fillAllFields": "Please fill in all fields",
+      "mismatch": "New passwords do not match",
+      "tooShort": "The new password must be at least 8 characters",
+      "infoBoxTitle": "Account Security Tips",
+      "tip1": "Please change your password regularly to protect account security",
+      "tip2": "Password must be at least 6 characters",
+      "tip3": "Recommended to use a combination of letters, numbers, and symbols",
+      "tip4": "Do not share your password with others"
+    }
+  },
+  "automation": {
+    "bookmarkLoading": {
+      "title": "Bookmark loading",
+      "description": "Choose the initial bookmark count, the number to load each time, and how long to retain the expanded list.",
+      "initialCount": "Initial bookmarks",
+      "initialCountHint": "Bookmarks shown on first entry or after the expanded list expires, from 1 to 200.",
+      "pageSize": "Bookmarks per load",
+      "pageSizeHint": "Bookmarks added by each click on Load more, from 1 to 200.",
+      "expiryMinutes": "Expansion duration (minutes)",
+      "expiryHint": "Starts after the last load. Return after expiry to collapse. Set 0 to reset on every visit.",
+      "summary": "Show {{initial}} initially, load {{step}} more each time, and retain the expanded list for {{minutes}} minutes.",
+      "summaryReset": "Show {{initial}} initially, load {{step}} more each time, and reset on every entry or return to the bookmark page."
+    },
+    "search": {
+      "title": "Search Auto-clear",
+      "description": "Set the time for search box to auto-clear after inactivity",
+      "enable": "Enable search auto-clear",
+      "enableHint": "Clear the search after you stop typing for the set duration.",
+      "delay": "Delay time",
+      "unit": "sec"
+    },
+    "tag": {
+      "title": "Tag Selection Auto-clear",
+      "description": "Set the time for tag selection to auto-clear after inactivity",
+      "enable": "Enable tag selection auto-clear",
+      "enableHint": "Clear selected tags after the set duration since the last selection.",
+      "delay": "Delay time",
+      "unit": "sec"
+    },
+    "infoBox": {
+      "title": "Automation Feature Guide",
+      "tip1": "Auto-clear feature helps you quickly return to initial state, improving efficiency"
+    },
+    "delaySeconds": "Clear after (seconds)"
+  },
+  "themeSettings": {
+    "title": "Interface theme",
+    "description": "Choose MarkVault's overall interface language. Existing icons stay unchanged and the selected theme applies across pages after saving.",
+    "label": "Interface theme options",
+    "selected": "Active",
+    "notice": {
+      "title": "Theme settings",
+      "description": "Choose the default interface or a built-in theme, then use the save bar below to apply it."
+    },
+    "tip": {
+      "title": "Theme design notes",
+      "description": "VibeHub emphasizes crisp borders and fast feedback; UI/UX Pro Max uses soft surfaces, clear hierarchy, and restrained shadows; ASCII terminal draws borders, buttons and the background with characters; Liquid Glass turns the interface into translucent glass whose buttons and pointer droplet attract and fuse when close; Classic keeps the current MarkVault styling."
+    },
+    "options": {
+      "default": {
+        "title": "Default",
+        "description": "Compact settings and plugin management with more content in view."
+      },
+      "classic": {
+        "title": "MarkVault Classic",
+        "description": "Compact cards and lists."
+      },
+      "vibehub": {
+        "title": "VibeHub interface",
+        "description": "Split workspace with side navigation."
+      },
+      "uiux-pro": {
+        "title": "UI/UX Pro Max soft",
+        "description": "Clear hierarchy and generous spacing."
+      },
+      "ascii": {
+        "title": "ASCII terminal",
+        "description": "Borders, buttons, background and motion drawn with characters."
+      },
+      "liquid-glass": {
+        "title": "Liquid Glass",
+        "description": "Translucent glass; buttons and droplets attract and fuse when close."
+      }
+    }
+  },
+  "experimental": {
+    "notice": {
+      "title": "Experimental features",
+      "description": "These features are disabled by default and their behavior may change in future releases."
+    },
+    "preview": "Preview",
+    "vibeHubTheme": {
+      "title": "VibeHub interface style",
+      "description": "Apply VibeHub typography, colors, borders, controls, cursor feedback, and interaction motion across the interface.",
+      "enable": "Enable VibeHub interface style",
+      "enableHint": "Keeps the existing MarkVault icons and switches all other frontend styling after saving. Enabling it turns off UI/UX Pro Max."
+    },
+    "uiUxProTheme": {
+      "title": "UI/UX Pro Max soft interface",
+      "description": "Apply the Soft UI Evolution design language across surfaces, controls, hierarchy, and micro-interactions while preserving clear contrast.",
+      "enable": "Enable UI/UX Pro Max soft interface",
+      "enableHint": "Supports light/dark mode and existing accent palettes. Enabling it turns off VibeHub and takes effect after saving."
+    },
+    "tagHeat": {
+      "title": "Tag click heat",
+      "description": "Show tag popularity based on clicks.",
+      "enable": "Enable tag click heat",
+      "enableHint": "Only changes tag appearance on the home page; tag data and filtering remain unchanged.",
+      "style": "Display style",
+      "effect": "Card background effect",
+      "effectHint": "Automatic mode upgrades effects by relative tag click heat. A fixed effect keeps its style while its strength still follows heat.",
+      "color": "Heat color",
+      "intensity": "Maximum intensity",
+      "styles": {
+        "fill": "Background shade",
+        "progress": "Bottom progress bar",
+        "liquid": "Container liquid level",
+        "rarity": "Rarity card"
+      },
+      "effects": {
+        "auto": "Automatic by heat tier",
+        "foil": "Foil sweep",
+        "diamond": "Diamond facets",
+        "sparkle": "Sparkle card",
+        "prism": "Prismatic holo",
+        "galaxy": "Secret galaxy",
+        "none": "Tier color only"
+      },
+      "rarities": {
+        "base": "Base",
+        "advanced": "Advanced",
+        "collector": "Collector",
+        "secret": "Secret"
+      }
+    },
+    "urlPrivacy": {
+      "title": "URL screenshot privacy",
+      "description": "Blur or mask bookmark addresses.",
+      "enable": "Enable URL privacy",
+      "enableHint": "Only changes visual presentation; links remain clickable.",
+      "effect": "Privacy effect",
+      "strength": "Effect strength",
+      "effects": {
+        "blur": "Blur",
+        "mosaic": "Mosaic",
+        "mask": "Solid mask"
+      }
+    },
+    "hoverCard": {
+      "title": "Bookmark hover collectibles",
+      "description": "Preview bookmark cards on hover.",
+      "enable": "Enable hover cards",
+      "enableHint": "Only appears on devices with hover input and does not change existing bookmark actions.",
+      "theme": "Card theme",
+      "effect": "Card effect",
+      "accentColor": "Accent color",
+      "intensity": "Effect intensity",
+      "size": "Hover card size",
+      "delay": "Hover delay",
+      "previewTitle": "MarkVault Secret Bookmark",
+      "previewDescription": "Collects the full bookmark profile and upgrades rarity based on visit count.",
+      "themes": {
+        "creature": "Creature collection",
+        "duelist": "Arcane duel",
+        "arcane": "Astral archive"
+      },
+      "effects": {
+        "auto": "Automatic by rarity",
+        "foil": "Foil sweep",
+        "prism": "Prismatic holo",
+        "galaxy": "Secret galaxy",
+        "none": "No animated effect"
+      },
+      "rarities": {
+        "base": "Base",
+        "advanced": "Advanced",
+        "collector": "Collector",
+        "secret": "Secret"
+      },
+      "thresholds": {
+        "title": "Rarity click thresholds",
+        "hint": "Set the minimum clicks for Advanced, Collector, and Secret cards. Values must increase by tier."
+      },
+      "shuffle": {
+        "title": "Tag filter shuffle animation",
+        "hint": "Only applies to Collectible Card View. Cards gather into a deck when a tag changes, then redeal in the filtered order."
+      },
+      "card": {
+        "visits": "Visits",
+        "tags": "Tags",
+        "snapshots": "Snapshots",
+        "created": "Collected",
+        "updated": "Updated",
+        "lastVisited": "Last visit",
+        "never": "Never",
+        "public": "Public",
+        "private": "Private",
+        "pinned": "Pinned",
+        "archived": "Archived",
+        "noDescription": "No description has been added to this bookmark card."
+      }
+    }
+  },
+  "appearance": {
+    "advanced": "Advanced visual effects"
+  },
+  "tips": {
+    "title": "💡 Tips"
+  },
+  "navGroup": {
+    "account": "Account",
+    "appearance": "Appearance & Experience",
+    "features": "Features",
+    "integration": "Integration",
+    "dataAndShare": "Data & Sharing",
+    "experimental": "Labs",
+    "preferences": "Preferences",
+    "services": "Services & data",
+    "site": "Site"
+  },
+  "navigation": "Settings category",
+  "tagIcons": {
+    "title": "Tag icons",
+    "enable": "Show tag icons",
+    "hint": "Recognize names such as GitHub and Docker, or choose an icon for each tag.",
+    "manage": "Manage tag icons",
+    "loading": "Loading tags…",
+    "retry": "Could not load tags. Retry"
+  },
+  "motion": {
+    "title": "Interface motion",
+    "description": "Turn interface animations on or off. Save to sync with your account.",
+    "enabled": "Enable interface motion",
+    "enabledHint": "When off, existing transitions are also reduced; loading indicators keep animating.",
+    "reducedMotion": "Your system asks to reduce motion, so animations are turned off automatically. Tag linkage still shows static highlights.",
+    "ocean": {
+      "title": "Ocean easter egg",
+      "hint": "Let ASCII sharks or dolphins swim behind the page, with translucent cards and panels.",
+      "scope": "Ocean preference storage",
+      "scopes": {
+        "browser": "Use this browser",
+        "account": "Save to account"
+      },
+      "scopeHint": {
+        "browser": "The style is saved in this browser immediately. Save settings to let each browser use its own local choice.",
+        "account": "After saving, the same account uses this style when you sign in, refresh or return to another browser."
+      },
+      "style": "Ocean style",
+      "options": {
+        "off": "Off",
+        "sharks": "Sharks",
+        "dolphins": "Dolphins",
+        "mixed": "Sharks & dolphins"
+      },
+      "paused": "Motion is off or your system asks for reduced motion, so the background stays still."
+    }
+  },
+  "registration": {
+    "title": "User registration",
+    "label": "Allow new registrations",
+    "description": "Closes automatically after the first registration. Reopen to allow regular user accounts. Changes apply immediately.",
+    "locked": "Registration is disabled by deployment configuration. Enable ALLOW_REGISTRATION before reopening.",
+    "failed": "Unable to save registration settings",
+    "retry": "Reload registration settings"
+  }
+}

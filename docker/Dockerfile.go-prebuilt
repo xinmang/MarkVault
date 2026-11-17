@@ -1,0 +1,19 @@
+# 构建上下文由 scripts/build-go-docker.ps1 生成，包含静态程序、前端和 CA 证书。
+FROM scratch
+WORKDIR /app
+ENV PORT=8787 \
+    MARKVAULT_DATA_DIR=/data \
+    MARKVAULT_WEB_DIR=/app/dist \
+    ENVIRONMENT=production
+COPY --chown=1000:1000 markvault markvault-migrate /app/
+COPY --chown=1000:1000 dist /app/dist
+COPY ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --chown=1000:1000 empty/ /data/
+COPY --chown=1000:1000 empty/ /tmp/
+USER 1000:1000
+EXPOSE 8787
+VOLUME ["/data"]
+HEALTHCHECK --interval=15s --timeout=5s --start-period=15s --retries=3 \
+    CMD ["/app/markvault", "-healthcheck"]
+STOPSIGNAL SIGTERM
+ENTRYPOINT ["/app/markvault"]

@@ -1,0 +1,87 @@
+import { apiClient } from '@/lib/api-client'
+import i18n from '@/i18n'
+import type {
+  ShareSettingsResponse,
+  UpdateShareSettingsRequest,
+  ShareSettings,
+  PublicSharePayload,
+  PublicSharePaginatedPayload,
+} from '@/lib/types'
+import { assertData } from './index'
+
+const PUBLIC_SHARE_BASE = import.meta.env.VITE_PUBLIC_SHARE_URL || '/api/public'
+
+export const shareService = {
+  async recordPublicClick(slug: string, kind: 'bookmarks' | 'tags', id: string): Promise<void> {
+    const url = `${PUBLIC_SHARE_BASE.replace(/\/$/, '')}/${encodeURIComponent(slug)}/${kind}/${encodeURIComponent(id)}/click`
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{}',
+      credentials: 'omit',
+      keepalive: true,
+    })
+    if (!response.ok) throw new Error(`记录公开分享点击失败 (${response.status})`)
+  },
+
+  async getSettings(): Promise<ShareSettings> {
+    const response = await apiClient.get<ShareSettingsResponse>('/settings/share')
+    return assertData(response.data, 'GET /settings/share').share
+  },
+
+  async updateSettings(payload: UpdateShareSettingsRequest): Promise<ShareSettings> {
+    const response = await apiClient.put<ShareSettingsResponse>('/settings/share', payload)
+    return assertData(response.data, 'PUT /settings/share').share
+  },
+
+  async getPublicShare(slug: string): Promise<PublicSharePayload> {
+    const url = `${PUBLIC_SHARE_BASE.replace(/\/$/, '')}/${encodeURIComponent(slug)}`
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(i18n.t('errors:share.loadFailed'))
+    }
+
+    const data = (await response.json()) as { data?: PublicSharePayload; error?: { message: string } }
+    if (!data.data) {
+      throw new Error(data.error?.message || i18n.t('errors:share.notFound'))
+    }
+    return data.data
+  },
+
+  async getPublicSharePaginated(
+    slug: string,
+    params?: { page_size?: number; page_cursor?: string }
+  ): Promise<PublicSharePaginatedPayload> {
+    const searchParams = new URLSearchParams()
+    if (params?.page_size) {
+      searchParams.set('page_size', String(params.page_size))
+    }
+    if (params?.page_cursor) {
+      searchParams.set('page_cursor', params.page_cursor)
+    }
+
+    const queryString = searchParams.toString()
+    const url = `${PUBLIC_SHARE_BASE.replace(/\/$/, '')}/${encodeURIComponent(slug)}${queryString ? `?${queryString}` : ''}`
+
+    const response = await fetch(url, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(i18n.t('errors:share.loadFailed'))
+    }
+
+    const data = (await response.json()) as { data?: PublicSharePaginatedPayload; error?: { message: string } }
+    if (!data.data) {
+      throw new Error(data.error?.message || i18n.t('errors:share.notFound'))
+    }
+    return data.data
+  },
+}

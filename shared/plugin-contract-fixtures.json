@@ -1,0 +1,369 @@
+[
+  {
+    "name": "基础主题",
+    "valid": true,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "伪造官方身份",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ],
+      "origin": "official"
+    }
+  },
+  {
+    "name": "宿主不兼容",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^2.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "重复权限",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [
+        "storage.read",
+        "storage.read"
+      ],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "未知权限",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [
+        "filesystem.read"
+      ],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "缺少页面入口",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "page",
+          "kind": "page",
+          "title": "页面"
+        }
+      ]
+    }
+  },
+  {
+    "name": "远程主题资源",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "url(https://example.com)"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "配置结构",
+    "valid": true,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ],
+      "settings": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 50
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "name": "未知配置约束",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ],
+      "settings": {
+        "type": "object",
+        "$ref": "https://example.com"
+      }
+    }
+  },
+  {
+    "name": "服务端工具",
+    "valid": true,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "echo",
+          "kind": "tool",
+          "title": "回显",
+          "inputSchema": {
+            "type": "object"
+          }
+        }
+      ],
+      "server": "server.js"
+    }
+  },
+  {
+    "name": "宿主动效",
+    "valid": true,
+    "manifest": {
+      "id": "examples.aurora",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "极光配色 / Aurora",
+      "description": "通过设计变量接入的示例主题。",
+      "author": "MarkVault",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "aurora",
+          "kind": "theme",
+          "title": "极光 / Aurora",
+          "tokens": {
+            "--primary": "#7c3aed",
+            "--ring": "#7c3aed"
+          }
+        },
+        {
+          "id": "gentle",
+          "kind": "motion",
+          "title": "柔和入场 / Gentle motion",
+          "animation": {
+            "target": "cards",
+            "effect": "rise",
+            "duration": 240
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "分类与图标",
+    "valid": true,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "category": "effects",
+      "icon": "sparkles",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "未知分类",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "category": "official",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "图标不能是路径或地址",
+    "valid": false,
+    "manifest": {
+      "id": "example.test",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "示例",
+      "author": "测试",
+      "icon": "https://example.com/icon.svg",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "theme",
+          "kind": "theme",
+          "title": "主题",
+          "tokens": {
+            "--primary": "#123456"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "不受控动效",
+    "valid": false,
+    "manifest": {
+      "id": "examples.aurora",
+      "version": "1.0.0",
+      "api": "^1.0.0",
+      "name": "极光配色 / Aurora",
+      "description": "通过设计变量接入的示例主题。",
+      "author": "MarkVault",
+      "permissions": [],
+      "contributes": [
+        {
+          "id": "bad",
+          "kind": "motion",
+          "title": "错误",
+          "animation": {
+            "target": "body",
+            "effect": "rise",
+            "duration": 100
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,946 @@
+/*
+ * UI/UX Pro Max 柔光界面主题
+ *
+ * 设计依据：Soft UI Evolution
+ * - 用柔和层次表达容器关系，但保留清晰边框和焦点环。
+ * - 颜色通过语义变量管理，支持现有明暗模式和配色选择器。
+ * - 动效只使用 transform/opacity，统一在 150–300ms 范围内。
+ */
+
+/* 设置页中的静态预览，即使主题尚未启用也能展示最终视觉语言。 */
+.uiux-pro-preview {
+  display: flex;
+  gap: 10px;
+  min-height: 156px;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid #ded8e4;
+  border-radius: 14px;
+  background: radial-gradient(circle at 86% 12%, rgb(236 72 153 / 14%), transparent 34%), #f6f3f8;
+  box-shadow:
+    inset 1px 1px 0 rgb(255 255 255 / 86%),
+    8px 8px 18px rgb(61 40 75 / 9%),
+    -6px -6px 14px rgb(255 255 255 / 88%);
+}
+
+.uiux-pro-preview__rail {
+  display: flex;
+  flex: 0 0 28px;
+  flex-direction: column;
+  gap: 9px;
+  align-items: center;
+  padding: 8px 0;
+  border-radius: 10px;
+  background: #eee9f1;
+}
+
+.uiux-pro-preview__rail span {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: #cfc7d8;
+}
+
+.uiux-pro-preview__rail span.is-active {
+  background: #ec4899;
+  box-shadow: 0 4px 9px rgb(236 72 153 / 32%);
+}
+
+.uiux-pro-preview__workspace {
+  min-width: 0;
+  flex: 1;
+  padding: 3px 3px 0;
+}
+
+.uiux-pro-preview__toolbar,
+.uiux-pro-preview__cards {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.uiux-pro-preview__toolbar {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.uiux-pro-preview__title,
+.uiux-pro-preview__action,
+.uiux-pro-preview__card span,
+.uiux-pro-preview__card strong,
+.uiux-pro-preview__card small {
+  display: block;
+  border-radius: 999px;
+  background: #cfc7d8;
+}
+
+.uiux-pro-preview__title {
+  width: 42%;
+  height: 9px;
+  background: #3f3a46;
+}
+
+.uiux-pro-preview__action {
+  width: 28px;
+  height: 18px;
+  background: #ec4899;
+  box-shadow: 0 4px 8px rgb(236 72 153 / 22%);
+}
+
+.uiux-pro-preview__cards {
+  align-items: stretch;
+}
+
+.uiux-pro-preview__card {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 7px;
+  padding: 8px;
+  border: 1px solid #ded8e4;
+  border-radius: 10px;
+  background: #fcfbfd;
+  box-shadow:
+    4px 4px 9px rgb(61 40 75 / 8%),
+    -3px -3px 7px rgb(255 255 255 / 88%);
+}
+
+.uiux-pro-preview__card.is-featured {
+  border-color: rgb(236 72 153 / 34%);
+  background: linear-gradient(145deg, #fff 0%, #fff5fa 100%);
+}
+
+.uiux-pro-preview__card span {
+  height: 42px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #f8c5dc, #d9d5ee);
+}
+
+.uiux-pro-preview__card strong {
+  width: 72%;
+  height: 7px;
+  background: #55505d;
+}
+
+.uiux-pro-preview__card small {
+  width: 48%;
+  height: 5px;
+  background: #bfb7c8;
+}
+
+:root[data-experimental-ui='uiux-pro'],
+:root[data-experimental-ui='uiux-pro'] [data-color-theme] {
+  --radius: 0.75rem;
+  --background: #f6f4f8;
+  --foreground: #18161c;
+  --card: #fcfbfd;
+  --card-foreground: #18161c;
+  --popover: #ffffff;
+  --popover-foreground: #18161c;
+  --primary: #27252b;
+  --primary-foreground: #ffffff;
+  --secondary: #eeeaf1;
+  --secondary-foreground: #302b35;
+  --muted: #f0edf3;
+  --muted-foreground: #625d68;
+  --accent: #fce7f3;
+  --accent-foreground: #9d174d;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --success: #16794c;
+  --success-foreground: #ffffff;
+  --warning: #9a5a09;
+  --warning-foreground: #ffffff;
+  --border: #ded9e3;
+  --input: #d2cbd8;
+  --ring: #27252b;
+  --sidebar: #efebf2;
+  --sidebar-foreground: #18161c;
+  --sidebar-primary: #27252b;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8e2eb;
+  --sidebar-accent-foreground: #18161c;
+  --sidebar-border: #d9d2de;
+  --sidebar-ring: #27252b;
+  --pro-accent: #ec4899;
+  --pro-accent-soft: #fce7f3;
+  --pro-surface-raised: #ffffff;
+  --pro-surface-sunken: #eeeaf1;
+  --pro-shadow-raised: 7px 7px 17px rgb(61 40 75 / 10%), -7px -7px 17px rgb(255 255 255 / 92%);
+  --pro-shadow-soft: 0 3px 8px rgb(61 40 75 / 7%), 0 12px 28px rgb(61 40 75 / 7%);
+  --pro-shadow-inset:
+    inset 2px 2px 5px rgb(61 40 75 / 8%), inset -2px -2px 5px rgb(255 255 255 / 88%);
+  --pro-brand-hover: #b83278;
+  --pro-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pro-duration-fast: 180ms;
+  --pro-duration-standard: 240ms;
+  --pro-duration-slow: 320ms;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'] {
+  --background: #121116;
+  --foreground: #f5f2f7;
+  --card: #1c1a20;
+  --card-foreground: #f5f2f7;
+  --popover: #211e26;
+  --popover-foreground: #f5f2f7;
+  --primary: #f1edf4;
+  --primary-foreground: #17151a;
+  --secondary: #29252e;
+  --secondary-foreground: #f5f2f7;
+  --muted: #25212a;
+  --muted-foreground: #b6aebd;
+  --accent: #48253a;
+  --accent-foreground: #fbcfe8;
+  --destructive: #ff7b72;
+  --destructive-foreground: #241012;
+  --success: #56d39a;
+  --success-foreground: #10251c;
+  --warning: #f4bd55;
+  --warning-foreground: #2c1d08;
+  --border: #393341;
+  --input: #4a4352;
+  --ring: #f3a6cb;
+  --sidebar: #18161d;
+  --sidebar-foreground: #f5f2f7;
+  --sidebar-primary: #f1edf4;
+  --sidebar-primary-foreground: #17151a;
+  --sidebar-accent: #29252e;
+  --sidebar-accent-foreground: #f5f2f7;
+  --sidebar-border: #393341;
+  --sidebar-ring: #f3a6cb;
+  --pro-accent: #f472b6;
+  --pro-accent-soft: #48253a;
+  --pro-surface-raised: #25212a;
+  --pro-surface-sunken: #16141a;
+  --pro-shadow-raised: 7px 7px 18px rgb(0 0 0 / 28%), -5px -5px 14px rgb(255 255 255 / 3%);
+  --pro-shadow-soft: 0 3px 8px rgb(0 0 0 / 24%), 0 12px 28px rgb(0 0 0 / 24%);
+  --pro-shadow-inset: inset 2px 2px 5px rgb(0 0 0 / 25%), inset -2px -2px 5px rgb(255 255 255 / 3%);
+  --pro-brand-hover: #fb9acb;
+}
+
+/* 配色选择器仍然可以切换品牌色；中性默认色保留编辑感。 */
+:root[data-experimental-ui='uiux-pro'][data-color-theme='blue'],
+:root[data-experimental-ui='uiux-pro'] [data-color-theme='blue'] {
+  --primary: #2457c8;
+  --primary-foreground: #ffffff;
+  --accent: #e9efff;
+  --accent-foreground: #1e40af;
+  --ring: #4c73d8;
+  --sidebar-primary: #2457c8;
+  --sidebar-primary-foreground: #ffffff;
+  --pro-accent: #3b82f6;
+  --pro-accent-soft: #e9efff;
+  --pro-brand-hover: #1e40af;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-color-theme='green'],
+:root[data-experimental-ui='uiux-pro'] [data-color-theme='green'] {
+  --primary: #147a4b;
+  --primary-foreground: #ffffff;
+  --accent: #e3f7ed;
+  --accent-foreground: #11633f;
+  --ring: #35a874;
+  --sidebar-primary: #147a4b;
+  --sidebar-primary-foreground: #ffffff;
+  --pro-accent: #22a06b;
+  --pro-accent-soft: #e3f7ed;
+  --pro-brand-hover: #11633f;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-color-theme='orange'],
+:root[data-experimental-ui='uiux-pro'] [data-color-theme='orange'] {
+  --primary: #b9580b;
+  --primary-foreground: #ffffff;
+  --accent: #fff0df;
+  --accent-foreground: #9a3412;
+  --ring: #dc7a27;
+  --sidebar-primary: #b9580b;
+  --sidebar-primary-foreground: #ffffff;
+  --pro-accent: #e27825;
+  --pro-accent-soft: #fff0df;
+  --pro-brand-hover: #9a3412;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-color-theme='violet'],
+:root[data-experimental-ui='uiux-pro'] [data-color-theme='violet'] {
+  --primary: #7135c2;
+  --primary-foreground: #ffffff;
+  --accent: #f0eaff;
+  --accent-foreground: #5b21b6;
+  --ring: #9870df;
+  --sidebar-primary: #7135c2;
+  --sidebar-primary-foreground: #ffffff;
+  --pro-accent: #8b5cf6;
+  --pro-accent-soft: #f0eaff;
+  --pro-brand-hover: #5b21b6;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'][data-color-theme='default'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'][data-color-theme='default'] {
+  --primary: #e6e1ea;
+  --primary-foreground: #17151a;
+  --accent: #30242e;
+  --accent-foreground: #fbcfe8;
+  --ring: #b99aad;
+  --sidebar-primary: #e6e1ea;
+  --sidebar-primary-foreground: #17151a;
+  --pro-accent: #f472b6;
+  --pro-accent-soft: #48253a;
+  --pro-brand-hover: #f9a8d4;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'][data-color-theme='blue'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'][data-color-theme='blue'] {
+  --primary: #9bb5ff;
+  --primary-foreground: #10182d;
+  --accent: #222e55;
+  --accent-foreground: #dbe5ff;
+  --ring: #9bb5ff;
+  --sidebar-primary: #9bb5ff;
+  --sidebar-primary-foreground: #10182d;
+  --pro-accent: #82a5ff;
+  --pro-accent-soft: #222e55;
+  --pro-brand-hover: #bed0ff;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'][data-color-theme='green'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'][data-color-theme='green'] {
+  --primary: #69dba5;
+  --primary-foreground: #0c2519;
+  --accent: #173c2c;
+  --accent-foreground: #bbf7d0;
+  --ring: #69dba5;
+  --sidebar-primary: #69dba5;
+  --sidebar-primary-foreground: #0c2519;
+  --pro-accent: #51c88e;
+  --pro-accent-soft: #173c2c;
+  --pro-brand-hover: #9be8c0;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'][data-color-theme='orange'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'][data-color-theme='orange'] {
+  --primary: #ffb06c;
+  --primary-foreground: #2d1708;
+  --accent: #4a2b18;
+  --accent-foreground: #fed7aa;
+  --ring: #ffb06c;
+  --sidebar-primary: #ffb06c;
+  --sidebar-primary-foreground: #2d1708;
+  --pro-accent: #f39a51;
+  --pro-accent-soft: #4a2b18;
+  --pro-brand-hover: #ffd0a3;
+}
+
+:root[data-experimental-ui='uiux-pro'][data-theme='dark'][data-color-theme='violet'],
+:root[data-experimental-ui='uiux-pro'] [data-theme='dark'][data-color-theme='violet'] {
+  --primary: #c2a7ff;
+  --primary-foreground: #1c1235;
+  --accent: #342758;
+  --accent-foreground: #ede9fe;
+  --ring: #c2a7ff;
+  --sidebar-primary: #c2a7ff;
+  --sidebar-primary-foreground: #1c1235;
+  --pro-accent: #aa86ff;
+  --pro-accent-soft: #342758;
+  --pro-brand-hover: #d9c9ff;
+}
+
+:root[data-experimental-ui='uiux-pro'] body {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    'Plus Jakarta Sans', 'Avenir Next', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui,
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+:root[data-experimental-ui='uiux-pro'] .themed-root {
+  background-color: var(--background) !important;
+  background-image:
+    radial-gradient(
+      circle at 4% 0%,
+      color-mix(in srgb, var(--pro-accent) 8%, transparent),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 100% 100%,
+      color-mix(in srgb, var(--primary) 5%, transparent),
+      transparent 32%
+    );
+}
+
+:root[data-experimental-ui='uiux-pro'] .app-main {
+  background-color: transparent !important;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 34%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+:root[data-experimental-ui='uiux-pro'] h1,
+:root[data-experimental-ui='uiux-pro'] h2,
+:root[data-experimental-ui='uiux-pro'] h3,
+:root[data-experimental-ui='uiux-pro'] h4 {
+  color: var(--foreground);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+:root[data-experimental-ui='uiux-pro'] :focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ring) 78%, transparent);
+  outline-offset: 2px;
+}
+
+:root[data-experimental-ui='uiux-pro'] ::selection {
+  color: var(--primary-foreground);
+  background: color-mix(in srgb, var(--pro-accent) 38%, transparent);
+}
+
+/* 顶栏：半透明但有明确的“浮起”层级。 */
+:root[data-experimental-ui='uiux-pro'] .shell-header {
+  height: 4.5rem !important;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 86%, transparent) !important;
+  background: color-mix(in srgb, var(--card) 88%, transparent) !important;
+  box-shadow: 0 8px 24px rgb(61 40 75 / 7%) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-logo-button,
+:root[data-experimental-ui='uiux-pro'] .shell-header-title {
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    opacity var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-logo-button:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-logo {
+  background: linear-gradient(145deg, var(--primary), var(--pro-accent)) !important;
+  color: var(--primary-foreground) !important;
+  border: 1px solid color-mix(in srgb, var(--primary-foreground) 20%, transparent);
+  box-shadow: var(--pro-shadow-soft) !important;
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-logo svg {
+  color: var(--primary-foreground) !important;
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-title h1 {
+  color: var(--foreground) !important;
+  font-size: 1.15rem;
+}
+
+:root[data-experimental-ui='uiux-pro'] .shell-header-title::after {
+  display: block;
+  width: 1.7rem;
+  height: 3px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: var(--pro-accent);
+  content: '';
+  transform-origin: left center;
+  animation: uiux-pro-underline-in var(--pro-duration-slow) var(--pro-ease) backwards;
+}
+
+/* 表面、按钮和输入框统一使用柔和层次。 */
+:root[data-experimental-ui='uiux-pro'] .card,
+:root[data-experimental-ui='uiux-pro'] .card-solid {
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  background: var(--card);
+  box-shadow: var(--pro-shadow-raised);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+:root[data-experimental-ui='uiux-pro'] .glass {
+  border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+  background: color-mix(in srgb, var(--card) 82%, transparent);
+  box-shadow: var(--pro-shadow-soft);
+  backdrop-filter: blur(16px) saturate(135%);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+}
+
+:root[data-experimental-ui='uiux-pro'] .shadow-float,
+:root[data-experimental-ui='uiux-pro'] .shadow-lg,
+:root[data-experimental-ui='uiux-pro'] .shadow-xl,
+:root[data-experimental-ui='uiux-pro'] .shadow-2xl {
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn {
+  min-height: 2.75rem;
+  padding: 0.65rem 1.05rem;
+  border: 1px solid transparent;
+  border-radius: 0.7rem;
+  background: linear-gradient(145deg, var(--primary), color-mix(in srgb, var(--primary) 84%, #000));
+  color: var(--primary-foreground);
+  box-shadow: 0 5px 13px color-mix(in srgb, var(--primary) 20%, transparent);
+  font-size: 0.875rem;
+  font-weight: 650;
+  letter-spacing: 0;
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    background-color var(--pro-duration-fast) ease,
+    border-color var(--pro-duration-fast) ease,
+    box-shadow var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn::before {
+  display: none;
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn:hover {
+  background: linear-gradient(145deg, var(--pro-brand-hover), var(--primary));
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--primary) 25%, transparent);
+  transform: translateY(-2px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn:active {
+  box-shadow: var(--pro-shadow-inset);
+  transform: translateY(0) scale(0.98);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn:disabled {
+  box-shadow: none;
+  transform: none;
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-sm {
+  min-height: 2.5rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.625rem;
+  font-size: 0.8125rem;
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-ghost {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-ghost:hover {
+  background: var(--pro-surface-sunken);
+  color: var(--foreground);
+  box-shadow: var(--pro-shadow-inset);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-secondary {
+  border-color: var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-outline {
+  border-color: var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: none;
+}
+
+:root[data-experimental-ui='uiux-pro'] .btn-outline:hover {
+  border-color: var(--primary);
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+:root[data-experimental-ui='uiux-pro'] .input,
+:root[data-experimental-ui='uiux-pro']
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+:root[data-experimental-ui='uiux-pro'] textarea,
+:root[data-experimental-ui='uiux-pro'] select {
+  min-height: 2.75rem;
+  border: 1px solid var(--input);
+  border-radius: 0.7rem;
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--pro-shadow-inset);
+  backdrop-filter: none;
+  transition:
+    border-color var(--pro-duration-fast) ease,
+    box-shadow var(--pro-duration-fast) ease,
+    transform var(--pro-duration-fast) var(--pro-ease);
+}
+
+:root[data-experimental-ui='uiux-pro'] .input:hover,
+:root[data-experimental-ui='uiux-pro'] input:hover,
+:root[data-experimental-ui='uiux-pro'] textarea:hover,
+:root[data-experimental-ui='uiux-pro'] select:hover {
+  border-color: color-mix(in srgb, var(--primary) 42%, var(--border));
+  transform: translateY(-1px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .input:focus,
+:root[data-experimental-ui='uiux-pro'] input:focus,
+:root[data-experimental-ui='uiux-pro'] textarea:focus,
+:root[data-experimental-ui='uiux-pro'] select:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--ring) 22%, transparent),
+    var(--pro-shadow-inset);
+  transform: none;
+}
+
+/* 配色点选择器与开关保留原有交互，只调整表面。 */
+:root[data-experimental-ui='uiux-pro'] .color-theme-trigger,
+:root[data-experimental-ui='uiux-pro'] .color-theme-option {
+  border-color: transparent;
+  border-radius: 0.7rem;
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    background-color var(--pro-duration-fast) ease,
+    border-color var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .color-theme-trigger:hover,
+:root[data-experimental-ui='uiux-pro'] .color-theme-trigger[data-open='true'],
+:root[data-experimental-ui='uiux-pro'] .color-theme-option:hover,
+:root[data-experimental-ui='uiux-pro'] .color-theme-option[data-selected='true'] {
+  border-color: var(--border);
+  background: var(--pro-surface-sunken);
+  transform: translateY(-1px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .color-theme-menu {
+  border-color: var(--border);
+  border-radius: 0.875rem;
+  background: var(--popover);
+  box-shadow: var(--pro-shadow-soft);
+  animation: uiux-pro-popover-in var(--pro-duration-standard) var(--pro-ease) backwards;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-toggle {
+  width: 2.9rem;
+  height: 1.6rem;
+  border-color: var(--border);
+  background: var(--pro-surface-sunken);
+  box-shadow: var(--pro-shadow-inset);
+  transition:
+    background-color var(--pro-duration-fast) ease,
+    border-color var(--pro-duration-fast) ease,
+    box-shadow var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-toggle[data-state='on'] {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 18%, transparent);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-toggle__thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-color: var(--border);
+  background: var(--pro-surface-raised);
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    background-color var(--pro-duration-fast) ease,
+    border-color var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-toggle[data-state='on'] .settings-toggle__thumb {
+  border-color: transparent;
+  background: var(--primary-foreground);
+}
+
+/* 首页内容卡片与标签：轻微抬升，不改变布局尺寸。 */
+:root[data-experimental-ui='uiux-pro'] .bookmark-card,
+:root[data-experimental-ui='uiux-pro'] .bookmark-list-item {
+  animation: uiux-pro-card-in var(--pro-duration-standard) var(--pro-ease) backwards;
+  transition:
+    transform var(--pro-duration-standard) var(--pro-ease),
+    border-color var(--pro-duration-standard) ease,
+    box-shadow var(--pro-duration-standard) var(--pro-ease);
+}
+
+:root[data-experimental-ui='uiux-pro'] .bookmark-card:nth-child(3n + 2),
+:root[data-experimental-ui='uiux-pro'] .bookmark-list-item:nth-child(3n + 2) {
+  animation-delay: 35ms;
+}
+
+:root[data-experimental-ui='uiux-pro'] .bookmark-card:nth-child(3n),
+:root[data-experimental-ui='uiux-pro'] .bookmark-list-item:nth-child(3n) {
+  animation-delay: 70ms;
+}
+
+:root[data-experimental-ui='uiux-pro'] .bookmark-card:hover,
+:root[data-experimental-ui='uiux-pro'] .bookmark-list-item:hover {
+  border-color: color-mix(in srgb, var(--pro-accent) 38%, var(--border));
+  box-shadow:
+    0 5px 12px rgb(61 40 75 / 7%),
+    0 18px 34px color-mix(in srgb, var(--pro-accent) 13%, transparent);
+  transform: translateY(-3px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .bookmark-card > [class*='bg-gradient-to-br'],
+:root[data-experimental-ui='uiux-pro'] .bookmark-list-item [class*='bg-gradient-to-br'] {
+  background-color: var(--pro-surface-sunken);
+  background-image: none;
+}
+
+:root[data-experimental-ui='uiux-pro'] .tag,
+:root[data-experimental-ui='uiux-pro'] .tag-item {
+  border-color: var(--border);
+  border-radius: 0.65rem;
+  box-shadow: var(--pro-shadow-soft);
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    background-color var(--pro-duration-fast) ease,
+    border-color var(--pro-duration-fast) ease,
+    box-shadow var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .tag:hover,
+:root[data-experimental-ui='uiux-pro'] .tag-item:hover {
+  border-color: color-mix(in srgb, var(--pro-accent) 42%, var(--border));
+  background-color: var(--pro-surface-raised);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--pro-accent) 12%, transparent);
+  transform: translateY(-2px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .tag-sidebar {
+  box-shadow: var(--pro-shadow-raised);
+}
+
+/* 设置页和导航保持清晰的层级，避免整页变成无边界的浮层。 */
+:root[data-experimental-ui='uiux-pro'] .markvault-settings-page {
+  width: 100%;
+  max-width: 90rem;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-page-heading,
+:root[data-experimental-ui='uiux-pro'] .settings-page-shell {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-sidebar {
+  padding-right: 1rem;
+  border-right-color: var(--border);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-nav-item {
+  min-height: 2.75rem;
+  color: var(--muted-foreground);
+  transition:
+    transform var(--pro-duration-fast) var(--pro-ease),
+    background-color var(--pro-duration-fast) ease,
+    color var(--pro-duration-fast) ease;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-nav-item:hover {
+  background: var(--pro-surface-sunken);
+  color: var(--foreground);
+  transform: translateX(3px);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-nav-item--active {
+  background: var(--pro-accent-soft) !important;
+  color: var(--accent-foreground) !important;
+  font-weight: 700;
+  box-shadow: var(--pro-shadow-inset);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-section {
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  background: var(--card);
+  box-shadow: var(--pro-shadow-soft);
+  animation: uiux-pro-section-in var(--pro-duration-slow) var(--pro-ease) backwards;
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-section-heading > div:first-child {
+  border-radius: 0.75rem;
+  background: var(--pro-accent-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-item {
+  border-color: color-mix(in srgb, var(--border) 92%, transparent);
+  border-radius: 0.75rem;
+  background: var(--pro-surface-sunken);
+  box-shadow: var(--pro-shadow-inset);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-divider {
+  border-color: color-mix(in srgb, var(--border) 70%, transparent);
+}
+
+:root[data-experimental-ui='uiux-pro'] .settings-mobile-trigger,
+:root[data-experimental-ui='uiux-pro'] .settings-mobile-menu {
+  border-color: var(--border);
+  border-radius: 0.75rem;
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] table {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.875rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--card);
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] thead {
+  background: var(--pro-surface-sunken);
+}
+
+:root[data-experimental-ui='uiux-pro'] th,
+:root[data-experimental-ui='uiux-pro'] td {
+  border-bottom-color: color-mix(in srgb, var(--border) 80%, transparent);
+}
+
+:root[data-experimental-ui='uiux-pro'] .modal-box,
+:root[data-experimental-ui='uiux-pro'] .vibehub-modal-panel,
+:root[data-experimental-ui='uiux-pro'] .vibehub-popover,
+:root[data-experimental-ui='uiux-pro'] .toast-surface {
+  border-color: var(--border);
+  border-radius: 1rem;
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .vibehub-modal-backdrop {
+  background: rgb(15 10 20 / 48%);
+  backdrop-filter: blur(4px);
+}
+
+/* 页面级动画只做透明度过渡，避免 transform 改变 fixed 侧栏的包含块并造成刷新跳动。 */
+:root[data-experimental-ui='uiux-pro'] .app-main > * {
+  animation: uiux-pro-page-in var(--pro-duration-slow) var(--pro-ease) backwards;
+}
+
+@keyframes uiux-pro-page-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes uiux-pro-section-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes uiux-pro-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes uiux-pro-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes uiux-pro-underline-in {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* 主题页使用柔光表面和统一高程，避免新入口与全站设计语言脱节。 */
+:root[data-experimental-ui='uiux-pro'] .interface-theme-card__body {
+  border-color: color-mix(in srgb, var(--border) 88%, transparent);
+  border-radius: 1rem;
+  background: var(--pro-surface-raised);
+  box-shadow: var(--pro-shadow-soft);
+}
+
+:root[data-experimental-ui='uiux-pro'] .interface-theme-card:hover .interface-theme-card__body {
+  border-color: color-mix(in srgb, var(--pro-accent) 38%, var(--border));
+  box-shadow: var(--pro-shadow-raised);
+}
+
+:root[data-experimental-ui='uiux-pro'] .interface-theme-card--selected .interface-theme-card__body {
+  border-color: var(--pro-accent);
+  background: color-mix(in srgb, var(--pro-surface-raised) 92%, var(--pro-accent-soft) 8%);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--pro-accent) 12%, transparent),
+    var(--pro-shadow-raised);
+}
+
+:root[data-experimental-ui='uiux-pro'] .interface-theme-card__selected {
+  background: var(--pro-accent-soft);
+  color: color-mix(in srgb, var(--pro-accent) 82%, var(--foreground));
+}
+
+@media (max-width: 639px) {
+  :root[data-experimental-ui='uiux-pro'] .app-main {
+    background-size: 42px 42px;
+  }
+
+  :root[data-experimental-ui='uiux-pro'] .card,
+  :root[data-experimental-ui='uiux-pro'] .card-solid {
+    padding: 1rem;
+  }
+
+  :root[data-experimental-ui='uiux-pro'] .settings-section {
+    padding: 1rem;
+  }
+
+  .uiux-pro-preview {
+    min-height: 132px;
+  }
+
+  .uiux-pro-preview__card {
+    padding: 6px;
+  }
+
+  .uiux-pro-preview__card span {
+    height: 32px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-experimental-ui='uiux-pro'] *,
+  :root[data-experimental-ui='uiux-pro'] *::before,
+  :root[data-experimental-ui='uiux-pro'] *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .uiux-pro-preview * {
+    transition: none !important;
+  }
+}

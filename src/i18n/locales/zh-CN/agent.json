@@ -1,0 +1,191 @@
+{
+  "nav": {
+    "label": "Agent 接入"
+  },
+  "hero": {
+    "eyebrow": "YOUR KNOWLEDGE. CONNECTED.",
+    "title": "让 AI 安全读写你的书签知识库",
+    "description": "把收藏连接到你的 AI。通过 Skill、API 或 MCP，让 Agent 找到答案、整理书签，每一次写入都由你掌控。",
+    "readWrite": "读写分权",
+    "mcp": "MCP 工具接入",
+    "version": "稳定 API v1",
+    "apiKey": "API Key 鉴权",
+    "primaryAuthenticated": "打开站内 Agent",
+    "primaryGuest": "登录后使用 Agent",
+    "manageKeys": "管理 API Key",
+    "secondary": "复制接入提示词",
+    "titleLead": "让知识流动，",
+    "titleAccent": "与 Agent 一起。",
+    "extension": "浏览器扩展",
+    "extensionHint": "在设置中获取"
+  },
+  "health": {
+    "title": "服务状态",
+    "checking": "正在检测 Agent API",
+    "online": "Agent API 可用",
+    "offline": "暂时无法连接 Agent API",
+    "hintChecking": "正在请求公开能力索引，不会读取任何私人数据。",
+    "hintOnline": "公开索引已响应，私有数据仍需 API Key。",
+    "hintOffline": "页面文档仍可查看，请稍后重试服务连接。"
+  },
+  "summary": {
+    "scopeTitle": "权限范围",
+    "scopeValue": "书签与标签的查询、创建和整理",
+    "authTitle": "鉴权方式",
+    "authValue": "X-API-Key 请求头",
+    "limitTitle": "默认限额",
+    "limitValue": "60 次/分钟"
+  },
+  "tabs": {
+    "label": "Agent 接入文档",
+    "skill": "Agent Skill",
+    "api": "REST API",
+    "mcp": "MCP",
+    "security": "安全说明"
+  },
+  "copy": {
+    "copy": "复制",
+    "copied": "已复制",
+    "failed": "复制失败，请手动复制"
+  },
+  "skill": {
+    "title": "把 MarkVault 作为 Agent Skill 使用",
+    "description": "复制下面的提示词交给你的编码 Agent，它会按目录下载 Skill、参考文档与零依赖客户端。",
+    "promptLabel": "安装提示词",
+    "installPrompt": "请从 {{origin}}/markvault/SKILL.md 安装并使用 MarkVault Skill，同时按相对路径下载 agents/openai.yaml、references/api.md 和 scripts/markvault-client.mjs。读取操作可直接执行；创建、修改或删除数据前，必须向我展示准确操作并取得明确确认。MARKVAULT_BASE_URL 与 MARKVAULT_API_KEY 必须从本地环境变量读取，禁止要求我把完整 Key 粘贴到对话中。",
+    "environmentTitle": "本地环境变量",
+    "environmentDescription": "Key 只保存在 Agent 的本地运行环境，不要写入仓库或聊天记录。",
+    "stepsTitle": "三步完成接入",
+    "steps": {
+      "keyTitle": "创建专用 Key",
+      "keyDescription": "按用途选择 READ_ONLY、BASIC 或 FULL 权限；写入 Key 只授予实际需要的权限。",
+      "envTitle": "配置本地环境",
+      "envDescription": "设置实例地址和 API Key，避免把密钥放进命令参数或 URL。",
+      "verifyTitle": "验证权限边界",
+      "verifyDescription": "先调用 me 查看权限；写操作必须在执行前再次展示并确认。"
+    },
+    "clientLabel": "Node.js 22 客户端示例"
+  },
+  "api": {
+    "title": "稳定的读写 REST API",
+    "description": "所有长期接入都使用 /api/v1/agent/*。旧的 /api/tab/* 不属于公开稳定契约。",
+    "endpointsTitle": "端点",
+    "endpoints": {
+      "index": "能力、版本与文档索引",
+      "me": "验证 Key 并读取账户统计",
+      "search": "搜索书签字段与标签名",
+      "bookmarks": "列出或创建书签",
+      "bookmark": "读取、修改或移入回收站",
+      "tags": "列出或创建标签",
+      "tag": "读取、修改或删除标签"
+    },
+    "curlTitle": "curl 搜索示例",
+    "resourcesTitle": "机器可读资源",
+    "resourcesDescription": "可直接提供给 Agent、API 客户端或文档生成器。",
+    "resourceOpenApi": "OpenAPI 3.1",
+    "resourceLlms": "llms.txt",
+    "resourceSkill": "SKILL.md",
+    "resourceReference": "API 参考"
+  },
+  "mcp": {
+    "title": "无状态 Streamable HTTP MCP",
+    "description": "MCP 客户端通过统一工具协议发现并调用 MarkVault 能力。服务端会按 API Key 权限动态隐藏不可用工具。",
+    "items": {
+      "transportTitle": "标准 HTTP 端点",
+      "transportDescription": "连接 {{origin}}/api/mcp，支持 JSON 与 text/event-stream 响应。",
+      "permissionTitle": "动态工具列表",
+      "permissionDescription": "tools/list 只返回当前 Key 有权使用的读取或写入工具。",
+      "confirmTitle": "写入必须确认",
+      "confirmDescription": "所有 MCP 写工具都要求在用户明确同意后传入 confirm=true。"
+    },
+    "exampleTitle": "MCP initialize 示例",
+    "toolsTitle": "13 个内置工具",
+    "toolsDescription": "覆盖账户概况、搜索、书签与标签的读取、创建、修改、软删除和恢复。删除书签只会进入回收站。"
+  },
+  "security": {
+    "title": "最小权限与人工确认同时生效",
+    "description": "读取、外部自动化和站内聊天共享同一套工具能力，但分别使用 API Key 权限和人工确认控制写入。",
+    "items": {
+      "permissionTitle": "细粒度写权限",
+      "permissionDescription": "创建、修改、删除和标签关联分别校验权限；READ_ONLY Key 无法调用任何写接口。",
+      "leastPrivilegeTitle": "Key 可撤销、可过期",
+      "leastPrivilegeDescription": "为每个 Agent 创建独立 Key，只授予实际需要的权限，并保留限流与调用记录。",
+      "mcpTitle": "MCP 二次确认",
+      "mcpDescription": "即使 Key 拥有写权限，MCP 写工具未收到 confirm=true 也会拒绝执行。",
+      "chatTitle": "站内人工确认",
+      "chatDescription": "模型只生成待执行动作，界面展示参数确认卡；用户确认前数据库不会发生变化。"
+    },
+    "boundaryTitle": "当前安全边界",
+    "boundaryDescription": "书签删除为可恢复的软删除；暂不开放永久删除、分享配置、账户设置或任意数据库操作。第三方模型密钥使用实例级密钥加密存储。"
+  },
+  "chat": {
+    "eyebrow": "MARKVAULT AGENT",
+    "title": "站内 Agent",
+    "description": "用自然语言查询和整理书签；任何写操作都会先等待你的确认。",
+    "statusChecking": "正在检查配置",
+    "statusReady": "已就绪",
+    "statusSetupRequired": "需要配置",
+    "settings": "AI 设置",
+    "clear": "清空对话",
+    "settingsLoadFailed": "读取 AI 设置失败",
+    "sendFailed": "发送消息失败",
+    "confirmFailed": "确认操作失败",
+    "cancelFailed": "取消操作失败",
+    "actionCancelled": "已取消“{{action}}”。",
+    "notConfiguredTitle": "站内 Agent 尚未配置",
+    "notConfiguredDescription": "请先选择 AI 服务、填写模型 API Key，并启用站内 Agent。第三方密钥只会加密存储在当前实例中。",
+    "configureNow": "前往 AI 设置",
+    "connectionTitle": "当前连接",
+    "provider": "服务商",
+    "model": "模型",
+    "safetyTitle": "写操作保护",
+    "safetyDescription": "查询可以直接执行；创建、修改和删除会先生成确认卡片，未经确认不会更改数据。",
+    "examplesTitle": "建议问题",
+    "privateSession": "当前账户的私密会话",
+    "pendingCount": "{{count}} 项待确认",
+    "messageList": "Agent 对话记录",
+    "welcomeTitle": "我可以帮你管理书签",
+    "welcomeDescription": "可以搜索和汇总书签，也可以创建、修改或移入回收站。写操作在你点击确认前不会执行。",
+    "examples": [
+      "找出最近收藏的 Docker 书签",
+      "创建一个名为“待读”的标签",
+      "把我关于 React 的书签设为公开"
+    ],
+    "destructiveHint": "这是会改变数据的操作；删除书签会进入回收站，删除标签会解除关联。",
+    "confirmHint": "确认后才会执行本次写操作。",
+    "approvalRequired": "需要人工确认",
+    "actionDetails": "查看将要提交的参数",
+    "confirming": "正在执行",
+    "confirm": "确认执行",
+    "cancel": "取消",
+    "thinking": "Agent 正在处理……",
+    "inputLabel": "发送给站内 Agent 的消息",
+    "placeholder": "输入问题或操作要求……",
+    "placeholderPending": "请先确认或取消待处理操作",
+    "placeholderDisabled": "请先在设置中启用站内 Agent",
+    "send": "发送",
+    "inputHint": "按 Enter 发送，Shift + Enter 换行；写操作会单独请求确认。",
+    "resolvePendingHint": "为避免执行过时操作，请先处理上方的确认卡片。"
+  },
+  "questions": {
+    "title": "可以这样问你的 Agent",
+    "description": "这些问题会被映射为查询工具；涉及写入时会先生成确认卡片。",
+    "items": [
+      "帮我找保存过的 Docker Compose 相关书签",
+      "列出“设计”标签下最近更新的 20 个收藏",
+      "我有哪些标签？每个标签有多少书签？",
+      "查看我的书签总数、置顶数量和标签数量",
+      "创建一个名为“稍后阅读”的标签",
+      "把指定书签设为公开，并在执行前让我确认"
+    ]
+  },
+  "scene": {
+    "description": "ASCII 鲨鱼与鱼群组成的知识海洋，包含终端启动和对角扫描动画",
+    "live": "探索知识海洋",
+    "still": "静态画面",
+    "unavailable": "ASCII 海洋",
+    "play": "继续动画",
+    "pause": "暂停动画",
+    "replay": "重播开场"
+  }
+}

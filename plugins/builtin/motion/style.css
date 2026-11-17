@@ -1,0 +1,323 @@
+/* ========================================
+   界面动效（设置 → 动效）
+   规则全部挂在 <html> 的 data-motion-* 属性上，由 ExperimentalFeaturesProvider 写入：
+   - 总开关关闭或系统要求“减少动态效果”时 data-motion="off"
+   - 时长统一乘以 --motion-speed（速度 200% 时为 0.5），位移与缩放幅度乘以 --motion-scale
+   节奏参考 magpie：短时长、小位移、ease-out，确认类反馈用轻微回弹。
+   ======================================== */
+
+:root {
+  --motion-speed: 1;
+  --motion-scale: 1;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-soft: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --motion-ease-spring: cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+/* ---------- 总开关：关闭后连同原有过渡一起收敛，加载指示保留 ---------- */
+:root[data-motion='off'] *:not(.animate-spin):not(.animate-pulse),
+:root[data-motion='off'] *::before,
+:root[data-motion='off'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  animation-delay: 0s !important;
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  scroll-behavior: auto !important;
+}
+
+/* 已有过渡跟随速度设置 */
+:root[data-motion='on'] :is(.btn, .tag-item, .bookmark-card, .bookmark-list-item) {
+  transition-duration: calc(240ms * var(--motion-speed));
+}
+
+/* ---------- 明暗切换：新主题从切换按钮圆形扩散（lib/theme-transition.ts 写入属性并驱动动画） ---------- */
+:root[data-theme-transition]::view-transition-old(root),
+:root[data-theme-transition]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* 扩散期间关闭元素自身的颜色过渡：否则页头按钮等会在新画面里慢慢渐变，
+   和圆形扩散的节奏对不上，显得突兀 */
+:root[data-theme-transition] *,
+:root[data-theme-transition] *::before,
+:root[data-theme-transition] *::after {
+  transition: none !important;
+}
+
+/* ---------- 按钮反馈：按下回弹、图标微动、主按钮扫光、点击涟漪 ---------- */
+:root[data-motion-buttons='on'] .btn:not(:disabled):active {
+  scale: calc(1 - 0.035 * var(--motion-scale));
+  transition-duration: calc(90ms * var(--motion-speed));
+}
+
+:root[data-motion-buttons='on'] .btn > svg {
+  transition: translate calc(220ms * var(--motion-speed)) var(--motion-ease-spring),
+    scale calc(220ms * var(--motion-speed)) var(--motion-ease-spring);
+}
+
+:root[data-motion-buttons='on'] .btn:not(:disabled):hover > svg:only-of-type {
+  translate: 0 -1px;
+  scale: calc(1 + 0.08 * var(--motion-scale));
+}
+
+:root[data-motion-buttons='on'] .btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 32%, oklch(1 0 0 / 0.26) 50%, transparent 68%);
+  translate: -120% 0;
+}
+
+:root[data-motion-buttons='on'] .btn-primary:not(:disabled):hover::after {
+  translate: 120% 0;
+  transition: translate calc(700ms * var(--motion-speed)) var(--motion-ease);
+}
+
+:root[data-motion-buttons='on'] :is(.tag-item, .bookmark-card, .bookmark-list-item):active {
+  scale: calc(1 - 0.015 * var(--motion-scale));
+}
+
+.motion-ripple {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: currentColor;
+  opacity: 0.2;
+  scale: 0;
+  animation: motion-ripple calc(560ms * var(--motion-speed)) var(--motion-ease) forwards;
+}
+
+@keyframes motion-ripple {
+  to {
+    scale: 1;
+    opacity: 0;
+  }
+}
+
+/* ---------- 卡片悬停 ---------- */
+:root[data-motion='on'] .bookmark-card {
+  transition-property: transform, translate, scale, box-shadow, border-color, opacity, filter;
+  transition-timing-function: var(--motion-ease);
+}
+
+:root[data-motion-card='lift'] .bookmark-card:hover {
+  transform: translateY(calc(-4px * var(--motion-scale)));
+  box-shadow:
+    0 18px 38px -14px oklch(0 0 0 / 0.24),
+    0 6px 14px -8px oklch(0 0 0 / 0.14);
+}
+
+:root[data-motion-card='lift'] .bookmark-list-item:hover {
+  transform: translateX(calc(3px * var(--motion-scale)));
+}
+
+/* 3D 倾斜：MotionEffects 写入 --motion-tilt-x/y（-1~1），离开卡片时清除 */
+:root[data-motion-card='tilt'] .bookmark-card {
+  transform: perspective(900px) rotateX(calc(var(--motion-tilt-y, 0) * 5deg * var(--motion-scale)))
+    rotateY(calc(var(--motion-tilt-x, 0) * 5deg * var(--motion-scale)));
+}
+
+:root[data-motion-card='tilt'] .bookmark-card:hover {
+  transform: perspective(900px) rotateX(calc(var(--motion-tilt-y, 0) * 5deg * var(--motion-scale)))
+    rotateY(calc(var(--motion-tilt-x, 0) * 5deg * var(--motion-scale)))
+    translateY(calc(-3px * var(--motion-scale)));
+  transition-duration: calc(140ms * var(--motion-speed));
+}
+
+:root[data-motion-card='glow'] .bookmark-card:hover {
+  transform: translateY(calc(-2px * var(--motion-scale)));
+  border-color: oklch(from var(--primary) l c h / 0.45);
+  box-shadow:
+    0 0 0 1px oklch(from var(--primary) l c h / 0.35),
+    0 14px 36px -12px oklch(from var(--primary) l c h / 0.45);
+}
+
+/* 跟随指针的柔光，倾斜与光晕共用 */
+:root:is([data-motion-card='tilt'], [data-motion-card='glow']) .bookmark-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    380px circle at var(--motion-pointer-x, 50%) var(--motion-pointer-y, 0%),
+    oklch(from var(--primary) l c h / 0.12),
+    transparent 46%
+  );
+  transition: opacity calc(240ms * var(--motion-speed)) var(--motion-ease);
+}
+
+:root:is([data-motion-card='tilt'], [data-motion-card='glow']) .bookmark-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- 列表入场（新出现的书签依次进入） ---------- */
+@keyframes motion-enter-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes motion-enter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(calc(10px * var(--motion-scale)));
+  }
+}
+
+@keyframes motion-enter-scale {
+  from {
+    opacity: 0;
+    transform: scale(calc(1 - 0.05 * var(--motion-scale)));
+  }
+}
+
+:root[data-motion-entrance='fade'] [data-motion-item] {
+  animation: motion-enter-fade calc(300ms * var(--motion-speed)) var(--motion-ease-soft) backwards;
+}
+
+:root[data-motion-entrance='rise'] [data-motion-item] {
+  animation: motion-enter-rise calc(380ms * var(--motion-speed)) var(--motion-ease) backwards;
+}
+
+:root[data-motion-entrance='scale'] [data-motion-item] {
+  animation: motion-enter-scale calc(360ms * var(--motion-speed)) var(--motion-ease-spring) backwards;
+}
+
+:root:not([data-motion-entrance='none']) [data-motion-item] {
+  /* 列表组件写入 --motion-index（同列或同组内的序号），最多错开 8 个，避免长列表等待过久 */
+  animation-delay: calc(min(var(--motion-index, 0), 8) * 30ms * var(--motion-speed));
+}
+
+/* ---------- 标签选中：轻微回弹 ---------- */
+@keyframes motion-tag-pop {
+  0% {
+    scale: 0.94;
+  }
+  60% {
+    scale: calc(1 + 0.04 * var(--motion-scale));
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+:root[data-motion='on'] .tag-item[aria-pressed='true'] {
+  animation: motion-tag-pop calc(380ms * var(--motion-speed)) var(--motion-ease-spring);
+}
+
+/* ---------- 标签与书签联动 ----------
+   TagLinkageRoot 在容器上写 data-link-mode（tag | bookmark），并给匹配元素写 data-link-state="match"。 */
+:root[data-motion-linkage='on'] :is([data-bookmark-tags], .tag-item, [data-link-tag]) {
+  transition-property: opacity, filter, box-shadow, border-color, transform, translate, scale,
+    background-color, color;
+  transition-duration: calc(180ms * var(--motion-speed));
+  transition-timing-function: var(--motion-ease);
+}
+
+:root[data-motion-linkage='on'] [data-link-mode='tag'] [data-bookmark-tags]:not([data-link-state='match']) {
+  opacity: 0.38;
+  filter: saturate(0.45);
+}
+
+:root[data-motion-linkage='on'] [data-link-mode='tag'] [data-bookmark-tags][data-link-state='match'] {
+  box-shadow:
+    0 0 0 2px oklch(from var(--primary) l c h / 0.5),
+    0 12px 28px -14px oklch(from var(--primary) l c h / 0.55);
+}
+
+/* 极简列表的行位于裁剪容器内，外扩描边会缺边，改画在行内侧 */
+:root[data-motion-linkage='on'] [data-link-mode='tag'] .bookmark-minimal-row[data-link-state='match'] {
+  box-shadow: inset 0 0 0 2px oklch(from var(--primary) l c h / 0.5);
+}
+
+:root[data-motion-linkage='on'] [data-link-mode='bookmark'] .tag-item:not([data-link-state='match']) {
+  opacity: 0.5;
+}
+
+:root[data-motion-linkage='on'] .tag-item[data-link-state='match'] {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+:root[data-motion='on'][data-motion-linkage='on'] .tag-item:not([aria-pressed='true'])[data-link-state='match'] {
+  animation: motion-link-ring calc(1600ms * var(--motion-speed)) ease-out infinite;
+}
+
+@keyframes motion-link-ring {
+  0% {
+    box-shadow:
+      inset 0 0 0 2px var(--primary),
+      0 0 0 0 oklch(from var(--primary) l c h / 0.35);
+  }
+  70%,
+  100% {
+    box-shadow:
+      inset 0 0 0 2px var(--primary),
+      0 0 0 6px oklch(from var(--primary) l c h / 0);
+  }
+}
+
+:root[data-motion-linkage='on'] .bookmark-tag-chip[data-link-state='match'],
+.bookmark-tag-chip[aria-pressed='true'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.bookmark-tag-chip--interactive {
+  cursor: pointer;
+}
+
+.bookmark-tag-chip--interactive:hover {
+  background: oklch(from var(--primary) l c h / 0.2);
+}
+
+.bookmark-tag-chip--interactive:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+/* ---------- 动效设置页 ----------
+   项目的 Tailwind 入口未加载主题色配置，这里用主题变量直接描述选项与预览的样式。 */
+:is(.motion-settings, .settings-plugin-panel) .motion-option {
+  border-color: var(--border);
+  color: var(--muted-foreground);
+  background: transparent;
+  transition: border-color 160ms ease, color 160ms ease, background-color 160ms ease;
+}
+
+:is(.motion-settings, .settings-plugin-panel) .motion-option:not(:disabled):hover {
+  border-color: oklch(from var(--primary) l c h / 0.5);
+  color: var(--foreground);
+}
+
+:is(.motion-settings, .settings-plugin-panel) .motion-option[aria-pressed='true'] {
+  border-color: var(--primary);
+  background: oklch(from var(--primary) l c h / 0.1);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.motion-settings .motion-notice {
+  border-color: oklch(from var(--warning) l c h / 0.4);
+  background: oklch(from var(--warning) l c h / 0.12);
+  color: var(--foreground);
+}
+
+.motion-settings .motion-preview {
+  border-color: var(--border);
+  background: oklch(from var(--muted) l c h / 0.4);
+}
+
+.motion-settings .motion-preview .tag-item {
+  border-color: var(--border);
+  background: var(--card);
+}
+
+.motion-settings .bookmark-tag-chip {
+  background: oklch(from var(--primary) l c h / 0.1);
+  color: var(--primary);
+}

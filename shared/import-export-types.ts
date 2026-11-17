@@ -1,0 +1,363 @@
+/**
+ * 导入导出功能的共享类型定义
+ * 提供类型安全的接口定义，支持多种格式的数据交换
+ */
+
+// ============ 基础数据类型 ============
+
+export interface ExportBookmark {
+  id: string
+  title: string
+  url: string
+  description?: string | null
+  cover_image?: string | null
+  cover_image_id?: string | null
+  favicon?: string | null
+  tags: string[]
+  is_pinned: boolean
+  is_archived?: boolean
+  is_public?: boolean
+  created_at: string
+  updated_at: string
+  click_count?: number
+  last_clicked_at?: string | null
+  has_snapshot?: boolean
+  latest_snapshot_at?: string | null
+  snapshot_count?: number
+  deleted_at?: string | null
+}
+
+export interface ExportTag {
+  id: string
+  name: string
+  color: string
+  click_count?: number
+  last_clicked_at?: string | null
+  created_at: string
+  updated_at: string
+  deleted_at?: string | null
+  bookmark_count?: number
+}
+
+export interface ExportUser {
+  id: string
+  email: string
+  name?: string
+  created_at: string
+}
+
+export interface ExportTabGroupItem {
+  id: string
+  title: string
+  url: string
+  favicon?: string
+  position: number
+  is_pinned: boolean
+  is_todo: boolean
+  is_archived: boolean
+  created_at: string
+}
+
+export interface ExportTabGroup {
+  id: string
+  title: string
+  parent_id?: string
+  is_folder: boolean
+  position: number
+  color?: string
+  tags?: string[]
+  is_deleted?: boolean
+  deleted_at?: string
+  created_at: string
+  updated_at: string
+  items: ExportTabGroupItem[]
+}
+
+// ============ 导出格式 ============
+
+export type ExportFormat = 'json'
+
+export interface MarkVaultExportData {
+  version: string
+  format: 'markvault' // MarkVault 专属标识
+  exported_at: string
+  user: ExportUser
+  bookmarks: ExportBookmark[]
+  tags: ExportTag[]
+  tab_groups?: ExportTabGroup[]
+  metadata: {
+    total_bookmarks: number
+    total_tags: number
+    total_tab_groups?: number
+    export_format: ExportFormat
+    source: 'markvault' // 明确标识来源
+  }
+}
+
+// ============ 导入格式（用于浏览器扩展）============
+
+export type ImportFormat = 'html' | 'json' | 'markvault' | 'tmarks'
+export type ImportSourceFormat = 'markvault' | 'tmarks'
+
+export interface ParsedBookmark {
+  title: string
+  url: string
+  description?: string
+  cover_image?: string
+  tags: string[]
+  created_at?: string
+  folder?: string
+}
+
+export interface ParsedTag {
+  name: string
+  color?: string
+}
+
+export interface ParsedTabGroupItem {
+  id?: string
+  title: string
+  url: string
+  favicon?: string
+  position: number
+  is_pinned: boolean
+  is_todo: boolean
+  is_archived: boolean
+  created_at?: string
+}
+
+export interface ParsedTabGroup {
+  id?: string
+  title: string
+  parent_id?: string
+  is_folder: boolean
+  position: number
+  color?: string
+  tags?: string
+  created_at?: string
+  updated_at?: string
+  items: ParsedTabGroupItem[]
+}
+
+export interface ImportData {
+  bookmarks: ParsedBookmark[]
+  tags: ParsedTag[]
+  tab_groups?: ParsedTabGroup[]
+  metadata?: {
+    source: ImportFormat
+    total_items: number
+    total_tab_groups?: number
+    parsed_at: string
+  }
+}
+
+// ============ 操作结果 ============
+
+export interface ImportEntityStats {
+  total: number
+  created: number
+  updated: number
+  skipped: number
+  failed: number
+}
+
+export interface ImportTagStats {
+  total: number
+  created: number
+  reused: number
+  restored: number
+  skipped: number
+  failed: number
+}
+
+export interface ImportResult {
+  format: ImportSourceFormat
+  version: string
+  bookmarks: ImportEntityStats
+  tags: ImportTagStats
+  tab_groups: ImportEntityStats
+  tab_group_items: ImportEntityStats
+  errors: ImportError[]
+  warnings: string[]
+}
+
+export interface ExportResult {
+  success: boolean
+  format: ExportFormat
+  filename: string
+  size: number
+  exported_at: string
+  error?: string
+}
+
+export interface ImportError {
+  entity: 'bookmark' | 'tag' | 'tab_group' | 'tab_group_item'
+  index: number
+  title?: string
+  error: string
+  code: ImportErrorCode
+}
+
+export type ImportErrorCode = 
+  | 'INVALID_URL'
+  | 'DUPLICATE_URL'
+  | 'MISSING_TITLE'
+  | 'INVALID_FORMAT'
+  | 'INVALID_STRUCTURE'
+  | 'IMPORT_LIMIT_EXCEEDED'
+  | 'TAG_CREATION_FAILED'
+  | 'BOOKMARK_CREATION_FAILED'
+  | 'TAB_GROUP_CREATION_FAILED'
+  | 'TAB_GROUP_ITEM_CREATION_FAILED'
+  | 'VALIDATION_ERROR'
+  | 'UNKNOWN_ERROR'
+
+// ============ 进度跟踪 ============
+
+export interface ProgressInfo {
+  current: number
+  total: number
+  percentage: number
+  status: ProgressStatus
+  message: string
+  estimated_remaining?: number
+}
+
+export type ProgressStatus = 
+  | 'preparing'
+  | 'parsing'
+  | 'validating'
+  | 'importing'
+  | 'exporting'
+  | 'completed'
+  | 'failed'
+  | 'cancelled'
+
+// ============ 配置选项 ============
+
+export interface ImportOptions {
+  skip_duplicates: boolean
+  preserve_timestamps: boolean
+  include_deleted: boolean
+  import_bookmarks: boolean
+  import_tab_groups: boolean
+  batch_size: number
+  default_tag_color: string
+}
+
+export interface ExportOptions {
+  include_tags: boolean
+  include_metadata: boolean
+  format_options: {
+    pretty_print?: boolean
+    include_click_stats?: boolean
+    include_user_info?: boolean
+  }
+}
+
+// ============ API 请求/响应 ============
+
+export interface ExportRequest {
+  format: ExportFormat
+  options?: ExportOptions
+}
+
+export interface ImportRequest {
+  format: ImportSourceFormat
+  data: string
+  options?: ImportOptions
+}
+
+export interface ImportFilePreview {
+  format: ImportSourceFormat
+  version: string
+  exported_at?: string
+  total_bookmarks: number
+  total_tags: number
+  total_tab_groups: number
+  total_tab_group_items: number
+  deleted_items: number
+}
+
+export interface ImportProgressResponse {
+  progress: ProgressInfo
+  result?: ImportResult
+}
+
+export interface ExportProgressResponse {
+  progress: ProgressInfo
+  result?: ExportResult
+}
+
+// ============ 解析器接口 ============
+
+export interface ImportParser {
+  format: ImportFormat
+  parse(content: string): Promise<ImportData>
+  validate(data: ImportData): Promise<ValidationResult>
+}
+
+export interface ValidationResult {
+  valid: boolean
+  errors: ValidationError[]
+  warnings: ValidationWarning[]
+}
+
+export interface ValidationError {
+  field: string
+  message: string
+  value?: unknown
+}
+
+export interface ValidationWarning {
+  field: string
+  message: string
+  value?: unknown
+}
+
+// ============ 导出器接口 ============
+
+export interface Exporter {
+  format: ExportFormat
+  export(data: MarkVaultExportData, options?: ExportOptions): Promise<ExportOutput>
+}
+
+export interface ExportOutput {
+  content: string | Buffer
+  filename: string
+  mimeType: string
+  size: number
+}
+
+// ============ 工具函数类型 ============
+
+export type DateParser = (dateString: string) => Date | null
+export type URLValidator = (url: string) => boolean
+export type TagNormalizer = (tagName: string) => string
+
+// ============ 常量 ============
+
+export const SUPPORTED_IMPORT_FORMATS: ImportFormat[] = ['json', 'markvault', 'tmarks']
+export const SUPPORTED_EXPORT_FORMATS: ExportFormat[] = ['json']
+
+export const DEFAULT_IMPORT_OPTIONS: ImportOptions = {
+  skip_duplicates: true,
+  preserve_timestamps: true,
+  include_deleted: false,
+  import_bookmarks: true,
+  import_tab_groups: true,
+  batch_size: 100,
+  default_tag_color: '#3b82f6',
+}
+
+export const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
+  include_tags: true,
+  include_metadata: true,
+  format_options: {
+    pretty_print: true,
+    include_click_stats: false,
+    include_user_info: false
+  }
+}
+
+export const EXPORT_VERSION = '1.0.0'

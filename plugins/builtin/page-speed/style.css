@@ -1,0 +1,120 @@
+/* 附着在页头下沿，不占用主站图标按钮的横向空间。 */
+.page-speed {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: max(12px, env(safe-area-inset-right));
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.page-speed__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  background: var(--card);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 6%);
+  cursor: pointer;
+}
+.page-speed__trigger strong {
+  color: var(--foreground);
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.page-speed__trigger svg {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+.page-speed__trigger:hover {
+  border-color: var(--primary);
+}
+.page-speed button:focus-visible,
+.page-speed a:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.page-speed__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: min(320px, calc(100vw - 24px));
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 14%);
+}
+.page-speed__heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.page-speed__heading h2 {
+  font-size: 14px;
+  font-weight: 650;
+}
+.page-speed__heading button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--muted);
+  color: var(--foreground);
+  cursor: pointer;
+}
+.page-speed__panel dl {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+.page-speed__panel dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.page-speed__panel dt {
+  color: var(--muted-foreground);
+}
+.page-speed__panel dd {
+  margin: 0;
+  font-family: ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+.page-speed__panel p {
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 1.7;
+}
+.page-speed__panel a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--primary);
+  font-weight: 600;
+}
+:root[data-experimental-ui='vibehub'] .page-speed__trigger {
+  border-radius: 6px;
+  box-shadow: none;
+}
+:root[data-experimental-ui='uiux-pro'] .page-speed__trigger {
+  box-shadow: 2px 3px 10px color-mix(in srgb, var(--foreground) 8%, transparent);
+}
+@media (max-width: 639px) {
+  .page-speed__label {
+    display: none;
+  }
+  .page-speed__trigger {
+    min-height: 36px;
+  }
+}

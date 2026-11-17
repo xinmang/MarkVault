@@ -1,0 +1,1 @@
+{"id":"examples.notes","version":"1.0.0","api":"^1.0.0","name":"插件便笺 / Plugin notes","description":"沙盒页面通过 SDK 保存当前账号独立便笺。","author":"MarkVault","permissions":["storage.read","storage.write"],"contributes":[{"id":"notes","kind":"page","title":"便笺 / Notes","entry":"page.html"}]}

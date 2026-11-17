@@ -1,0 +1,885 @@
+{
+  "form": {
+    "quickValues": "{{name}}常用值",
+    "unlimited": "不限",
+    "retry": "重试"
+  },
+  "organization": {
+    "core": "基础设置",
+    "theme": "界面与配色",
+    "motion": "动画与背景",
+    "enhancements": "浏览增强",
+    "ai": "助手与模型",
+    "api": "API 与外部访问",
+    "connections": "MCP 与图片存储",
+    "extensions": "统计与扩展",
+    "plugins": "自定义插件",
+    "layouts": "布局视图",
+    "interface": "界面外观",
+    "services": "助手与连接",
+    "hints": {
+      "basic": "管理账号、安全与界面语言。",
+      "automation": "设置列表加载、搜索与标签筛选的自动行为。",
+      "data": "管理快照保留、导入导出与数据备份。",
+      "share": "管理公开分享与访问方式。",
+      "site": "配置站点名称、外观标识与注册策略。",
+      "theme": "选择界面主题与页面版式，并调整配色与标签图标。",
+      "layouts": "按需开启更多书签视图、标签布局和标签页组布局，开启后出现在对应页面的切换菜单里。",
+      "motion": "开关动效与背景并展开设置，海洋样式可按浏览器或账号保存。",
+      "enhancements": "开启后展开设置，调整标签热度、网址遮罩与书签悬浮卡片。",
+      "ai": "开关站内助手与工具，展开模型供应商配置 AI 服务。",
+      "api": "管理 API 密钥及外部助手的访问权限。",
+      "connections": "配置外部 MCP 连接、图片存储和浏览器扩展。",
+      "statistics": "开启后可查看访问趋势、热力图与调用分析；关闭不删除历史记录。",
+      "plugins": "安装和管理第三方插件。内置功能已整合到设置的各个分区。"
+    }
+  },
+  "title": "设置",
+  "description": "配置应用的通用行为和用户体验",
+  "version": {
+    "label": "版本 v{{version}}"
+  },
+  "tabs": {
+    "basic": "账户与语言",
+    "automation": "书签与自动化",
+    "appearance": "外观",
+    "snapshot": "快照",
+    "ai": "AI 服务",
+    "browser": "浏览器",
+    "api": "API 与扩展",
+    "share": "公开分享",
+    "data": "数据与快照",
+    "statistics": "数据分析",
+    "language": "语言",
+    "theme": "外观与标签",
+    "experimental": "实验性功能",
+    "site": "网站设置",
+    "motion": "动效"
+  },
+  "navGroup": {
+    "account": "账户",
+    "appearance": "外观与体验",
+    "features": "功能",
+    "integration": "集成",
+    "dataAndShare": "数据与分享",
+    "experimental": "实验室",
+    "preferences": "使用偏好",
+    "services": "服务与数据",
+    "site": "站点"
+  },
+  "action": {
+    "save": "保存设置",
+    "saving": "保存中...",
+    "reset": "重置",
+    "logout": "登出",
+    "discard": "放弃"
+  },
+  "message": {
+    "saveSuccess": "设置已保存",
+    "saveFailed": "保存失败",
+    "saveFailedWithError": "保存失败：{{error}}",
+    "resetSuccess": "已重置为上次保存的设置",
+    "logoutFailed": "登出失败",
+    "unsavedChanges": "有未保存的更改"
+  },
+  "language": {
+    "title": "语言设置",
+    "description": "选择界面显示语言",
+    "label": "界面语言",
+    "hint": "更改语言后界面将立即切换"
+  },
+  "permissions": {
+    "bookmarks": "书签",
+    "tags": "标签",
+    "tabGroups": "收纳",
+    "other": "其他",
+    "bookmarksCreate": "创建书签",
+    "bookmarksRead": "读取书签",
+    "bookmarksUpdate": "更新书签",
+    "bookmarksDelete": "删除书签",
+    "bookmarksAll": "所有书签权限",
+    "tagsCreate": "创建标签",
+    "tagsRead": "读取标签",
+    "tagsUpdate": "更新标签",
+    "tagsDelete": "删除标签",
+    "tagsAssign": "分配标签",
+    "tagsAll": "所有标签权限",
+    "tabGroupsCreate": "创建收纳",
+    "tabGroupsRead": "读取收纳",
+    "tabGroupsUpdate": "更新收纳",
+    "tabGroupsDelete": "删除收纳",
+    "tabGroupsAll": "所有收纳权限",
+    "aiSuggest": "AI 智能建议",
+    "userRead": "读取用户信息",
+    "userPreferencesRead": "读取用户偏好",
+    "templates": {
+      "readOnly": "只读",
+      "readOnlyDesc": "仅查看数据，不能修改",
+      "basic": "基础使用",
+      "basicDesc": "可以添加书签和标签，但不能删除",
+      "full": "完整权限",
+      "fullDesc": "拥有所有操作权限"
+    }
+  },
+  "browserPermissions": {
+    "title": "浏览器权限设置",
+    "description": "配置 MarkVault 所需的浏览器权限，以获得最佳使用体验",
+    "popup": {
+      "title": "弹窗权限",
+      "description": "允许 MarkVault 打开弹窗，以便使用\"一键打开全部标签页\"功能。"
+    },
+    "howTo": {
+      "title": "如何允许弹窗？",
+      "step1": "在标签页组详情页面，点击\"全部恢复\"按钮",
+      "step2": "浏览器地址栏会出现弹窗拦截图标（通常在右侧）",
+      "step3": "点击该图标，选择\"始终允许 [网站] 显示弹出式窗口\"",
+      "step4": "刷新页面后，再次点击\"全部恢复\"即可正常使用"
+    },
+    "browsers": {
+      "title": "各浏览器设置方法",
+      "chrome": {
+        "title": "Chrome / Edge",
+        "description": "地址栏右侧会出现 🚫 图标，点击后选择\"始终允许弹出式窗口和重定向\""
+      },
+      "firefox": {
+        "title": "Firefox",
+        "description": "地址栏左侧会出现弹窗拦截提示，点击\"选项\" → \"允许 [网站] 的弹出式窗口\""
+      },
+      "safari": {
+        "title": "Safari",
+        "description": "菜单栏：Safari → 设置 → 网站 → 弹出式窗口 → 找到当前网站 → 选择\"允许\""
+      }
+    },
+    "why": {
+      "title": "💡 为什么需要弹窗权限？",
+      "description": "\"一键打开全部标签页\"功能需要同时打开多个网页。浏览器为了安全考虑，默认会拦截批量打开的弹窗。允许 MarkVault 的弹窗权限后，您就可以一次性打开标签页组中的所有网页，大大提高工作效率。"
+    }
+  },
+  "ai": {
+    "loading": "正在加载 AI 设置",
+    "loadFailed": "加载 AI 设置失败",
+    "save": "保存 AI 设置",
+    "saving": "正在保存…",
+    "saveFailed": "保存 AI 设置失败",
+    "testing": "正在测试…",
+    "modelPlaceholder": "输入服务商提供的模型名称",
+    "apiKeySavedPlaceholder": "已加密保存，留空保留",
+    "apiKeyHint": "API Key 加密保存在服务器；已有密钥留空保留，输入新值后保存即可替换。",
+    "keepApiKey": "保留现有密钥",
+    "clearApiKey": "清除已保存密钥",
+    "customPrompt": "自定义提示词",
+    "customPromptHint": "为助手补充整理收藏时使用的偏好和要求。",
+    "customPromptPlaceholder": "输入希望助手遵循的偏好和要求",
+    "custom": "自定义",
+    "title": "AI 服务配置",
+    "description": "配置 AI 服务用于标签推荐、智能分类等功能",
+    "enable": "启用 AI 功能",
+    "enabled": "已开启",
+    "enableHint": "开启后可使用 AI 智能整理等功能",
+    "provider": "服务商",
+    "apiKey": "API Key",
+    "getApiKey": "获取 API Key",
+    "apiKeyPlaceholder": "输入 {{provider}} API Key",
+    "model": "模型",
+    "selectModel": "选择",
+    "refreshModels": "刷新模型",
+    "refreshingModels": "获取中...",
+    "modelsFetched": "已获取 {{count}} 个模型，可直接选择或手动输入",
+    "modelsFetchError": "模型列表加载失败：{{error}}",
+    "modelsHint": "输入 API Key 后可自动获取可用模型列表，推荐使用 {{model}}",
+    "modelsRecommend": "推荐使用 {{model}}，性价比较高",
+    "apiUrl": "API 地址",
+    "apiUrlOptional": "API 地址 (可选)",
+    "apiUrlHint": "留空使用默认地址，或输入自定义 API 端点",
+    "testConnection": "测试连接",
+    "testSuccess": "连接成功 ({{latency}}ms)",
+    "testFailed": "连接失败",
+    "enterApiKeyFirst": "请先输入完整的 API Key",
+    "saveSuccess": "AI 设置已保存",
+    "infoBox": {
+      "title": "使用说明",
+      "tip1": "第三方 AI API Key 使用实例密钥加密保存，请妥善保管实例配置和备份",
+      "tip2": "站内 Agent 由 MarkVault 服务器调用所配置的 AI 服务，请确认发送的数据适合由该服务处理",
+      "tip3": "模型名称、可用性与调用费用以你配置的服务商为准",
+      "tip4": "调用费用取决于所选模型、请求长度和工具调用次数"
+    }
+  },
+  "apiKey": {
+    "page": {
+      "title": "API Keys 管理",
+      "description": "管理您的 API 密钥，用于第三方应用访问",
+      "createNew": "创建新的 API Key",
+      "info": "API Keys 用于第三方应用（如浏览器插件）安全访问您的 MarkVault 数据。您可以随时撤销不需要的 Key。",
+      "currentUsage": "当前使用",
+      "unlimited": "无限制",
+      "empty": "还没有创建任何 API Key",
+      "createFirst": "创建第一个 API Key",
+      "tipsTitle": "💡 提示：",
+      "tip1": "每个账户最多创建 {{limit}} 个 API Key",
+      "tip2": "完整 Key 仅在创建时显示一次，请立即复制并妥善保存",
+      "tip3": "如果 Key 泄露，请立即撤销",
+      "revokeTitle": "撤销 API Key",
+      "revokeMessage": "确定要撤销此 API Key 吗？撤销后无法恢复。",
+      "revokeSuccess": "API Key 已撤销",
+      "revokeFailed": "撤销失败，请重试",
+      "deleteTitle": "删除 API Key",
+      "deleteMessage": "确定要彻底删除此 API Key 吗？该操作不可恢复，并会清除所有使用记录。",
+      "deleteSuccess": "API Key 已永久删除",
+      "deleteFailed": "删除失败，请重试"
+    },
+    "status": {
+      "label": "状态",
+      "active": "活跃",
+      "revoked": "已撤销",
+      "expired": "已过期"
+    },
+    "permissions": "权限",
+    "permissionsCount": "{{count}} 项",
+    "lastUsed": "最后使用",
+    "neverUsed": "从未使用",
+    "createdAt": "创建于",
+    "expiresAt": "过期时间",
+    "viewDetails": "查看详情",
+    "revoke": "撤销",
+    "delete": "删除",
+    "agentGuide": {
+      "title": "Agent、MCP 与站内聊天",
+      "description": "查看 Skill、读写 REST API、MCP 和确认机制；为每个 Agent 创建最小权限的专用 Key。",
+      "action": "打开接入指南"
+    },
+    "create": {
+      "title": "创建 API Key",
+      "step": "步骤 {{current}}/{{total}}",
+      "name": "名称",
+      "nameRequired": "名称 *",
+      "namePlaceholder": "例如：Chrome 插件 - 工作电脑",
+      "nameHint": "用于识别此 Key 的用途",
+      "description": "描述 (可选)",
+      "descriptionPlaceholder": "例如：用于浏览器插件访问",
+      "quickSelect": "快速选择:",
+      "recommended": "推荐",
+      "includedPermissions": "包含的权限:",
+      "expiration": "过期时间:",
+      "neverExpire": "永不过期",
+      "expireIn30Days": "30 天后",
+      "expireIn90Days": "90 天后",
+      "cancel": "取消",
+      "prev": "← 上一步",
+      "next": "下一步 →",
+      "creating": "创建中...",
+      "createButton": "创建 API Key",
+      "failed": "创建失败",
+      "failedMessage": "创建失败，请重试"
+    },
+    "success": {
+      "title": "创建成功！请妥善保存此 Key",
+      "yourKey": "您的 API Key:",
+      "copy": "📋 复制",
+      "copied": "✓ 已复制",
+      "warning": "⚠️ 重要提示：",
+      "warningList": {
+        "showOnce": "完整 Key 仅显示这一次，关闭后无法再次查看或复制",
+        "saveNow": "请立即复制并保存到安全的地方",
+        "prefixOnly": "后续您只能看到前缀: {{prefix}}..."
+      },
+      "close": "我已保存，关闭"
+    },
+    "detail": {
+      "close": "关闭",
+      "basicInfo": "基本信息:",
+      "keyPrefix": "Key 前缀:",
+      "createdAt": "创建时间:",
+      "expiresAt": "过期时间:",
+      "neverExpire": "永不过期",
+      "description": "描述:",
+      "permissions": "权限:",
+      "usage": "使用情况:",
+      "lastUsed": "最后使用:",
+      "neverUsed": "从未使用",
+      "totalRequests": "使用次数:",
+      "requestCount": "{{count}} 次",
+      "lastIp": "最后 IP:",
+      "recentActivity": "最近活动:",
+      "recentActivityLimit": "(最多显示 {{count}} 条)",
+      "tableTime": "时间",
+      "tableMethod": "方法",
+      "tableEndpoint": "端点",
+      "tableStatus": "状态",
+      "noLogs": "暂无使用记录"
+    },
+    "infoBox": {
+      "usageTitle": "使用说明",
+      "usageTip1": "API Keys 用于第三方应用（如浏览器插件）安全访问您的数据",
+      "usageTip2": "每个 Key 可以设置不同的权限范围",
+      "usageTip3": "建议为不同用途创建不同的 Key",
+      "securityTitle": "安全提示",
+      "securityTip1": "不要在公开场合分享你的 API Key",
+      "securityTip2": "如果 Key 泄露，请立即撤销",
+      "securityTip3": "定期检查 Key 的使用记录"
+    }
+  },
+  "snapshot": {
+    "title": "快照设置",
+    "retention": {
+      "title": "快照保留策略",
+      "description": "控制每个书签保留的快照数量",
+      "count": "保留快照数量",
+      "countHint": "每个书签最多保留的快照版本数（-1 表示无限制）",
+      "unit": "个",
+      "tip": "超出后自动删除最旧快照；-1 表示不限数量。"
+    },
+    "maxCount": {
+      "title": "最大快照数量",
+      "description": "每个书签最多保存的快照数量",
+      "hint": "当快照数量超过限制时，会自动删除最旧的快照。设置为 -1 表示不限制数量。"
+    },
+    "autoCreate": {
+      "title": "自动创建快照",
+      "description": "添加书签时自动创建网页快照",
+      "enable": "启用自动创建",
+      "enableHint": "添加新书签时自动保存网页快照（需要浏览器扩展支持）"
+    },
+    "dedup": {
+      "title": "智能去重",
+      "description": "避免保存重复的快照内容",
+      "enable": "启用智能去重",
+      "tip1": "通过内容哈希检测重复快照",
+      "tip2": "如果内容相同，不会创建新快照",
+      "tip3": "节省存储空间，提高效率"
+    },
+    "autoClean": {
+      "title": "自动清理",
+      "description": "定期清理过期的快照",
+      "days": "自动清理天数",
+      "daysHint": "自动删除超过指定天数的快照（0 表示不自动清理）",
+      "unit": "天",
+      "warning": "⚠️ 自动清理功能会永久删除快照，请谨慎设置。设置为 0 表示不自动清理。"
+    },
+    "automation": {
+      "title": "自动化选项",
+      "description": "配置快照的自动创建和去重功能"
+    },
+    "infoBox": {
+      "title": "快照功能说明",
+      "tip1": "快照功能可以保存网页的完整内容，即使原网页被删除也可查看",
+      "tip2": "建议启用智能去重，避免保存重复内容，节省存储空间"
+    }
+  },
+  "site": {
+    "title": "网站设置",
+    "subtitle": "全站统一的品牌信息，会显示在页头、登录页与分享页；只有管理员可以修改",
+    "savedHint": "当前内容与已保存的网站设置一致",
+    "name": {
+      "label": "网站名称",
+      "placeholder": "例如 MarkVault",
+      "hint": "1–80 个字符，用于页头、浏览器标题与分享页"
+    },
+    "descriptionField": {
+      "label": "网站描述",
+      "placeholder": "一句话介绍这个站点",
+      "hint": "最多 300 个字符，同时写入 description meta"
+    },
+    "images": {
+      "title": "站点图标",
+      "hint": "支持 HTTP(S) 图片地址，或上传不超过 256 KiB 的 PNG/JPEG/GIF/WebP",
+      "upload": "上传图片",
+      "clear": "清除"
+    },
+    "logo": {
+      "label": "网站 Logo",
+      "placeholder": "https://example.com/logo.png"
+    },
+    "favicon": {
+      "label": "浏览器图标（favicon）",
+      "placeholder": "https://example.com/favicon.png"
+    },
+    "preview": {
+      "title": "实时预览",
+      "hint": "预览只反映当前编辑内容，保存后才会应用到全站",
+      "browserTitle": "浏览器标题",
+      "metaDescription": "站点描述"
+    },
+    "action": {
+      "restoreDefaults": "恢复默认",
+      "saveSite": "保存网站设置"
+    },
+    "message": {
+      "saveSuccess": "网站设置已保存",
+      "saveFailed": "保存网站设置失败",
+      "defaultsNotice": "已填入默认值，保存后才会应用到全站",
+      "invalidName": "网站名称需为 1–80 个字符",
+      "invalidDescription": "网站描述最多 300 个字符",
+      "invalidLogo": "Logo 需为 HTTP(S) 图片地址或不超过 256 KiB 的位图",
+      "invalidFavicon": "浏览器图标需为 HTTP(S) 图片地址或不超过 256 KiB 的位图",
+      "invalidUpload": "上传失败：请选择不超过 256 KiB 的 PNG/JPEG/GIF/WebP 图片"
+    },
+    "readOnly": {
+      "title": "只有管理员可以修改网站设置",
+      "description": "当前账号可以查看全站品牌信息。首个注册账号为管理员；如需修改，请使用管理员账号登录。"
+    },
+    "loadFailed": "网站设置加载失败",
+    "loading": "加载中...",
+    "retry": "重试"
+  },
+  "share": {
+    "savedHint": "修改后保存生效",
+    "savedLinkHint": "显示已保存的分享链接；修改后缀后请先保存。",
+    "loadFailed": "读取分享设置失败，请重试。",
+    "title": "分享设置",
+    "publicShare": {
+      "title": "公开分享",
+      "description": "创建公开链接，让其他人查看你的书签",
+      "enable": "启用公开分享",
+      "enableHint": "开启后，其他人可以通过链接访问你的公开书签"
+    },
+    "slug": {
+      "label": "分享链接后缀",
+      "placeholder": "例如：my-bookmarks",
+      "hint": "仅支持字母、数字与短横线，留空将自动生成",
+      "regenerate": "重新生成"
+    },
+    "pageTitle": {
+      "label": "页面标题",
+      "placeholder": "公开页面标题，用于向访客介绍"
+    },
+    "pageDescription": {
+      "label": "页面描述",
+      "placeholder": "可选描述，向访客说明书签集合内容"
+    },
+    "shareLink": {
+      "label": "分享链接",
+      "placeholder": "生成后显示分享链接",
+      "copy": "复制",
+      "copied": "已复制"
+    },
+    "reset": "重置",
+    "saveSuccess": "分享设置已保存",
+    "saveFailed": "保存失败",
+    "regenerateSuccess": "链接已重新生成",
+    "regenerateFailed": "生成失败",
+    "copySuccess": "链接已复制",
+    "copyFailed": "复制失败",
+    "resetSuccess": "已重置为上次保存的设置",
+    "infoBox": {
+      "title": "分享功能说明",
+      "tip1": "只有标记为\"公开\"的书签才会在分享页面显示",
+      "tip2": "你可以随时修改分享链接或关闭分享功能",
+      "tip3": "分享页面不需要登录即可访问"
+    }
+  },
+  "data": {
+    "title": "数据管理",
+    "r2Storage": {
+      "title": "文件存储用量",
+      "description": "包含所有快照和封面图在本地对象存储中的总占用",
+      "currentUsage": "当前使用",
+      "unlimited": "无限制"
+    },
+    "import": {
+      "title": "导入数据",
+      "description": "从 MarkVault JSON 备份恢复书签、标签和收纳箱"
+    },
+    "export": {
+      "title": "导出数据",
+      "description": "将书签数据导出为文件进行备份",
+      "tip1": "包含完整数据，适合备份和迁移",
+      "tip2": "可选择包含标签、元数据等信息",
+      "htmlTip1": "兼容浏览器标准格式",
+      "htmlTip2": "可直接导出为浏览器书签格式",
+      "htmlTip3": "保留文件夹结构和书签层级"
+    },
+    "importSuccess": "导入完成：处理 {{bookmarks}} 个书签、{{groups}} 个收纳箱",
+    "exportSuccess": "导出成功：{{details}}",
+    "lastOperation": {
+      "export": "数据导出",
+      "cleanup": "快照清理"
+    },
+    "snapshotManagement": {
+      "title": "快照管理",
+      "description": "清理和维护书签快照数据",
+      "cleanOrphan": "清理孤立快照记录",
+      "cleaning": "清理中...",
+      "cleanButton": "清理孤立记录"
+    },
+    "exportFeature": {
+      "title": "导出功能",
+      "description": "支持多种格式，满足不同需求",
+      "jsonTitle": "JSON 格式",
+      "htmlTitle": "HTML 格式"
+    },
+    "fetchBookmarksFailed": "获取书签列表失败",
+    "cleanSnapshotsFailed": "清理快照失败",
+    "cleanSnapshotsSuccess": "成功清理 {{count}} 条孤立快照记录",
+    "cleanSnapshotsNone": "没有发现孤立的快照记录",
+    "cleanSnapshotsConfirmTitle": "清理快照记录",
+    "cleanSnapshotsConfirmMessage": "确定要清理所有书签的孤立快照记录吗？\n\n这将检查所有快照记录，删除对象文件不存在的记录。",
+    "loading": "加载中...",
+    "cleanSnapshots": {
+      "title": "清理孤立快照",
+      "tip1": "检查所有快照记录，验证对象文件是否存在",
+      "tip2": "删除对象文件不存在的数据库记录",
+      "tip3": "自动更新书签的快照计数",
+      "tip4": "适用于手动删除对象文件后的数据修复"
+    }
+  },
+  "browser": {
+    "title": "浏览器设置",
+    "download": {
+      "title": "浏览器插件下载",
+      "description": "下载 Chrome/Chromium 通用扩展（适用于 Chromium 内核浏览器）",
+      "clickToDownload": "点击下载",
+      "tip": "💡 目前仅提供 Chrome/Chromium 通用版本（Chrome、Edge、Brave、Opera、360、QQ、搜狗等）"
+    },
+    "permissions": {
+      "title": "浏览器权限设置",
+      "description": "配置 MarkVault 所需的浏览器权限，以获得最佳使用体验",
+      "bookmarks": {
+        "title": "书签访问权限",
+        "description": "允许扩展读取和保存浏览器书签"
+      },
+      "tabs": {
+        "title": "标签页访问权限",
+        "description": "允许扩展访问当前打开的标签页信息"
+      },
+      "storage": {
+        "title": "存储权限",
+        "description": "允许扩展在本地存储数据"
+      }
+    },
+    "popup": {
+      "title": "弹窗权限",
+      "description": "允许 MarkVault 打开弹窗，以便使用\"一键打开全部标签页\"功能。",
+      "howTo": "如何允许弹窗？",
+      "step1": "在标签页组详情页面，点击\"全部恢复\"按钮",
+      "step2": "浏览器地址栏会出现弹窗拦截图标（通常在右侧）",
+      "step3": "点击该图标，选择\"始终允许显示弹出式窗口\"",
+      "step4": "刷新页面后，再次点击\"全部恢复\"即可正常使用",
+      "chromeTitle": "Chrome / Edge",
+      "chromeDesc": "地址栏右侧会出现 🚫 图标，点击后选择\"始终允许弹出式窗口和重定向\"",
+      "firefoxTitle": "Firefox",
+      "firefoxDesc": "地址栏左侧会出现弹窗拦截提示，点击\"选项\" → \"允许弹出式窗口\"",
+      "safariTitle": "Safari",
+      "safariDesc": "菜单栏：Safari → 设置 → 网站 → 弹出式窗口 → 找到当前网站 → 选择\"允许\"",
+      "whyTitle": "💡 为什么需要弹窗权限？",
+      "whyDesc": "\"一键打开全部标签页\"功能需要同时打开多个网页。浏览器为了安全考虑，默认会拦截批量打开的弹窗。允许 MarkVault 的弹窗权限后，您就可以一次性打开标签页组中的所有网页，大大提高工作效率。"
+    },
+    "install": {
+      "title": "安装步骤",
+      "description": "按照以下步骤安装浏览器扩展",
+      "step1Title": "下载插件压缩包",
+      "step1Desc": "点击上方下载按钮，获取对应浏览器的扩展文件",
+      "step2Title": "解压文件",
+      "step2Desc": "将下载的 zip 文件解压到任意文件夹（建议放在不会删除的位置）",
+      "step3Title": "打开扩展管理页面",
+      "step3Desc": "Chrome: chrome://extensions/ | Edge: edge://extensions/",
+      "step4Title": "启用开发者模式",
+      "step4Desc": "在扩展管理页面右上角，打开\"开发者模式\"开关",
+      "step5Title": "加载插件",
+      "step5Desc": "点击\"加载已解压的扩展程序\"，选择刚才解压的文件夹",
+      "step6Title": "完成安装",
+      "step6Desc": "插件图标会出现在浏览器工具栏，点击即可使用"
+    },
+    "faq": {
+      "title": "常见问题",
+      "iconNotFound": "Q: 插件安装后找不到图标？",
+      "iconNotFoundAnswer": "A: 点击浏览器工具栏右侧的拼图图标，找到 MarkVault 插件并点击固定按钮，图标就会显示在工具栏上。",
+      "howToGetApiKey": "Q: 如何获取 API Key？",
+      "howToGetApiKeyAnswer": "A: 在通用设置的\"API\"标签页中创建一个新的 API Key 并复制到插件配置中。",
+      "supportedBrowsers": "Q: 插件支持哪些浏览器？",
+      "supportedBrowsersAnswer": "A: 目前仅提供 Chrome/Chromium 版本，支持 Chrome、Edge、Brave、Opera、360、QQ、搜狗等 Chromium 内核浏览器。",
+      "whereToView": "保存的标签页组在哪里查看？",
+      "whereToViewAnswer": "在 MarkVault 网站的\"标签页\"页面可以查看和管理所有保存的标签页组。"
+    },
+    "infoBox": {
+      "title": "使用提示",
+      "tip1": "首次使用需要在插件中配置 MarkVault 网站地址和 API Key",
+      "tip2": "建议将插件图标固定到工具栏，方便快速访问",
+      "tip3": "插件会自动保存标签页的标题、URL 和网站图标",
+      "tip4": "保存的数据同步到你配置的 MarkVault 实例，可通过同一账号在多设备访问"
+    }
+  },
+  "basic": {
+    "accountInfo": {
+      "title": "账户信息",
+      "description": "查看您的账户基本信息"
+    },
+    "username": "用户名",
+    "email": "邮箱",
+    "registeredAt": "注册时间",
+    "role": "账户角色",
+    "roleAdmin": "管理员",
+    "roleUser": "普通用户",
+    "notSet": "未设置",
+    "unknown": "未知",
+    "security": {
+      "title": "安全设置",
+      "description": "修改您的登录密码"
+    },
+    "password": {
+      "change": "修改密码",
+      "current": "当前密码",
+      "currentPlaceholder": "请输入当前密码",
+      "new": "新密码",
+      "newPlaceholder": "请输入新密码（至少 8 个字符）",
+      "confirm": "确认新密码",
+      "confirmPlaceholder": "请再次输入新密码",
+      "cancel": "取消",
+      "submit": "确认修改",
+      "changing": "修改中...",
+      "changeSuccess": "密码修改成功，请重新登录",
+      "changeFailed": "密码修改失败",
+      "fillAllFields": "请填写所有字段",
+      "mismatch": "两次输入的新密码不一致",
+      "tooShort": "新密码至少需要 8 个字符",
+      "infoBoxTitle": "账户安全提示",
+      "tip1": "请定期修改密码以保护账户安全",
+      "tip2": "密码至少需要 6 个字符",
+      "tip3": "建议使用字母、数字和符号的组合",
+      "tip4": "不要与他人分享您的密码"
+    }
+  },
+  "automation": {
+    "bookmarkLoading": {
+      "title": "书签加载更多",
+      "description": "控制书签页的默认显示数量、每次加载数量和展开状态的保留时间。",
+      "initialCount": "首批显示（个）",
+      "initialCountHint": "首次进入或展开状态过期后显示的书签数量，范围 1–200。",
+      "pageSize": "每次加载（个）",
+      "pageSizeHint": "每次点击“加载更多”新增的书签数量，范围 1–200。",
+      "expiryMinutes": "展开有效期（分钟）",
+      "expiryHint": "从最后一次加载更多计时，过期后再次进入页面时收起。0 表示每次进入都重置。",
+      "summary": "默认显示 {{initial}} 个，每次加载 {{step}} 个，展开状态保留 {{minutes}} 分钟。",
+      "summaryReset": "默认显示 {{initial}} 个，每次加载 {{step}} 个，每次进入或切回书签页时重置。"
+    },
+    "search": {
+      "title": "搜索框自动清空",
+      "description": "设置搜索框在无操作后自动清空的时间",
+      "enable": "启用搜索框自动清空",
+      "enableHint": "停止输入后，按设定时间清空搜索。",
+      "delay": "延迟时间",
+      "unit": "秒"
+    },
+    "tag": {
+      "title": "标签选中自动清空",
+      "description": "设置标签选中状态在无操作后自动清空的时间",
+      "enable": "启用标签选中自动清空",
+      "enableHint": "最后一次选择标签后，按设定时间清除筛选。",
+      "delay": "延迟时间",
+      "unit": "秒"
+    },
+    "infoBox": {
+      "title": "自动化功能说明",
+      "tip1": "自动清空功能可以帮助你快速回到初始状态，提高操作效率"
+    },
+    "delaySeconds": "清除延迟（秒）"
+  },
+  "themeSettings": {
+    "title": "界面主题",
+    "description": "选择 MarkVault 的整体界面风格。主题会保留现有图标体系，并在保存后应用到所有页面。",
+    "label": "界面主题选项",
+    "selected": "当前使用",
+    "notice": {
+      "title": "主题设置",
+      "description": "选择默认界面或一个内置主题，点击底部保存按钮后应用。"
+    },
+    "tip": {
+      "title": "主题设计说明",
+      "description": "VibeHub 强调清晰边框和快速反馈；UI/UX Pro Max 柔光风格强调层次、柔和表面和克制阴影；ASCII 终端用字符绘制边框、按钮和背景；液态玻璃把界面做成半透明的玻璃，按钮与指针水滴靠近时互相吸附、融合；经典主题保持 MarkVault 当前样式。"
+    },
+    "options": {
+      "default": {
+        "title": "默认",
+        "description": "紧凑的设置与插件管理，清晰展示更多内容。"
+      },
+      "classic": {
+        "title": "MarkVault 经典",
+        "description": "紧凑的卡片与列表。"
+      },
+      "vibehub": {
+        "title": "VibeHub 界面风格",
+        "description": "分栏工作区与侧边导航。"
+      },
+      "uiux-pro": {
+        "title": "UI/UX Pro Max 柔光风格",
+        "description": "更鲜明的层次与留白。"
+      },
+      "ascii": {
+        "title": "ASCII 终端",
+        "description": "边框、按钮、背景与动画都用字符绘制。"
+      },
+      "liquid-glass": {
+        "title": "液态玻璃",
+        "description": "半透明玻璃材质，按钮与水滴靠近时吸附融合。"
+      }
+    }
+  },
+  "experimental": {
+    "notice": {
+      "title": "实验性功能说明",
+      "description": "这些功能默认关闭，效果和配置可能在后续版本中调整。"
+    },
+    "preview": "效果预览",
+    "vibeHubTheme": {
+      "title": "VibeHub 界面风格",
+      "description": "将全站界面切换为 VibeHub 的排版、色彩、边框、控件、鼠标反馈和交互动效。",
+      "enable": "启用 VibeHub 界面风格",
+      "enableHint": "保留 MarkVault 现有图标，其余前端样式在保存后统一切换；启用时会关闭 UI/UX Pro Max 风格。"
+    },
+    "uiUxProTheme": {
+      "title": "UI/UX Pro Max 柔光风格",
+      "description": "使用 Soft UI Evolution 设计语言重塑全站层次、表面、控件和微交互，并保留清晰对比度。",
+      "enable": "启用 UI/UX Pro Max 柔光风格",
+      "enableHint": "支持明暗模式和现有配色；启用时会关闭 VibeHub 界面风格，保存后生效。"
+    },
+    "tagHeat": {
+      "title": "标签点击热度",
+      "description": "按点击次数显示标签热度。",
+      "enable": "启用标签点击热度",
+      "enableHint": "仅影响首页标签选项，不改变标签数据和筛选逻辑。",
+      "style": "显示效果",
+      "effect": "卡牌背景特效",
+      "effectHint": "自动分级会按照标签的相对点击热度逐级升级特效；选择其他效果时会固定特效类型，强度仍随热度变化。",
+      "color": "热度颜色",
+      "intensity": "最大显示强度",
+      "styles": {
+        "fill": "背景深浅",
+        "progress": "底部进度条",
+        "liquid": "容器液位",
+        "rarity": "稀有度卡牌"
+      },
+      "effects": {
+        "auto": "按热度自动分级",
+        "foil": "闪箔扫光",
+        "diamond": "钻石卡切面",
+        "sparkle": "星闪卡",
+        "prism": "棱镜虹彩",
+        "galaxy": "星河秘密闪",
+        "none": "仅显示分级底色"
+      },
+      "rarities": {
+        "base": "基础",
+        "advanced": "进阶",
+        "collector": "收藏",
+        "secret": "秘密"
+      }
+    },
+    "urlPrivacy": {
+      "title": "网址截图隐私",
+      "description": "模糊或遮挡书签地址。",
+      "enable": "启用网址隐私效果",
+      "enableHint": "只改变网址的视觉显示，链接仍可正常点击访问。",
+      "effect": "隐藏效果",
+      "strength": "效果强度",
+      "effects": {
+        "blur": "模糊",
+        "mosaic": "马赛克",
+        "mask": "实心遮罩"
+      }
+    },
+    "hoverCard": {
+      "title": "书签悬停收藏卡",
+      "description": "悬停时显示书签卡片预览。",
+      "enable": "启用悬停收藏卡",
+      "enableHint": "仅在支持鼠标悬停的设备上显示，不改变书签原有点击和编辑操作。",
+      "theme": "卡牌主题",
+      "effect": "卡面特效",
+      "accentColor": "强调色",
+      "intensity": "特效强度",
+      "size": "悬浮卡片大小",
+      "delay": "悬停显示延迟",
+      "previewTitle": "MarkVault 秘藏书签",
+      "previewDescription": "收录书签的完整资料，并按照访问次数自动提升卡牌稀有度。",
+      "themes": {
+        "creature": "精灵典藏",
+        "duelist": "秘法决斗",
+        "arcane": "星界秘藏"
+      },
+      "effects": {
+        "auto": "按稀有度自动",
+        "foil": "闪箔扫光",
+        "prism": "棱镜虹彩",
+        "galaxy": "星河秘密闪",
+        "none": "关闭动态特效"
+      },
+      "rarities": {
+        "base": "基础",
+        "advanced": "进阶",
+        "collector": "收藏",
+        "secret": "秘密"
+      },
+      "thresholds": {
+        "title": "稀有度点击阈值",
+        "hint": "依次填写进阶、收藏和秘密卡所需的最低点击次数，数值必须逐级增加。"
+      },
+      "shuffle": {
+        "title": "标签筛选洗牌动画",
+        "hint": "仅在收藏卡视图中生效。点击标签时先将当前卡牌收拢成牌堆，筛选完成后按新顺序重新发牌。"
+      },
+      "card": {
+        "visits": "访问",
+        "tags": "标签",
+        "snapshots": "快照",
+        "created": "收录日期",
+        "updated": "更新时间",
+        "lastVisited": "最近访问",
+        "never": "暂无",
+        "public": "公开",
+        "private": "私有",
+        "pinned": "置顶",
+        "archived": "已归档",
+        "noDescription": "这张书签卡还没有填写描述。"
+      }
+    }
+  },
+  "appearance": {
+    "advanced": "高级视觉效果"
+  },
+  "tips": {
+    "title": "💡 使用提示"
+  },
+  "navigation": "设置分类",
+  "tagIcons": {
+    "title": "标签图标",
+    "enable": "显示标签图标",
+    "hint": "自动识别 GitHub、Docker 等名称，可为每个标签自定义。",
+    "manage": "管理标签图标",
+    "loading": "正在加载标签…",
+    "retry": "加载失败，点击重试"
+  },
+  "motion": {
+    "title": "界面动效",
+    "description": "统一开启或关闭界面动画，保存后同步到账号。",
+    "enabled": "启用界面动效",
+    "enabledHint": "关闭后同时收敛原有的过渡动画，只保留加载指示。",
+    "reducedMotion": "系统已开启“减少动态效果”，动效会自动关闭；标签联动仍以静态高亮呈现。",
+    "ocean": {
+      "title": "海洋彩蛋",
+      "hint": "让 ASCII 鲨鱼或海豚在页面背景游动，并将卡片和面板变为半透明。",
+      "scope": "海洋彩蛋保存方式",
+      "scopes": {
+        "browser": "跟随浏览器",
+        "account": "保存到账号"
+      },
+      "scopeHint": {
+        "browser": "样式立即保存在当前浏览器；保存设置后，此账号会在各浏览器使用各自的本地选择。",
+        "account": "保存设置后，同一账号在其他浏览器登录、刷新或返回页面时也会使用这个样式。"
+      },
+      "style": "海洋样式",
+      "options": {
+        "off": "关闭",
+        "sharks": "鲨鱼",
+        "dolphins": "海豚",
+        "mixed": "鲨鱼与海豚"
+      },
+      "paused": "动效已关闭或系统开启了减少动态效果，背景只显示静态画面。"
+    }
+  },
+  "registration": {
+    "title": "用户注册",
+    "label": "允许新用户注册",
+    "description": "首个用户注册后默认关闭。开启后新用户可注册普通账号，修改立即生效。",
+    "locked": "部署配置禁止注册，需要部署者启用 ALLOW_REGISTRATION 后才能开启。",
+    "failed": "保存注册设置失败",
+    "retry": "重新读取注册设置"
+  }
+}

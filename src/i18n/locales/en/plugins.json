@@ -1,0 +1,443 @@
+{
+  "sourceFilter": "Filter by plugin source",
+  "count_one": "{{count}} plugin",
+  "count_other": "{{count}} plugins",
+  "summary": {
+    "classic": "Familiar MarkVault cards and lists.",
+    "vibehub": "Crisp borders, a split workspace and quick feedback.",
+    "uiux-pro": "Soft surfaces, restrained shadows and clear hierarchy.",
+    "ascii": "A terminal-style interface: borders, buttons, background and motion are all drawn with ASCII characters, with a boot sequence.",
+    "liquid-glass": "A translucent glass interface: buttons and the pointer droplet attract each other and fuse when they get close.",
+    "palettes": "Choose accent colors for light and dark modes.",
+    "motion": "Control transitions, hover effects and click animations.",
+    "theme-transition": "Animate light and dark mode changes while keeping the selected palette.",
+    "ocean": "Add ocean creatures and gentle background animations.",
+    "cursor": "Enable pointer effects in the VibeHub theme.",
+    "tag-heat": "Highlight frequently visited tags by their activity.",
+    "hover-card": "Preview bookmarks on hover and customize their cards.",
+    "url-privacy": "Hide or blur URLs in the bookmark interface.",
+    "animated-icons": "Animated fallback icons for bookmarks without favicons.",
+    "agent": "Chat with an assistant to find and organize bookmarks.",
+    "models": "Configure AI services, models and provider connections.",
+    "tools": "Give assistants tools to search and manage bookmarks and tags.",
+    "agent-api": "Connect external assistants and automation through REST.",
+    "mcp-server": "Expose bookmark tools to authorized MCP clients.",
+    "mcp-client": "Connect external MCP services and select assistant tools.",
+    "statistics": "View bookmark visit trends, heatmaps, tab statistics and Agent usage.",
+    "passkey": "Sign in with fingerprints, facial recognition, device PINs, or security keys, and manage registered passkeys.",
+    "browser-extension": "Download the browser extension and follow the installation guide to save pages and sync tabs.",
+    "page-speed": "Show page load and route render times in the upper-right corner, with browser timing details.",
+    "view-gallery": "Adds a gallery view to bookmarks: covers or page screenshots as tiles, with notes and tags on hover.",
+    "view-timeline": "Adds a timeline view to bookmarks, grouped by today, yesterday, the last 7 days and month.",
+    "view-domains": "Adds a site groups view to bookmarks: bookmarks from the same site share a collapsible group.",
+    "view-focus": "Adds a focus view to bookmarks: one bookmark at a time, browsed with the left and right arrow keys.",
+    "tag-cloud": "Adds a tag cloud to the tag sidebar: text size follows usage, so frequent tags stand out.",
+    "tag-bars": "Adds a tag ranking to the tag sidebar: one tag per row, with bars comparing bookmark or click counts.",
+    "tab-board": "Adds a board layout to tab groups: one column per group, with tabs draggable between columns.",
+    "tab-compact": "Adds a compact list to tab groups: each group is a single row that expands to show its tabs.",
+    "home-topbar": "Home layout: no sidebar. Tags become a horizontal strip under the toolbar and bookmarks use the full width.",
+    "home-launchpad": "Home layout: a start page with a centered search box, frequent tags and quick access, followed by all bookmarks.",
+    "home-reader": "Home layout: three panes with tags on the left, a compact list in the middle and bookmark details on the right.",
+    "home-tagboard": "Home layout: a board with one column per tag that scrolls horizontally.",
+    "home-canvas": "Home layout: tags and bookmarks laid out on an infinite canvas you can pan and zoom, free of the screen size.",
+    "tabs-tabbed": "Tab groups layout: groups become a strip along the top, content uses the full width, and the group tree and to-dos move into drawers.",
+    "tabs-wall": "Tab groups layout: all groups as a multi-column wall of cards, with tabs draggable between cards.",
+    "tabs-timeline": "Tab groups layout: a timeline by saved date: today, yesterday, last 7 days and each month.",
+    "tabs-canvas": "Tab groups layout: every group is a card on an infinite canvas you can pan, zoom and arrange freely."
+  },
+  "title": "Custom plugins",
+  "subtitle": "Install and manage third-party plugins. Built-in features now live in Settings, where each section has its own switches and options.",
+  "all": "Installed",
+  "builtin": "Built-in",
+  "official": "Official",
+  "community": "Community",
+  "safe": "Safe mode",
+  "exitSafe": "Exit safe mode",
+  "safeNotice": "Optional plugins are skipped on this page. Disable faulty plugins here.",
+  "search": "Search name or plugin ID",
+  "capability": "Filter by capability",
+  "loading": "Loading plugins…",
+  "empty": "No custom plugins are installed, or none match the filters.",
+  "error": "Operation failed",
+  "install": "Administrator installation",
+  "installNote": "Users must grant access after installation. Custom sources are marked community. ZIP limit: 16 MiB.",
+  "releaseURL": "Pinned GitHub Release asset URL",
+  "installRelease": "Install from Release",
+  "installZip": "Upload plugin ZIP",
+  "tooLarge": "Package exceeds 16 MiB",
+  "permissions": "Permissions",
+  "noPermissions": "No additional business permissions requested.",
+  "config": "Plugin settings (JSON)",
+  "enable": "Authorize and enable",
+  "save": "Save and enable",
+  "disable": "Disable",
+  "clear": "Clear my plugin data",
+  "clearConfirm": "Delete this plugin's settings, storage and credentials? This cannot be undone.",
+  "allowInstance": "Allow on instance",
+  "disableInstance": "Disable for everyone",
+  "rollback": "Roll back to",
+  "uninstall": "Uninstall",
+  "uninstallConfirm": "Uninstall from this instance? User configuration and data will be retained.",
+  "notFound": "Plugin is missing or uninstalled.",
+  "kind": {
+    "all": "All capabilities",
+    "theme": "Theme",
+    "motion": "Motion",
+    "background": "Background",
+    "page": "Page",
+    "panel": "Panel",
+    "action": "Menu action",
+    "agent": "Agent",
+    "provider": "Model provider",
+    "tool": "Tool",
+    "mcp": "MCP connection"
+  },
+  "status": {
+    "running": "Running",
+    "disabled": "Disabled",
+    "waiting": "Waiting for dependencies",
+    "pending-authorization": "Authorization required",
+    "unavailable": "Runtime unavailable",
+    "failed": "Failed"
+  },
+  "permission": {
+    "storage": {
+      "read": "Read this plugin's storage",
+      "write": "Write this plugin's storage"
+    },
+    "bookmarks": {
+      "read": "Read my bookmarks",
+      "write": "Modify my bookmarks (confirmation required)"
+    },
+    "tags": {
+      "read": "Read my tags",
+      "write": "Modify my tags (confirmation required)"
+    },
+    "network": {
+      "fetch": "Access public HTTPS targets"
+    },
+    "models": {
+      "call": "Use my model configuration"
+    }
+  },
+  "imageHosting": {
+    "intro": "Choose which images use S3, Cloudflare R2, MinIO or a generic HTTP image host. Local copies are released after the remote image is verified; failed uploads keep the original image.",
+    "enabled": "Enable image hosting",
+    "purposes": "Images to upload",
+    "purpose": {
+      "screenshot": "Website screenshots",
+      "snapshot": "Images inside page snapshots",
+      "cover": "Bookmark covers",
+      "favicon": "Website icons (favicons)",
+      "default": "Custom fallback image"
+    },
+    "scope": "Applies to newly saved images. Unchecked types keep local storage or the original URL. Snapshot HTML stays on this server; existing images are not migrated. Covers and favicons are copied only from explicitly saved HTTPS image URLs.",
+    "endpoint": "Upload endpoint (HTTPS)",
+    "fileField": "Upload file field",
+    "urlPath": "Image URL path in the response",
+    "authHeader": "Authentication header",
+    "authHint": "Use Authorization or an X-* header such as X-API-Key; leave empty for no authentication. URL paths support data.url and data.0.url.",
+    "secret": "Authentication value",
+    "secretSaved": "Encrypted value saved; leave empty to keep it",
+    "secretEmpty": "For example, Bearer …; enter the complete header value",
+    "clearSecret": "Remove credentials for new uploads",
+    "grant": "Allow selected images to be uploaded to my configured image host",
+    "privacy": "Selected images are sent to this storage provider. Original URLs on public buckets or CDNs may be publicly accessible. This server still checks image access. Deleting an image here does not remove the provider’s copy.",
+    "save": "Save image hosting settings",
+    "saved": "Saved",
+    "defaultTitle": "Bookmark fallback image",
+    "defaultHint": "Used for your signed-in account when no cover or icon is available. Save and enable the plugin first, then upload PNG, JPEG or WebP (up to 2 MiB). The “Custom fallback image” checkbox determines whether it is uploaded to the host.",
+    "uploadDefault": "Upload fallback image",
+    "removeDefault": "Restore built-in fallback",
+    "tooLarge": "The fallback image must be at most 2 MiB",
+    "readFailed": "Unable to read the image",
+    "backend": "Storage service",
+    "httpBackend": "Generic HTTP image host",
+    "s3Endpoint": "S3 API endpoint (HTTPS)",
+    "bucket": "Bucket",
+    "region": "Region",
+    "prefix": "Object prefix (optional)",
+    "publicURL": "Public image / CDN base URL (optional)",
+    "pathStyle": "Use path-style addressing (recommended for R2 / MinIO)",
+    "s3Hint": "For AWS S3, use the regional API endpoint and the bucket’s region. For R2, use your account’s r2.cloudflarestorage.com endpoint and region auto. For MinIO, use the HTTPS API endpoint; the region is usually us-east-1. Do not include the bucket in the endpoint.",
+    "publicHint": "Leave the public URL empty to read a private bucket with server-side signatures. No public bucket permission is needed. A public URL must allow anonymous reads and point to the bucket root; the object prefix is appended automatically.",
+    "s3KeysSaved": "Encrypted keys saved. Leave both empty to keep them, or enter both to replace them.",
+    "s3KeysEmpty": "Enter dedicated credentials with object upload and read permissions",
+    "keyRetention": "Existing private-bucket images retain encrypted read credentials from upload time. Revoking the old key at the storage service will prevent those images from loading. Their read credentials are removed when the corresponding images are deleted here."
+  },
+  "paletteSettingsHint": "The palette is saved in this browser right away and stays the same across light and dark mode. Turning this off shows the default colour; turning it back on restores your choice.",
+  "themeTransitionHint": "Controls the reveal animation when switching between light and dark mode; it does not change the palette. With this off you can still switch modes. The animation is also skipped when interface motion is off or the system asks for reduced motion.",
+  "currentLightMode": "Current: light mode",
+  "currentDarkMode": "Current: dark mode",
+  "configurePalette": "Configure palette",
+  "expandSettings": "Expand settings",
+  "updatingPlugin": "Updating…",
+  "collapseSettings": "Collapse settings",
+  "expandNamedSettings": "Expand settings for {{name}}",
+  "collapseNamedSettings": "Collapse settings for {{name}}",
+  "toggleNamedPlugin": "Enable {{name}}",
+  "namedSettings": "Settings for {{name}}",
+  "inlineSettingsHint": "Switches take effect immediately. Features with options can be expanded once they are on; follow each panel to save changes. Collapsing keeps unsaved edits.",
+  "category": {
+    "all": "All categories",
+    "appearance": "Appearance",
+    "effects": "Effects & enhancements",
+    "intelligence": "Assistant",
+    "connections": "Connections & storage",
+    "insights": "Statistics",
+    "layouts": "Layouts",
+    "other": "Other extensions"
+  },
+  "relatedPlugins": "Features",
+  "openFeature": "Open feature",
+  "configurable": "Configurable",
+  "permissionCount_one": "{{count}} permission",
+  "permissionCount_other": "{{count}} permissions",
+  "filter": {
+    "status": "Filter by status",
+    "all": "All",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "source": "Filter by source",
+    "sourceAll": "All sources"
+  },
+  "form": {
+    "save": "Save",
+    "saving": "Saving…",
+    "revert": "Revert",
+    "restoreDefaults": "Restore defaults",
+    "saved": "Settings saved",
+    "unset": "Not set",
+    "invalidJSON": "Not valid JSON"
+  },
+  "settingsOptions": {
+    "ascii": {
+      "background": {
+        "field": "Character field",
+        "rain": "Glyph rain",
+        "off": "Off"
+      }
+    }
+  },
+  "detail": {
+    "settings": "Plugin settings",
+    "advancedJSON": "Advanced: edit JSON",
+    "backToForm": "Back to form",
+    "jsonHint": "Edit the complete configuration directly. The server validates it against the plugin's settings schema on save.",
+    "jsonDiscardHint": "Going back to the form discards unsaved changes made here.",
+    "author": "By {{author}}"
+  },
+  "advanced": {
+    "title": "Credentials and external tool access",
+    "loadFailed": "Unable to load tools",
+    "credentialName": "Credential reference",
+    "credentialTarget": "Authorized HTTPS origin",
+    "secret": "Secret",
+    "secretPlaceholder": "Empty deletes the reference",
+    "saveCredential": "Save encrypted credential",
+    "exposureHint": "Select tools and exact API Key IDs. This replaces this plugin’s public tool selection. Existing keys gain no access automatically.",
+    "keyIds": "API Key IDs",
+    "keyIdsPlaceholder": "API Key IDs, comma separated",
+    "saveExposure": "Save external access"
+  },
+  "marketplace": {
+    "title": "Plugin catalog",
+    "intro": "Bundled official examples are available offline. Additional catalogs are community sources.",
+    "loadFailed": "Catalog unavailable",
+    "installed": "Installed",
+    "install": "Install",
+    "sourceLabel": "Catalog URL",
+    "sourcePlaceholder": "HTTPS catalog JSON URL",
+    "refresh": "Refresh catalog"
+  },
+  "featureUnavailable": "This feature is not enabled",
+  "featureUnavailableHint": "Turn this feature on in Settings to use it. Optional features are hidden temporarily in safe mode.",
+  "pageSpeed": {
+    "document": "Page load",
+    "route": "Page render",
+    "details": "Page speed",
+    "close": "Close page speed details",
+    "ttfb": "Time to first byte (TTFB)",
+    "domReady": "DOM ready",
+    "firstPaint": "First contentful paint (FCP)",
+    "documentHint": "From browser navigation start to the end of the load event. Excludes later async requests; caching affects the result.",
+    "routeHint": "From route change to the initial page render, including lazy modules. Excludes later async data requests and images.",
+    "status": {
+      "waiting": "Waiting",
+      "measuring": "Measuring",
+      "unsupported": "Unavailable",
+      "interrupted": "Interrupted",
+      "timeout": "Incomplete"
+    },
+    "explanation": {
+      "waiting": "Navigate to another page or reload to capture a complete measurement.",
+      "measuring": "Waiting for the page to load or render.",
+      "unsupported": "This browser does not provide complete navigation timing data.",
+      "interrupted": "The page went into the background during measurement. The result was discarded; navigate or reload to retry.",
+      "timeout": "Measurement did not complete within 30 seconds. No duration is reported."
+    }
+  },
+  "layouts": {
+    "timeline": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "week": "Last 7 days",
+      "unknown": "Unknown date"
+    },
+    "domains": {
+      "other": "Other sites"
+    },
+    "focus": {
+      "previous": "Previous",
+      "next": "Next",
+      "position": "{{current}} of {{total}}",
+      "open": "Open bookmark",
+      "select": "Select this bookmark",
+      "deselect": "Deselect"
+    }
+  },
+  "shells": {
+    "switch": "Page layout: {{name}} (click to switch)",
+    "home": {
+      "label": "Home",
+      "default": {
+        "name": "Default layout",
+        "description": "Tags on the left, bookmarks on the right."
+      },
+      "topbar": {
+        "name": "Top bar",
+        "description": "Tags in a horizontal strip, bookmarks at full width."
+      },
+      "launchpad": {
+        "name": "Start page",
+        "description": "Centered search, frequent tags and quick access."
+      },
+      "reader": {
+        "name": "Three panes",
+        "description": "Tags, list and details side by side. Needs a desktop-width window."
+      },
+      "tagboard": {
+        "name": "Tag board",
+        "description": "One column per tag, scrolling horizontally."
+      },
+      "canvas": {
+        "name": "Infinite canvas",
+        "description": "Tags and bookmarks on a canvas you can pan and zoom."
+      }
+    },
+    "tabs": {
+      "label": "Tab groups",
+      "default": {
+        "name": "Default layout",
+        "description": "Group tree on the left, groups in the middle, to-dos on the right."
+      },
+      "tabbed": {
+        "name": "Group strip",
+        "description": "Groups in a strip along the top, content at full width."
+      },
+      "wall": {
+        "name": "Card wall",
+        "description": "All groups as a multi-column wall of cards."
+      },
+      "timeline": {
+        "name": "Saved timeline",
+        "description": "Groups on a timeline by saved date."
+      },
+      "canvas": {
+        "name": "Infinite canvas",
+        "description": "Every group is a card on the canvas that you can place freely."
+      }
+    },
+    "picker": {
+      "title": "Page layout",
+      "hint": "A layout decides how the whole page is arranged and can be combined with any interface theme or palette. It applies as soon as you choose it, and the choice is saved in this browser.",
+      "selected": "In use",
+      "unavailable": "Disabled for this instance",
+      "safe": "Safe mode uses the default layout for now. Your choice returns when you leave safe mode.",
+      "narrow": "This window is narrow, so the default layout is shown for now"
+    },
+    "allTags": "All tags",
+    "clearTags": "Clear filters ({{count}})",
+    "expandTags": "Show all tags",
+    "collapseTags": "Collapse tags",
+    "tagStrip": "Tag filters",
+    "noTags": "No tags yet",
+    "loaded": "{{count}} loaded",
+    "loadMore": "Load more",
+    "loadingMore": "Loading…",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening",
+      "night": "Up late",
+      "name": ", {{name}}"
+    },
+    "quickAccess": "Quick access",
+    "allBookmarks": "All bookmarks",
+    "results": "Results",
+    "noSelection": "Select a bookmark to see its details",
+    "open": "Open",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "summary": "AI summary",
+    "savedAt": "Saved",
+    "visits": "Visits",
+    "lastVisit": "Last visited",
+    "visibility": "Visibility",
+    "public": "Public",
+    "private": "Private",
+    "untagged": "Untagged",
+    "manageGroups": "Groups and folders",
+    "groupStrip": "Groups",
+    "allGroups": "All",
+    "timelineSummary": "{{groups}} groups · {{tabs}} tabs"
+  },
+  "openSettings": "Open settings",
+  "instanceDisabled": "Disabled by administrator",
+  "asciiOptions": "ASCII terminal options",
+  "liquidGlass": {
+    "options": "Liquid Glass options",
+    "playground": {
+      "hint": "Drag a droplet: when the two get close they pull towards each other and fuse into one shape, and pulling them apart stretches a thin neck before it snaps. Buttons and the pointer droplet on the page fuse the same way.",
+      "drop": "Droplet {{index}}, drag or use the arrow keys to move"
+    }
+  },
+  "canvas": {
+    "label": "Infinite canvas. Drag to pan, hold Ctrl and scroll to zoom, arrow keys to move",
+    "hint": "Drag to pan · Ctrl + scroll to zoom",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "resetZoom": "Reset to actual size",
+    "fit": "Fit all content",
+    "tidy": "Tidy up: clear manual card positions",
+    "minimap": "Minimap",
+    "moveCard": "Move card: {{name}} (drag or use the arrow keys)",
+    "settings": {
+      "title": "Infinite canvas mode",
+      "hint": "When on, the page lays its content out on a canvas you can pan and zoom, so any number of tags, bookmarks and tab groups fits regardless of screen size. Drag empty space to pan, hold Ctrl and scroll or pinch to zoom, and drag cards anywhere. Infinite canvas is one of the page layouts; the switch applies immediately and the choice is saved in this browser.",
+      "toggle": "Use the infinite canvas for {{name}}",
+      "home": {
+        "name": "Home",
+        "description": "One card for all tags and one card of bookmarks per tag."
+      },
+      "tabs": {
+        "name": "Tab groups",
+        "description": "One card per group; tabs can still be dragged between cards."
+      }
+    }
+  },
+  "featureNote": {
+    "cursor": "Only takes effect with the VibeHub interface theme; the current theme shows no pointer effect.",
+    "oceanAscii": "While the ocean background is on, the ASCII terminal theme hides its character background."
+  },
+  "custom": {
+    "installed": "Installed custom plugins",
+    "manage": "Manage and install",
+    "hint": "Custom plugins are third-party extensions installed separately. They are installed, authorised and configured on their own page. Built-in features are not listed here; they live in the settings sections.",
+    "none": "No custom plugins are installed yet."
+  },
+  "instance": {
+    "title": "Instance-wide feature switches",
+    "hint": "A feature disabled here is unavailable to every account on this instance. Each account keeps its own switch and settings, which apply again once the feature is allowed."
+  }
+}

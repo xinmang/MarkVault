@@ -1,0 +1,82 @@
+/* VibeHub 风格的强调色配色：保持中性表面，只切换交互强调色。 */
+
+:root[data-color-theme='blue'] {
+  --primary: #1e40d8;
+  --primary-foreground: #ffffff;
+  --accent: #eef2ff;
+  --accent-foreground: #1e40d8;
+  --ring: #3b5bdb;
+  --chart-1: #1e40d8;
+  --chart-2: #0f766e;
+  --chart-3: #b45309;
+  --chart-4: #7c3aed;
+  --chart-5: #be123c;
+  --sidebar-primary: #1e40d8;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-ring: #3b5bdb;
+}
+
+:root[data-color-theme='green'] {
+  --primary: #15803d;
+  --primary-foreground: #ffffff;
+  --accent: #ecfdf5;
+  --accent-foreground: #166534;
+  --ring: #22c55e;
+  --chart-1: #15803d;
+  --chart-2: #1d4ed8;
+  --chart-3: #b45309;
+  --chart-4: #7c3aed;
+  --chart-5: #be123c;
+  --sidebar-primary: #15803d;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-ring: #22c55e;
+}
+
+:root[data-color-theme='violet'] {
+  --primary: #7c3aed;
+  --primary-foreground: #ffffff;
+  --accent: #f5f3ff;
+  --accent-foreground: #6d28d9;
+  --ring: #8b5cf6;
+  --chart-1: #7c3aed;
+  --chart-2: #0f766e;
+  --chart-3: #b45309;
+  --chart-4: #1d4ed8;
+  --chart-5: #be123c;
+  --sidebar-primary: #7c3aed;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-ring: #8b5cf6;
+}
+
+:root[data-color-theme='blue'][data-theme='dark'] {
+  --primary: #8ca3ff;
+  --primary-foreground: #11151c;
+  --accent: #242e50;
+  --accent-foreground: #dce4ff;
+  --ring: #8ca3ff;
+  --sidebar-primary: #8ca3ff;
+  --sidebar-primary-foreground: #11151c;
+  --sidebar-ring: #8ca3ff;
+}
+
+:root[data-color-theme='green'][data-theme='dark'] {
+  --primary: #4ade80;
+  --primary-foreground: #11151c;
+  --accent: #173324;
+  --accent-foreground: #bbf7d0;
+  --ring: #4ade80;
+  --sidebar-primary: #4ade80;
+  --sidebar-primary-foreground: #11151c;
+  --sidebar-ring: #4ade80;
+}
+
+:root[data-color-theme='violet'][data-theme='dark'] {
+  --primary: #a78bfa;
+  --primary-foreground: #11151c;
+  --accent: #30264a;
+  --accent-foreground: #ede9fe;
+  --ring: #a78bfa;
+  --sidebar-primary: #a78bfa;
+  --sidebar-primary-foreground: #11151c;
+  --sidebar-ring: #a78bfa;
+}

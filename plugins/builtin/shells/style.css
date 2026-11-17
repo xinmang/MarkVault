@@ -1,0 +1,1236 @@
+/* 页面版式插件共用样式。主题色工具类在本项目不生成，颜色一律直接取主题变量。 */
+
+/* ---------- 公共 ---------- */
+.pshell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100dvh - 4rem);
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .pshell {
+    height: calc(100dvh - 5rem);
+  }
+}
+
+/* 版式里的滚动区；手机宽度下底部留出导航栏的位置 */
+.pshell-scroll {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  padding: 0.75rem 0.75rem 5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 640px) {
+  .pshell-scroll {
+    padding: 0.75rem 1rem 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .pshell-scroll {
+    padding: 0.75rem 1.5rem 1.5rem;
+  }
+}
+
+:is(
+  .pshell-pill,
+  .pshell-chip,
+  .pshell-tile,
+  .pshell-reader__tag,
+  .pshell-reader__row-open,
+  .pshell-tagboard__tag,
+  .pshell-tagboard__open,
+  .pshell-strip__tab,
+  .pshell-tabs__button
+):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.pshell-heading {
+  margin-bottom: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pshell-count {
+  flex-shrink: 0;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--muted);
+  /* 小字号落在灰底上，纯次要文字色对比度不足 4.5:1，向正文色靠一些 */
+  color: color-mix(in oklab, var(--muted-foreground) 75%, var(--foreground));
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.6;
+}
+
+.pshell-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pshell-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 3rem 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.pshell-state > p:first-child {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pshell-state[role='alert'] > p:first-child {
+  color: var(--destructive, #dc2626);
+}
+
+/* 标签芯片。选择器带上 .tag-item，压过各界面主题给标签项加的边框与阴影 */
+.pshell .pshell-chip.tag-item {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 14rem;
+  height: 2rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: none;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.pshell-chip__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pshell-chip__count {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pshell .pshell-chip.tag-item:hover {
+  border-color: oklch(from var(--primary) l c h / 0.45);
+  background: var(--muted);
+  box-shadow: none;
+  transform: none;
+}
+
+.pshell .pshell-chip.tag-item[data-state='selected'] {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.pshell-chip[data-state='selected'] .pshell-chip__count {
+  color: inherit;
+  opacity: 0.8;
+}
+
+.pshell .pshell-chip.tag-item[data-state='related'] {
+  border-color: oklch(from var(--primary) l c h / 0.5);
+  background: oklch(from var(--primary) l c h / 0.1);
+  color: var(--primary);
+}
+
+:is(.pshell-chip, .pshell-reader__tag, .pshell-tagboard__tag)[data-state='dimmed'] {
+  opacity: 0.55;
+}
+
+/* 虚线胶囊按钮：全部标签、清除筛选、展开标签带 */
+.pshell-pill {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.375rem;
+  height: 2rem;
+  padding: 0 0.625rem;
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.pshell-pill:hover {
+  border-color: var(--muted-foreground);
+  background: var(--muted);
+  color: var(--foreground);
+}
+
+.pshell-chevron {
+  transition: transform 150ms ease;
+}
+
+[aria-expanded='true'] > .pshell-chevron {
+  transform: rotate(180deg);
+}
+
+/* ---------- 首页：顶栏版式 ---------- */
+:is(.pshell-topbar__bar, .pshell-tagboard__bar) {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem 0.75rem 0.25rem;
+}
+
+@media (min-width: 640px) {
+  :is(.pshell-topbar__bar, .pshell-tagboard__bar) {
+    padding: 1.25rem 1rem 0.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :is(.pshell-topbar__bar, .pshell-tagboard__bar) {
+    padding: 1.5rem 1.5rem 0.25rem;
+  }
+}
+
+.pshell-topbar__tags {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* 单行横向滚动；右侧渐隐提示还有更多标签 */
+.pshell-topbar__strip {
+  display: flex;
+  flex: 1;
+  gap: 0.375rem;
+  min-width: 0;
+  padding: 1px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+
+.pshell-topbar__strip::-webkit-scrollbar {
+  display: none;
+}
+
+.pshell-topbar__strip[data-expanded='true'] {
+  flex-wrap: wrap;
+  max-height: 9.25rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  mask-image: none;
+}
+
+.pshell-topbar__empty {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 2rem;
+}
+
+/* ---------- 首页：起始页版式 ---------- */
+.pshell-launchpad__page > * {
+  width: 100%;
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+.pshell-launchpad__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: clamp(1rem, 6vh, 4rem) 0 0.5rem;
+  text-align: center;
+}
+
+.pshell-launchpad__greeting {
+  color: var(--foreground);
+  font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.pshell-launchpad__greeting > span {
+  color: var(--primary);
+}
+
+.pshell-launchpad__date {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+}
+
+.pshell-launchpad__search {
+  width: 100%;
+  max-width: 48rem;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.pshell-launchpad__tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+  max-width: 54rem;
+  margin-top: 0.75rem;
+}
+
+.pshell-launchpad__section {
+  margin-top: 1.75rem;
+}
+
+.pshell-launchpad__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(6.5rem, 1fr));
+  gap: 0.75rem;
+}
+
+.pshell-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 1rem 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.25);
+  background: var(--card);
+  cursor: pointer;
+  transition:
+    transform 200ms ease,
+    box-shadow 200ms ease,
+    border-color 200ms ease;
+}
+
+.pshell-tile:hover {
+  transform: translateY(-2px);
+  border-color: oklch(from var(--primary) l c h / 0.4);
+  box-shadow: 0 12px 28px -14px oklch(0 0 0 / 0.35);
+}
+
+.pshell-tile__icon.layout-favicon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+}
+
+.pshell-tile__title {
+  width: 100%;
+  overflow: hidden;
+  color: var(--card-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pshell-tile__pin {
+  position: absolute;
+  top: 0.375rem;
+  right: 0.375rem;
+  color: var(--primary);
+}
+
+/* ---------- 首页：三栏版式 ---------- */
+.pshell--reader {
+  flex-direction: row;
+}
+
+.pshell-reader__rail {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: 13.5rem;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+  background: var(--card);
+}
+
+@media (min-width: 1440px) {
+  .pshell-reader__rail {
+    width: 15.5rem;
+  }
+}
+
+.pshell-reader__rail-head {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 0.75rem 0.5rem 1rem;
+}
+
+.pshell-reader__rail-head > h2 {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pshell-reader__rail-list {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  padding: 0 0.5rem 0.75rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.pshell .pshell-reader__tag.pshell-reader__tag {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.pshell-reader__tag-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pshell-reader__tag-count {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pshell .pshell-reader__tag.pshell-reader__tag:hover {
+  background: var(--muted);
+  box-shadow: none;
+  transform: none;
+}
+
+.pshell .pshell-reader__tag.pshell-reader__tag[data-state='selected'] {
+  background: oklch(from var(--primary) l c h / 0.12);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.pshell .pshell-reader__tag.pshell-reader__tag[data-state='related'] {
+  color: var(--primary);
+}
+
+.pshell-reader__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.pshell-reader__toolbar {
+  flex-shrink: 0;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pshell-reader__panes {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.pshell-reader__list {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 1px;
+  width: clamp(17rem, 34%, 26rem);
+  padding: 0.5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-right: 1px solid var(--border);
+  scrollbar-width: thin;
+}
+
+.pshell-reader__row {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color 150ms ease;
+}
+
+.pshell-reader__row > .batch-checkbox {
+  margin-left: 0.5rem;
+}
+
+.pshell-reader__row:hover {
+  background: var(--muted);
+}
+
+.pshell-reader__row[data-active='true'] {
+  background: oklch(from var(--primary) l c h / 0.12);
+}
+
+/* 行本身已有底色区分，批量选中改用内侧色条，避免描边被滚动区裁掉 */
+:is(.pshell-reader__row, .pshell-tagboard__row)[data-batch-selected='true'] {
+  outline: none;
+  box-shadow: inset 3px 0 0 var(--primary);
+  background: oklch(from var(--primary) l c h / 0.07);
+}
+
+:is(.pshell-reader__row-open, .pshell-tagboard__open) {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  padding: 0.5rem 0.625rem;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+:is(.pshell-reader__row-open, .pshell-tagboard__open):focus-visible {
+  outline-offset: -2px;
+}
+
+.pshell-reader__row-icon.layout-favicon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+:is(.pshell-reader__row-text, .pshell-tagboard__text) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+:is(.pshell-reader__row-title, .pshell-tagboard__title) {
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pshell-reader__row[data-active='true'] .pshell-reader__row-title {
+  color: var(--primary);
+}
+
+:is(.pshell-reader__row-host, .pshell-tagboard__host) {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 选中行有主色底，域名用的次要文字色要相应加深 */
+.pshell-reader__row[data-active='true'] .pshell-reader__row-host {
+  color: color-mix(in oklab, var(--muted-foreground) 75%, var(--foreground));
+}
+
+:is(.pshell-reader__row-pin, .pshell-tagboard__pin) {
+  flex-shrink: 0;
+  color: var(--primary);
+}
+
+.pshell-reader__preview {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.pshell-reader__preview > * {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 46rem;
+}
+
+.pshell-reader__preview--empty {
+  align-items: center;
+  justify-content: center;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.pshell-reader__media {
+  overflow: hidden;
+  max-height: 20rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.25);
+  background: var(--muted);
+}
+
+.pshell-reader__media > img {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  object-position: top;
+}
+
+.pshell-reader__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.pshell-reader__icon.layout-favicon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top: 0.125rem;
+  border-radius: 10px;
+}
+
+.pshell-reader__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.pshell-reader__heading > h2 {
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.pshell-reader__heading > p {
+  margin-top: 0.25rem;
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  overflow-wrap: anywhere;
+}
+
+.pshell-reader__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pshell-reader__text {
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.pshell-reader__block > .pshell-heading {
+  margin-bottom: 0.375rem;
+}
+
+.pshell-reader__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 0.75rem 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.pshell-reader__meta dt {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
+
+.pshell-reader__meta dd {
+  margin-top: 0.125rem;
+  color: var(--foreground);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 首页：标签看板版式 ---------- */
+.pshell-tagboard__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pshell-tagboard__status > .pshell-more {
+  margin-left: auto;
+  padding: 0;
+}
+
+.pshell-tagboard__columns {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: 0.875rem;
+  min-height: 0;
+  padding: 0.5rem 0.75rem 5rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .pshell-tagboard__columns {
+    padding: 0.5rem 1rem 1rem;
+    scroll-padding-inline: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .pshell-tagboard__columns {
+    padding: 0.5rem 1.5rem 1.5rem;
+    scroll-padding-inline: 1.5rem;
+  }
+}
+
+.pshell-tagboard__column {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  width: min(19rem, 86vw);
+  max-height: 100%;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.25);
+  background: var(--card);
+  scroll-snap-align: start;
+}
+
+.pshell-tagboard__header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.375rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pshell-tagboard__header > .pshell-count {
+  margin-left: auto;
+}
+
+.pshell .pshell-tagboard__tag.tag-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  height: 1.75rem;
+  margin-left: -0.375rem;
+  padding: 0 0.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.pshell-tagboard__tag-name {
+  overflow: hidden;
+  color: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pshell-tagboard__header > .pshell-tagboard__tag-name {
+  color: var(--muted-foreground);
+}
+
+.pshell .pshell-tagboard__tag.tag-item:hover {
+  background: var(--muted);
+  box-shadow: none;
+  transform: none;
+}
+
+.pshell .pshell-tagboard__tag.tag-item[data-state='selected'] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.pshell .pshell-tagboard__tag.tag-item[data-state='related'] {
+  color: var(--primary);
+}
+
+.pshell-tagboard__items {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  padding: 0.375rem;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+}
+
+.pshell-tagboard__row {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  padding-right: 0.25rem;
+  border-radius: 8px;
+  transition: background-color 150ms ease;
+}
+
+.pshell-tagboard__row > .batch-checkbox {
+  margin-left: 0.5rem;
+}
+
+.pshell-tagboard__row:hover {
+  background: var(--muted);
+}
+
+.pshell-tagboard__open {
+  padding: 0.4375rem 0.5rem;
+}
+
+.pshell-tagboard__row > .layout-edit {
+  opacity: 0;
+}
+
+.pshell-tagboard__row:is(:hover, :focus-within) > .layout-edit {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .pshell-tagboard__row > .layout-edit {
+    opacity: 1;
+  }
+}
+
+/* ---------- 标签页组版式：公共 ---------- */
+.pshell-tabs {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: oklch(from var(--muted) l c h / 0.3);
+}
+
+.pshell-tabs__header {
+  flex-shrink: 0;
+  padding: 1rem 1rem 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .pshell-tabs__header {
+    padding: 1.5rem 1.5rem 0.75rem;
+  }
+}
+
+.pshell-tabs__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.pshell-tabs__title {
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+  color: var(--foreground);
+  font-size: 1.25rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.pshell-tabs__button {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.25rem;
+  background: var(--card);
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.pshell-tabs__button:hover {
+  background: var(--muted);
+}
+
+.pshell-tabs__badge {
+  position: absolute;
+  top: -0.375rem;
+  right: -0.375rem;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  border-radius: 999px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 0.625rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.125rem;
+  text-align: center;
+}
+
+.pshell-tabs__scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 0.5rem 1rem 5rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+@media (min-width: 768px) {
+  .pshell-tabs__scroll {
+    padding: 0.5rem 1.5rem 1.5rem;
+  }
+}
+
+/* 版式自绘的分组卡片 */
+.pshell-group {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.25);
+  background: var(--card);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.pshell-group[data-drop-target='true'] {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px oklch(from var(--primary) l c h / 0.25);
+}
+
+.pshell-group__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.875rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.pshell-group__heading {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pshell-group__folder {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pshell-group__meta {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pshell-group__items {
+  min-height: 3rem;
+  padding: 0.5rem;
+}
+
+/* ---------- 标签页组：顶部分组栏 ---------- */
+.pshell-strip {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.125rem;
+  margin: 0 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+.pshell-strip::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .pshell-strip {
+    margin: 0 1.5rem;
+  }
+}
+
+.pshell-strip__tab {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.375rem;
+  max-width: 15rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-bottom: 2px solid transparent;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    color 150ms ease;
+}
+
+.pshell-strip__tab:focus-visible {
+  outline-offset: -2px;
+}
+
+.pshell-strip__tab:hover {
+  color: var(--foreground);
+}
+
+.pshell-strip__tab[aria-pressed='true'] {
+  border-bottom-color: var(--primary);
+  color: var(--primary);
+}
+
+/* 文件夹里的分组紧跟在文件夹后面，用箭头表示从属 */
+.pshell-strip__tab[data-child='true'] {
+  padding-left: 0.25rem;
+  font-size: 0.8125rem;
+}
+
+.pshell-strip__tab[data-child='true']::before {
+  content: '›';
+  color: var(--muted-foreground);
+  opacity: 0.6;
+}
+
+.pshell-strip__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- 标签页组：卡片墙 ---------- */
+.pshell-wall {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+}
+
+.pshell-wall__column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* ---------- 标签页组：收纳时间线 ---------- */
+.pshell-timeline {
+  display: flex;
+  flex-direction: column;
+  max-width: 64rem;
+  margin-inline: auto;
+}
+
+.pshell-timeline__period {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: 0 1.5rem;
+}
+
+/* 时间标签吸在滚动区顶部，右侧的竖线连成一条时间轴 */
+.pshell-timeline__label {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  padding: 0.25rem 0 1rem;
+  text-align: right;
+}
+
+.pshell-timeline__label > h2 {
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.pshell-timeline__label > p {
+  margin-top: 0.125rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.pshell-timeline__cards {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0 0 1.5rem 1.5rem;
+  border-left: 2px solid var(--border);
+}
+
+.pshell-timeline__cards::before {
+  position: absolute;
+  top: 0.5rem;
+  left: -0.4375rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: var(--background);
+  content: '';
+}
+
+@media (max-width: 767px) {
+  .pshell-timeline__period {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pshell-timeline__label {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0 0 0.5rem;
+    text-align: left;
+  }
+
+  .pshell-timeline__cards {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .pshell-timeline__cards::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.pshell-tile, .pshell-chevron) {
+    transition: none;
+  }
+
+  .pshell-tile:hover {
+    transform: none;
+  }
+}
+
+/* ---------- 设置页的版式选择 ---------- */
+.pshell-picker-hint {
+  margin-bottom: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.pshell-picker-group {
+  min-width: 0;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+
+.pshell-picker-group:disabled {
+  opacity: 0.6;
+}
+
+.pshell-picker-legend {
+  margin-bottom: 0.5rem;
+  color: var(--foreground);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pshell-picker-grid {
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+}
+
+.pshell-picker-description {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+/* 选中卡片带主色底，说明文字相应加深以保持对比度 */
+.interface-theme-card--selected .pshell-picker-description {
+  color: color-mix(in oklab, var(--muted-foreground) 75%, var(--foreground));
+}
+
+.pshell-picker-card--unavailable {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.pshell-picker-error {
+  margin-bottom: 0.5rem;
+  color: var(--destructive, #dc2626);
+  font-size: 0.8rem;
+}

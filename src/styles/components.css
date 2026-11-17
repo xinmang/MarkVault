@@ -1,0 +1,2493 @@
+/* ===== 组件样式 ===== */
+
+/* 全局样式 */
+* {
+  border-color: var(--border);
+}
+
+/* overflow-x: hidden 会让 body 变成不滚动的滚动容器，吸顶页头（position: sticky）因此失效；
+   clip 只裁剪横向溢出，不建立滚动容器 */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+html {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+/* 原生控件（复选框、下拉列表、滚动条、日期选择）跟随明暗模式，勾选色取主题主色 */
+:root {
+  color-scheme: light;
+  accent-color: var(--primary);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* 经典主题的页头底色（bg-card/80 不会生成）；VibeHub、UI/UX Pro 主题各自覆盖 */
+.shell-header {
+  background: oklch(from var(--card) l c h / 0.82);
+}
+
+/* 图标按钮固定点击面积，避免 .btn-sm 的横向内边距把图标挤小。 */
+.shell-header .btn.h-11.w-11 {
+  padding: 0;
+  flex-shrink: 0;
+}
+.shell-header .btn.h-11.w-11 svg {
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .public-app-shell .version-status:not([data-has-update='true']) {
+    display: none;
+  }
+}
+
+/* 玻璃磨砂效果 */
+.glass {
+  background: oklch(from var(--card) l c h / 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid oklch(from var(--border) l c h / 0.5);
+}
+
+.toast-surface {
+  background: oklch(from var(--card) l c h / 0.98);
+}
+
+[data-theme='dark'] .toast-surface {
+  background: oklch(from var(--card) l c h / 0.92);
+}
+
+/* 悬浮阴影效果 */
+.shadow-float {
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.1),
+    0 5px 15px -3px oklch(0 0 0 / 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shadow-float:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 20px 40px -5px oklch(0 0 0 / 0.15),
+    0 10px 25px -3px oklch(0 0 0 / 0.08);
+}
+
+[data-theme='dark'] .shadow-float {
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.3),
+    0 5px 15px -3px oklch(0 0 0 / 0.2);
+}
+
+[data-theme='dark'] .shadow-float:hover {
+  box-shadow:
+    0 20px 40px -5px oklch(0 0 0 / 0.4),
+    0 10px 25px -3px oklch(0 0 0 / 0.25);
+}
+
+/* 按钮样式 */
+/* 图标与文字横向排列并居中（不少按钮写了 gap-2，原先 .btn 是块级盒子，图标会单独占一行）。
+   放在 components 层，hidden、block、flex 等工具类仍可覆盖显示方式。 */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    oklch(from var(--primary) calc(l - 0.05) c h) 100%
+  );
+  color: var(--primary-foreground);
+  box-shadow:
+    0 4px 12px -2px rgba(from var(--primary) r g b / 0.3),
+    0 2px 6px -1px rgba(from var(--primary) r g b / 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    oklch(from var(--primary-foreground) l c h / 0.2) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 20px -2px rgba(from var(--primary) r g b / 0.4),
+    0 4px 10px -1px rgba(from var(--primary) r g b / 0.3);
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow:
+    0 2px 8px -2px rgba(from var(--primary) r g b / 0.3),
+    0 1px 4px -1px rgba(from var(--primary) r g b / 0.2);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 0.75rem;
+}
+
+.btn-lg {
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
+}
+
+.btn-ghost {
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+}
+
+.btn-ghost:hover {
+  background: oklch(from var(--primary) l c h / 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(
+    135deg,
+    var(--primary) 0%,
+    oklch(from var(--primary) calc(l - 0.05) c h) 100%
+  );
+}
+
+.btn-secondary {
+  color: var(--secondary-foreground);
+  background: linear-gradient(
+    135deg,
+    var(--secondary) 0%,
+    oklch(from var(--secondary) calc(l - 0.05) c h) 100%
+  );
+  box-shadow:
+    0 4px 12px -2px rgba(from var(--secondary) r g b / 0.3),
+    0 2px 6px -1px rgba(from var(--secondary) r g b / 0.2);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+  box-shadow:
+    0 8px 20px -2px rgba(from var(--primary) r g b / 0.3),
+    0 4px 10px -1px rgba(from var(--primary) r g b / 0.2);
+}
+
+/* 顶栏配色选择器：触发器和弹层只呈现色点。 */
+.color-theme-picker {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.color-theme-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  background: transparent;
+  box-shadow: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.color-theme-trigger:hover {
+  border-color: var(--border);
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+.color-theme-trigger[data-open='true'] {
+  border-color: var(--border);
+  background: var(--muted);
+}
+
+.color-theme-trigger:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.color-theme-trigger__swatch,
+.color-theme-option__swatch {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 70%);
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 12%);
+  transition:
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.color-theme-trigger__swatch {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.color-theme-trigger[data-open='true'] .color-theme-trigger__swatch {
+  transform: scale(0.9);
+}
+
+.color-theme-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 80;
+  width: max-content;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 14%);
+}
+
+.color-theme-menu__options {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.color-theme-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  background: transparent;
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    transform 140ms ease;
+}
+
+.color-theme-option:hover {
+  background: var(--muted);
+  transform: translateY(-1px);
+}
+
+.color-theme-option[data-selected='true'] {
+  border-color: var(--border);
+  background: var(--muted);
+}
+
+.color-theme-option:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.color-theme-option__swatch {
+  width: 1rem;
+  height: 1rem;
+}
+
+.color-theme-option[data-selected='true'] .color-theme-option__swatch {
+  box-shadow:
+    0 0 0 2px var(--popover),
+    0 0 0 4px var(--ring);
+  transform: scale(1.06);
+}
+
+.settings-toggle {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 5%);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.settings-toggle[data-state='on'] {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+.settings-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 1.125rem;
+  height: 1.125rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.settings-toggle[data-state='on'] .settings-toggle__thumb {
+  border-color: transparent;
+  background: var(--primary-foreground);
+  transform: translate3d(1.25rem, 0, 0);
+}
+
+label:has(> input:focus-visible) > .settings-toggle {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+label:hover > input:not(:disabled) + .settings-toggle[data-state='off'] {
+  border-color: color-mix(in srgb, var(--primary) 45%, var(--border));
+}
+
+.settings-toggle.is-disabled {
+  opacity: 0.45;
+}
+
+/* 主题选择卡片：使用原生 radio 保证键盘和读屏语义，视觉上展示三种风格的差异。 */
+.interface-theme-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.interface-theme-card {
+  display: block;
+  min-width: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.interface-theme-card__body {
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.25);
+  background: var(--card);
+  color: var(--card-foreground);
+  box-shadow: 0 10px 24px -22px color-mix(in srgb, var(--foreground) 55%, transparent);
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.interface-theme-card:hover .interface-theme-card__body {
+  border-color: color-mix(in srgb, var(--primary) 38%, var(--border));
+  transform: translateY(-2px);
+}
+
+.interface-theme-card:has(input:focus-visible) .interface-theme-card__body {
+  outline: 3px solid color-mix(in srgb, var(--ring) 78%, transparent);
+  outline-offset: 2px;
+}
+
+.interface-theme-card--selected .interface-theme-card__body {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--card) 92%, var(--primary) 8%);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--primary) 14%, transparent),
+    0 16px 30px -24px color-mix(in srgb, var(--primary) 65%, transparent);
+}
+
+.interface-theme-card:active .interface-theme-card__body {
+  transform: scale(0.99);
+}
+
+.interface-theme-card__heading,
+.interface-theme-card__title-wrap,
+.interface-theme-card__selected {
+  display: flex;
+  align-items: center;
+}
+
+.interface-theme-card__heading {
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.interface-theme-card__title-wrap {
+  min-width: 0;
+  gap: 0.5rem;
+  color: var(--primary);
+}
+
+.interface-theme-card__title {
+  overflow-wrap: anywhere;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--foreground);
+}
+
+.interface-theme-card__selected {
+  flex: 0 0 auto;
+  gap: 0.25rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+  background: color-mix(in srgb, var(--primary) 13%, transparent);
+  color: var(--primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.interface-theme-card__description {
+  min-height: 3.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.interface-theme-card__preview {
+  display: block;
+  min-width: 0;
+  margin-top: auto;
+  overflow: hidden;
+  border-radius: calc(var(--radius) * 1.05);
+}
+
+.interface-theme-preview {
+  display: flex;
+  min-height: 8.5rem;
+  gap: 0.5rem;
+  overflow: hidden;
+  padding: 0.625rem;
+}
+
+.interface-theme-preview__topbar,
+.interface-theme-preview__vibe-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.interface-theme-preview__topbar {
+  justify-content: space-between;
+  height: 1.1rem;
+}
+
+.interface-theme-preview__brand,
+.interface-theme-preview__control,
+.interface-theme-preview__line,
+.interface-theme-preview__sidebar,
+.interface-theme-preview__classic-cards span,
+.interface-theme-preview__vibe-heading span,
+.interface-theme-preview__vibe-heading i,
+.interface-theme-preview__vibe-cards span {
+  display: block;
+}
+
+.interface-theme-preview__brand {
+  width: 32%;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.interface-theme-preview__control {
+  width: 1.25rem;
+  height: 0.7rem;
+  margin-left: auto;
+  border-radius: 999px;
+  background: var(--primary);
+}
+
+.interface-theme-preview__control--muted {
+  margin-left: 0;
+  background: var(--border);
+}
+
+.interface-theme-preview--classic {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--card);
+}
+
+.interface-theme-preview--classic .interface-theme-preview__classic-body {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.625rem;
+}
+
+.interface-theme-preview__sidebar {
+  width: 18%;
+  min-height: 6.2rem;
+  border-radius: 0.35rem;
+  background: var(--muted);
+}
+
+.interface-theme-preview__classic-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.interface-theme-preview__line {
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--muted-foreground);
+  opacity: 0.45;
+}
+
+.interface-theme-preview__line--wide {
+  width: 56%;
+}
+
+.interface-theme-preview__classic-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 0.625rem;
+}
+
+.interface-theme-preview__classic-cards span {
+  height: 4.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--card) 86%, var(--primary) 14%);
+}
+
+.interface-theme-preview--vibehub {
+  border: 2px solid #252936;
+  border-radius: 0.4rem;
+  background: #f5f6f8;
+  color: #252936;
+}
+
+.interface-theme-preview__vibe-rail {
+  display: flex;
+  flex: 0 0 1.3rem;
+  flex-direction: column;
+  gap: 0.45rem;
+  align-items: center;
+  padding-top: 0.15rem;
+}
+
+.interface-theme-preview__vibe-rail span {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid #252936;
+  border-radius: 0.15rem;
+  background: transparent;
+}
+
+.interface-theme-preview__vibe-rail span.is-active {
+  background: #f97316;
+  box-shadow: 2px 2px 0 #252936;
+}
+
+.interface-theme-preview__vibe-workspace {
+  min-width: 0;
+  flex: 1;
+  padding-top: 0.15rem;
+}
+
+.interface-theme-preview__vibe-heading {
+  justify-content: space-between;
+  margin-bottom: 0.7rem;
+}
+
+.interface-theme-preview__vibe-heading span {
+  width: 46%;
+  height: 0.45rem;
+  background: #252936;
+}
+
+.interface-theme-preview__vibe-heading i {
+  width: 1.3rem;
+  height: 0.75rem;
+  border: 1px solid #252936;
+  background: #f97316;
+}
+
+.interface-theme-preview__vibe-cards {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 0.45rem;
+}
+
+.interface-theme-preview__vibe-cards span {
+  height: 5.2rem;
+  border: 1px solid #252936;
+  background: #fff;
+  box-shadow: 3px 3px 0 #252936;
+}
+
+.interface-theme-preview__vibe-cards span.is-featured {
+  background: linear-gradient(140deg, #ffedd5 0%, #fdba74 100%);
+}
+
+.interface-theme-preview--uiux-pro {
+  min-height: 8.5rem;
+}
+
+@media (min-width: 768px) {
+  .interface-theme-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interface-theme-card__body {
+    transition: none;
+  }
+
+  .interface-theme-card:hover .interface-theme-card__body,
+  .interface-theme-card:active .interface-theme-card__body {
+    transform: none;
+  }
+}
+
+/* 输入框样式 */
+.input {
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  border-radius: var(--radius);
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+  color: var(--foreground);
+}
+
+.input:hover {
+  background: var(--card);
+  border-color: oklch(from var(--primary) l c h / 0.4);
+}
+
+.input:focus {
+  outline: none;
+  background: var(--card);
+  border-color: var(--primary);
+  box-shadow:
+    0 0 0 4px oklch(from var(--primary) l c h / 0.1),
+    0 4px 12px -2px rgba(from var(--primary) r g b / 0.15);
+  transform: translateY(-1px);
+}
+
+.input::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* Select 下拉框样式 */
+select.input {
+  cursor: pointer;
+  appearance: auto;
+  background-image: none;
+  padding-right: 1.25rem;
+}
+
+select.input:hover {
+  transform: none;
+}
+
+select.input:focus {
+  transform: none;
+  box-shadow: 0 0 0 4px oklch(from var(--primary) l c h / 0.1);
+}
+
+select.input option {
+  background-color: var(--background);
+  color: var(--foreground);
+  padding: 0.5rem;
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--card);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: calc(var(--radius) * 1.5);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.1),
+    0 5px 15px -3px oklch(0 0 0 / 0.05);
+  padding: 1.5rem;
+  color: var(--card-foreground);
+}
+
+/* 弹窗/模态框中的卡片 - 不使用 backdrop-filter 以避免透明问题 */
+.card-solid {
+  background-color: var(--card);
+  border-radius: calc(var(--radius) * 1.5);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.1),
+    0 5px 15px -3px oklch(0 0 0 / 0.05);
+  padding: 1.5rem;
+  color: var(--card-foreground);
+}
+
+[data-theme='dark'] .card {
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.3),
+    0 5px 15px -3px oklch(0 0 0 / 0.2);
+}
+
+[data-theme='dark'] .card-solid {
+  box-shadow:
+    0 10px 30px -5px oklch(0 0 0 / 0.3),
+    0 5px 15px -3px oklch(0 0 0 / 0.2);
+}
+
+/* 复选框样式 */
+.checkbox {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.375rem;
+  border: 2px solid var(--border);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.checkbox:checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+/* 书签批量选择。主题色工具类（bg-primary、ring-primary）在本项目不生成，
+   且 .card 的阴影会盖住 ring，因此选中描边用 outline，颜色直接取主题变量。 */
+.batch-checkbox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+  border-radius: 0.375rem;
+  background: var(--card);
+  color: var(--primary-foreground);
+  box-shadow: 0 1px 2px oklch(0 0 0 / 0.12);
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.batch-checkbox:hover {
+  border-color: var(--primary);
+}
+
+.batch-checkbox[aria-checked='true'] {
+  border-color: var(--primary);
+  background: var(--primary);
+}
+
+.batch-checkbox:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+[data-batch-selected='true'] {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* 卡片视图的封面/截图贴边铺满，内边距由内容区自己负责 */
+.card.bookmark-card {
+  padding: 0;
+}
+
+:is(.bookmark-card, .bookmark-list-item):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.batch-selection-prompt {
+  border-color: oklch(from var(--primary) l c h / 0.2);
+  background: oklch(from var(--primary) l c h / 0.05);
+}
+
+.batch-selection-prompt button {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.batch-selection-prompt button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 极简列表：行位于带圆角的裁剪容器内，外扩的描边会被裁掉，选中与联动都改为内描边 */
+.bookmark-minimal-table {
+  background: var(--card);
+}
+
+.bookmark-minimal-head {
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.bookmark-minimal-row {
+  transition: background-color 150ms ease;
+}
+
+.bookmark-minimal-row:hover {
+  background: oklch(from var(--muted) l c h / 0.7);
+}
+
+.bookmark-minimal-row[data-batch-selected='true'] {
+  outline: none;
+  background: oklch(from var(--primary) l c h / 0.07);
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+
+/* 手机底部导航：不透明背景盖住滚动内容，底部留出系统手势区，当前页用主题色标出 */
+.mobile-bottom-nav {
+  border-top: 1px solid var(--border);
+  background: oklch(from var(--card) l c h / 0.94);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  box-shadow: 0 -6px 18px -12px oklch(0 0 0 / 0.25);
+}
+
+.mobile-bottom-nav__item {
+  position: relative;
+  color: var(--muted-foreground);
+  transition: color 160ms ease;
+}
+
+.mobile-bottom-nav__item[aria-current='page'] {
+  color: var(--primary);
+}
+
+.mobile-bottom-nav__item[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1.75rem;
+  height: 3px;
+  border-radius: 0 0 999px 999px;
+  background: var(--primary);
+  translate: -50% 0;
+}
+
+.mobile-bottom-nav__item[aria-current='page'] span {
+  font-weight: 600;
+}
+
+/* 书签状态徽标（置顶 / 归档），对应原先未生效的 bg-warning、bg-base-content/40；
+   橙色配色没有定义警告色，给出与默认主题一致的兜底值 */
+.bookmark-status-badge--pinned {
+  background: var(--warning, oklch(0.75 0.15 85));
+  color: var(--warning-foreground, oklch(0.145 0 0));
+}
+
+.bookmark-status-badge--archived {
+  background: oklch(from var(--foreground) l c h / 0.4);
+  color: var(--background);
+}
+
+/* 设置页侧栏：经典主题下的当前项与悬停（VibeHub、UI/UX Pro 主题各自定义） */
+:root:not([data-experimental-ui]) .settings-nav-item {
+  color: var(--muted-foreground);
+}
+
+:root:not([data-experimental-ui]) .settings-nav-item:hover {
+  background: oklch(from var(--muted) l c h / 0.7);
+  color: var(--foreground);
+}
+
+:root:not([data-experimental-ui]) :is(.settings-nav-item--active, .settings-nav-item--active:hover) {
+  background: oklch(from var(--primary) l c h / 0.08);
+  color: var(--primary);
+  box-shadow: inset 3px 0 0 var(--primary);
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: oklch(from var(--primary) l c h / 0.1);
+  color: var(--primary);
+  border: 1px solid oklch(from var(--primary) l c h / 0.2);
+  transition: all 0.2s ease;
+}
+
+.tag:hover {
+  background: oklch(from var(--primary) l c h / 0.15);
+  border-color: oklch(from var(--primary) l c h / 0.3);
+  transform: translateY(-1px);
+}
+
+/* 跑马灯动画 - 四个方向
+   虚线条比边框长一个周期（12px），只平移 transform，由合成层完成动画，不触发重绘。 */
+@keyframes tag-marquee-move-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(12px);
+  }
+}
+
+@keyframes tag-marquee-move-down {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(12px);
+  }
+}
+
+@keyframes tag-marquee-move-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-12px);
+  }
+}
+
+@keyframes tag-marquee-move-up {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-12px);
+  }
+}
+
+/* 实验性标签热度“液体”效果。 */
+.tag-liquid-fill::before {
+  content: '';
+  position: absolute;
+  left: -12%;
+  top: -5px;
+  width: 124%;
+  height: 10px;
+  border-radius: 50%;
+  background: inherit;
+  opacity: 0.75;
+  animation: tag-liquid-wave 3s ease-in-out infinite alternate;
+}
+
+@keyframes tag-liquid-wave {
+  from {
+    transform: translateX(-2%) scaleY(0.75);
+  }
+  to {
+    transform: translateX(2%) scaleY(1.15);
+  }
+}
+
+/* 标签热度收藏卡效果：背景层不参与点击，强度随标签点击热度增长。 */
+.tag-heat-card {
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / calc(0.04 + 0.14 * var(--tag-heat-strength)));
+}
+
+.tag-heat-card::before,
+.tag-heat-card__effect,
+.tag-heat-card__sparkles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.tag-heat-card::before {
+  content: '';
+  z-index: -2;
+  background: var(--tag-heat-color);
+  opacity: calc(0.08 + 0.28 * var(--tag-heat-strength));
+}
+
+.tag-heat-card__effect,
+.tag-heat-card__sparkles {
+  z-index: -1;
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.tag-heat-card--advanced {
+  box-shadow: inset 0 0 0 1px rgb(255 220 140 / calc(0.16 + 0.24 * var(--tag-heat-strength)));
+}
+
+.tag-heat-card--collector {
+  box-shadow:
+    inset 0 0 0 1px rgb(165 245 255 / calc(0.2 + 0.3 * var(--tag-heat-strength))),
+    inset 0 0 12px rgb(105 225 255 / calc(0.08 + 0.12 * var(--tag-heat-strength)));
+}
+
+.tag-heat-card--secret {
+  box-shadow:
+    inset 0 0 0 1px rgb(255 185 245 / calc(0.25 + 0.35 * var(--tag-heat-strength))),
+    inset 0 0 16px rgb(195 105 255 / calc(0.12 + 0.18 * var(--tag-heat-strength)));
+}
+
+.tag-heat-card--effect-foil .tag-heat-card__effect {
+  opacity: calc(0.16 + 0.38 * var(--tag-heat-strength));
+  background: linear-gradient(
+    112deg,
+    transparent 16%,
+    rgb(255 255 255 / 0.08) 34%,
+    rgb(255 255 255 / 0.82) 47%,
+    rgb(115 245 225 / 0.52) 53%,
+    transparent 72%
+  );
+  background-position: 120% 50%;
+  background-size: 240% 100%;
+  animation: tag-heat-foil 4.8s ease-in-out infinite;
+}
+
+.tag-heat-card--effect-diamond .tag-heat-card__effect {
+  opacity: calc(0.18 + 0.48 * var(--tag-heat-strength));
+  background:
+    repeating-conic-gradient(from 45deg, rgb(255 255 255 / 0.74) 0 12.5%, transparent 0 25%) 0 0 /
+      14px 14px,
+    linear-gradient(
+      115deg,
+      transparent 18%,
+      #8ff7ff 44%,
+      #fff4bc 53%,
+      #f5a7ff 64%,
+      transparent 82%
+    );
+  filter: saturate(1.25) contrast(1.08);
+  animation: tag-heat-diamond 5.5s linear infinite;
+}
+
+.tag-heat-card--effect-sparkle .tag-heat-card__sparkles,
+.tag-heat-card--effect-galaxy .tag-heat-card__sparkles {
+  opacity: calc(0.22 + 0.56 * var(--tag-heat-strength));
+  background-image:
+    radial-gradient(circle, white 0 1px, transparent 1.6px),
+    radial-gradient(circle, #fff1a8 0 1.2px, transparent 1.9px),
+    radial-gradient(circle, #9bf7ff 0 0.8px, transparent 1.5px);
+  background-position:
+    0 0,
+    11px 15px,
+    5px 21px;
+  background-size:
+    23px 23px,
+    31px 31px,
+    37px 37px;
+  animation: tag-heat-sparkle 4s linear infinite;
+}
+
+.tag-heat-card--effect-sparkle .tag-heat-card__effect {
+  opacity: calc(0.1 + 0.28 * var(--tag-heat-strength));
+  background: radial-gradient(circle at 42% 35%, white 0 2%, transparent 19%);
+}
+
+.tag-heat-card--effect-prism .tag-heat-card__effect {
+  opacity: calc(0.2 + 0.5 * var(--tag-heat-strength));
+  background: repeating-linear-gradient(
+    125deg,
+    #ff477e 0 7%,
+    #ffd166 11%,
+    #48d6c5 18%,
+    #5b8def 25%,
+    #c56cf0 32%,
+    #ff477e 40%
+  );
+  background-size: 280% 280%;
+  filter: saturate(1.25);
+  animation: tag-heat-prism 7s linear infinite;
+}
+
+.tag-heat-card--effect-galaxy .tag-heat-card__effect {
+  opacity: calc(0.24 + 0.54 * var(--tag-heat-strength));
+  background:
+    radial-gradient(circle at 62% 35%, white 0 1%, transparent 13%),
+    conic-gradient(from 210deg at 58% 42%, #ff477e, #f5b942, #48d6c5, #5575f6, #c56cf0, #ff477e);
+  background-size:
+    170% 170%,
+    150% 150%;
+  filter: saturate(1.4) contrast(1.08);
+  animation: tag-heat-galaxy 8s ease-in-out infinite alternate;
+}
+
+@keyframes tag-heat-foil {
+  0%,
+  24% {
+    background-position: 140% 50%;
+  }
+  66%,
+  100% {
+    background-position: -90% 50%;
+  }
+}
+
+@keyframes tag-heat-diamond {
+  from {
+    background-position:
+      0 0,
+      120% 50%;
+  }
+  to {
+    background-position:
+      28px 14px,
+      -80% 50%;
+  }
+}
+
+@keyframes tag-heat-sparkle {
+  from {
+    transform: translate3d(-6px, -4px, 0);
+  }
+  to {
+    transform: translate3d(10px, 8px, 0);
+  }
+}
+
+@keyframes tag-heat-prism {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes tag-heat-galaxy {
+  from {
+    background-position:
+      20% 35%,
+      15% 30%;
+  }
+  to {
+    background-position:
+      80% 65%,
+      85% 70%;
+  }
+}
+
+/* 实验性网址隐私效果。链接仍保留真实 href，仅隐藏可见文字。 */
+.url-privacy-blur {
+  display: inline-block;
+  max-width: 100%;
+  filter: blur(var(--url-privacy-blur, 4px));
+  user-select: none;
+  pointer-events: none;
+}
+
+.url-privacy-mosaic {
+  display: inline-block;
+  max-width: 100%;
+  color: transparent;
+  border-radius: 0.25rem;
+  user-select: none;
+  pointer-events: none;
+  background-image: repeating-conic-gradient(
+    from 45deg,
+    var(--primary) 0 25%,
+    var(--muted-foreground) 0 50%
+  );
+  background-size: var(--url-privacy-block-size, 8px) var(--url-privacy-block-size, 8px);
+}
+
+.url-privacy-mask {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.08em;
+}
+
+/* 收藏卡视图：直接陈列完整卡面，保留卡牌倾斜与稀有度特效。 */
+.bookmark-collectible-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 292px), 356px));
+  align-items: start;
+  justify-content: center;
+  gap: 24px 18px;
+  padding: 4px 2px 12px;
+}
+
+.bookmark-collectible-item {
+  position: relative;
+  width: 100%;
+  max-width: 356px;
+  border-radius: 8px;
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  cursor: pointer;
+  perspective: 1200px;
+  touch-action: manipulation;
+}
+
+/* 标签筛选洗牌：先将旧卡收拢到可视区域中心，再按筛选后的顺序重新发牌。 */
+.bookmark-collectible-grid--shuffle-gather,
+.bookmark-collectible-grid--shuffle-deal {
+  pointer-events: none;
+}
+
+.bookmark-collectible-grid--shuffle-gather .bookmark-collectible-item,
+.bookmark-collectible-grid--shuffle-deal .bookmark-collectible-item {
+  z-index: var(--shuffle-z, 1);
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.bookmark-collectible-grid--shuffle-gather .bookmark-collectible-item {
+  transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  transition:
+    transform 460ms cubic-bezier(0.65, 0, 0.35, 1),
+    opacity 260ms ease,
+    filter 260ms ease;
+}
+
+.bookmark-collectible-grid--shuffle-gather.is-active .bookmark-collectible-item {
+  transform: translate3d(var(--shuffle-x, 0), var(--shuffle-y, 0), 0)
+    rotate(var(--shuffle-rotate, 0)) scale(0.94);
+  opacity: 0.92;
+  filter: saturate(0.88) brightness(0.94);
+}
+
+.bookmark-collectible-grid--shuffle-deal .bookmark-collectible-item {
+  transform: translate3d(var(--shuffle-x, 0), var(--shuffle-y, 0), 0)
+    rotate(var(--shuffle-rotate, 0)) scale(0.92);
+  opacity: 0.62;
+  filter: blur(1px) saturate(0.86);
+}
+
+.bookmark-collectible-grid--shuffle-deal.is-active .bookmark-collectible-item {
+  transform: translate3d(0, 0, 0) rotate(0) scale(1);
+  opacity: 1;
+  filter: none;
+  transition:
+    transform 650ms cubic-bezier(0.16, 1, 0.3, 1) var(--shuffle-delay, 0ms),
+    opacity 360ms ease-out var(--shuffle-delay, 0ms),
+    filter 420ms ease-out var(--shuffle-delay, 0ms);
+}
+
+.bookmark-collectible-item:focus-visible {
+  outline-color: var(--primary);
+}
+
+.bookmark-collectible-item.is-selected {
+  outline-color: var(--primary);
+}
+
+.bookmark-collectible-item:hover .bookmark-tcg-card--collection {
+  box-shadow:
+    0 28px 64px rgb(0 0 0 / 0.34),
+    0 6px 18px rgb(0 0 0 / 0.24);
+}
+
+.bookmark-tcg-card--collection {
+  height: 590px;
+  max-height: none;
+}
+
+.bookmark-tcg-card--collection .bookmark-tcg-card__frame {
+  height: 100%;
+  max-height: 100%;
+}
+
+.bookmark-tcg-card--with-left-action .bookmark-tcg-card__header > div:first-child {
+  padding-left: 30px;
+}
+
+.bookmark-tcg-card--with-right-action .bookmark-tcg-card__rarity {
+  margin-right: 30px;
+}
+
+/* 实验性书签收藏卡：浮层不接管指针，避免打断书签原有操作。 */
+.bookmark-tcg-preview {
+  position: fixed;
+  z-index: 140;
+  pointer-events: none;
+  perspective: 1200px;
+  animation: bookmark-tcg-enter 180ms ease-out both;
+}
+
+.bookmark-tcg-preview__scale {
+  transform-origin: top left;
+}
+
+.bookmark-tcg-card {
+  --tcg-ink: #172033;
+  --tcg-muted: #5f6673;
+  --tcg-surface: #fbfcfe;
+  --tcg-panel: #eef3f8;
+  --tcg-frame: #27364a;
+  --tcg-highlight: #f5b942;
+  position: relative;
+  width: 100%;
+  max-height: inherit;
+  overflow: hidden;
+  border: 2px solid var(--tcg-frame);
+  border-radius: 8px;
+  color: var(--tcg-ink);
+  background: var(--tcg-frame);
+  box-shadow:
+    0 22px 50px rgb(0 0 0 / 0.28),
+    0 4px 12px rgb(0 0 0 / 0.22);
+  transform: rotateX(var(--tcg-rotate-x)) rotateY(var(--tcg-rotate-y));
+  transform-style: preserve-3d;
+  transition:
+    transform 80ms linear,
+    box-shadow 180ms ease;
+  isolation: isolate;
+}
+
+.bookmark-tcg-card--creature {
+  --tcg-ink: #182237;
+  --tcg-muted: #5b6473;
+  --tcg-surface: #fcfcfa;
+  --tcg-panel: #eaf2ef;
+  --tcg-frame: #1d5f63;
+  --tcg-highlight: #f0b429;
+}
+
+.bookmark-tcg-card--duelist {
+  --tcg-ink: #27152b;
+  --tcg-muted: #735f64;
+  --tcg-surface: #fbf8f2;
+  --tcg-panel: #eee2d2;
+  --tcg-frame: #5d263f;
+  --tcg-highlight: #bc7c2a;
+}
+
+.bookmark-tcg-card--arcane {
+  --tcg-ink: #f6f2ff;
+  --tcg-muted: #bbc4d5;
+  --tcg-surface: #12151c;
+  --tcg-panel: #202530;
+  --tcg-frame: #202632;
+  --tcg-highlight: #e8bd55;
+}
+
+.bookmark-tcg-card--advanced {
+  border-color: color-mix(in srgb, var(--tcg-accent) 65%, #f1c75b);
+  box-shadow:
+    0 22px 52px rgb(0 0 0 / 0.3),
+    0 0 18px color-mix(in srgb, var(--tcg-accent) 38%, transparent);
+}
+
+.bookmark-tcg-card--collector {
+  border-color: #d6a643;
+  box-shadow:
+    0 24px 58px rgb(0 0 0 / 0.34),
+    0 0 0 2px rgb(73 211 194 / 0.42),
+    0 0 24px rgb(217 70 239 / 0.26);
+}
+
+.bookmark-tcg-card--secret {
+  border-color: #f4d66b;
+  box-shadow:
+    0 26px 64px rgb(0 0 0 / 0.38),
+    0 0 0 2px rgb(255 255 255 / 0.5),
+    0 0 30px color-mix(in srgb, var(--tcg-accent) 46%, #65e6d3);
+}
+
+.bookmark-tcg-card__frame {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: inherit;
+  padding: 10px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.42);
+  border-radius: 6px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--tcg-surface) 94%, var(--tcg-accent)),
+    var(--tcg-surface)
+  );
+}
+
+.bookmark-tcg-card--arcane .bookmark-tcg-card__frame {
+  background: linear-gradient(145deg, #171b24, color-mix(in srgb, #19151f 82%, var(--tcg-accent)));
+  border-color: rgb(255 255 255 / 0.16);
+}
+
+.bookmark-tcg-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+}
+
+.bookmark-tcg-card__series {
+  margin-bottom: 2px;
+  color: var(--tcg-muted);
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bookmark-tcg-card__header h2 {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--tcg-ink);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.bookmark-tcg-card__rarity {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+  max-width: 105px;
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--tcg-frame) 45%, transparent);
+  border-radius: 999px;
+  color: var(--tcg-ink);
+  background: color-mix(in srgb, var(--tcg-panel) 88%, white);
+  font-size: 10px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.bookmark-tcg-card__rarity--advanced {
+  color: #8b4a00;
+  background: #ffe4a4;
+}
+.bookmark-tcg-card__rarity--collector {
+  color: #174f57;
+  background: #bcece4;
+}
+.bookmark-tcg-card__rarity--secret {
+  color: #5a174f;
+  background: #f7c9ef;
+}
+
+.bookmark-tcg-card__artwork {
+  position: relative;
+  height: 174px;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--tcg-frame) 70%, #c88b35);
+  border-radius: 4px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--tcg-accent) 16%, #ecf5f2),
+    #e8edf5 54%,
+    #f3e8df
+  );
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.55),
+    inset 0 -24px 50px rgb(8 19 34 / 0.08);
+}
+
+.bookmark-tcg-card__artwork img {
+  width: 100%;
+  height: 100%;
+}
+
+.bookmark-tcg-card__artwork img.is-cover {
+  object-fit: cover;
+}
+.bookmark-tcg-card__artwork img.is-icon {
+  object-fit: contain;
+  padding: 36px;
+}
+
+/* 网站截图入口与灯箱：主题色在 Tailwind v4 中没有对应工具类，直接使用主题变量 */
+.bookmark-screenshot-button {
+  color: var(--muted-foreground);
+}
+
+.bookmark-screenshot-button:hover,
+.bookmark-screenshot-button:focus-visible {
+  color: var(--foreground);
+  background-color: var(--muted);
+}
+
+.bookmark-screenshot-button--floating {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+/* 截图 / 快照入口胶囊：同一套外观 */
+.bookmark-media-chip {
+  background-color: var(--card);
+  color: var(--foreground);
+  border: 1px solid var(--border);
+}
+
+.bookmark-media-count {
+  color: var(--primary-foreground);
+  background-color: var(--primary);
+}
+
+/* 截图 + 快照按钮组：浮在收藏卡片右下角 */
+.bookmark-media-group--floating > * {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+}
+
+.screenshot-lightbox-backdrop {
+  background-color: color-mix(in srgb, var(--background) 80%, transparent);
+}
+
+/* 网站截图：只展示正文顶部，最高 280px，避免把整张长图塞进卡片 */
+.bookmark-tcg-card__artwork.is-screenshot {
+  height: auto;
+  max-height: 280px;
+}
+
+.bookmark-tcg-card__artwork img.is-screenshot {
+  height: auto;
+  max-height: 280px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.bookmark-tcg-card__domain {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  left: 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 5px 7px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 0.44);
+  border-radius: 4px;
+  color: #f8fafc;
+  background: rgb(19 25 36 / 0.78);
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bookmark-tcg-card__domain svg {
+  flex: 0 0 auto;
+}
+
+.bookmark-tcg-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.bookmark-tcg-card__stats > div {
+  display: grid;
+  grid-template-columns: 14px auto;
+  grid-template-rows: auto auto;
+  align-items: center;
+  justify-content: center;
+  column-gap: 4px;
+  padding: 5px 4px;
+  border: 1px solid color-mix(in srgb, var(--tcg-frame) 24%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--tcg-panel) 82%, transparent);
+}
+
+.bookmark-tcg-card__stats svg {
+  grid-row: 1 / 3;
+  width: 13px;
+  color: var(--tcg-accent);
+}
+
+.bookmark-tcg-card__stats strong {
+  color: var(--tcg-ink);
+  font-size: 13px;
+  line-height: 1;
+}
+.bookmark-tcg-card__stats span {
+  color: var(--tcg-muted);
+  font-size: 8px;
+  line-height: 1.1;
+}
+
+.bookmark-tcg-card__details {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  padding: 8px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--tcg-frame) 28%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--tcg-surface) 88%, var(--tcg-panel));
+}
+
+.bookmark-tcg-card__description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--tcg-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+
+.bookmark-tcg-card__url {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  padding-bottom: 5px;
+  overflow: hidden;
+  border-bottom: 1px solid color-mix(in srgb, var(--tcg-frame) 18%, transparent);
+  color: var(--tcg-muted);
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.bookmark-tcg-card__url svg {
+  width: 11px;
+  height: 11px;
+  flex: 0 0 auto;
+}
+
+.bookmark-tcg-card__summary {
+  display: flex;
+  gap: 6px;
+  padding-top: 5px;
+  border-top: 1px solid color-mix(in srgb, var(--tcg-frame) 18%, transparent);
+}
+
+.bookmark-tcg-card__summary > span {
+  flex: 0 0 auto;
+  height: fit-content;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: white;
+  background: var(--tcg-accent);
+  font-size: 8px;
+  font-weight: 900;
+}
+
+.bookmark-tcg-card__summary p {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--tcg-muted);
+  font-size: 9px;
+  font-style: italic;
+  line-height: 1.3;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.bookmark-tcg-card__tags,
+.bookmark-tcg-card__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bookmark-tcg-card__tags > span {
+  max-width: 120px;
+  padding: 2px 6px;
+  overflow: hidden;
+  border-left: 3px solid var(--tag-color);
+  border-radius: 3px;
+  color: var(--tcg-ink);
+  background: color-mix(in srgb, var(--tag-color) 14%, var(--tcg-panel));
+  font-size: 9px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-tcg-card__status > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--tcg-muted);
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.bookmark-tcg-card__status svg {
+  width: 10px;
+  height: 10px;
+}
+
+.bookmark-tcg-card__footer {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  padding-top: 1px;
+}
+
+.bookmark-tcg-card__footer > div {
+  display: grid;
+  grid-template-columns: 13px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 4px;
+}
+
+.bookmark-tcg-card__footer svg {
+  grid-row: 1 / 3;
+  width: 11px;
+  color: var(--tcg-accent);
+}
+.bookmark-tcg-card__footer span {
+  color: var(--tcg-muted);
+  font-size: 8px;
+}
+.bookmark-tcg-card__footer strong {
+  overflow: hidden;
+  color: var(--tcg-ink);
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmark-tcg-card__effect,
+.bookmark-tcg-card__sparkles {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  mix-blend-mode: color-dodge;
+}
+
+.bookmark-tcg-card--effect-foil .bookmark-tcg-card__effect {
+  opacity: calc(0.32 * var(--tcg-intensity));
+  background: linear-gradient(
+    112deg,
+    transparent 18%,
+    rgb(255 255 255 / 0.78) 42%,
+    rgb(101 230 211 / 0.62) 49%,
+    rgb(245 185 66 / 0.7) 55%,
+    transparent 76%
+  );
+  background-position: var(--tcg-pointer-x) var(--tcg-pointer-y);
+  background-size: 240% 240%;
+}
+
+.bookmark-tcg-card--effect-prism .bookmark-tcg-card__effect {
+  opacity: calc(0.46 * var(--tcg-intensity));
+  background:
+    repeating-linear-gradient(
+      125deg,
+      #ff477e 0 6%,
+      #ffd166 9%,
+      #48d6c5 15%,
+      #5b8def 21%,
+      #c56cf0 27%,
+      #ff477e 34%
+    ),
+    linear-gradient(115deg, transparent 22%, white 48%, transparent 72%);
+  background-position: var(--tcg-pointer-x) var(--tcg-pointer-y);
+  background-size:
+    280% 280%,
+    220% 220%;
+}
+
+.bookmark-tcg-card--effect-galaxy .bookmark-tcg-card__effect {
+  opacity: calc(0.54 * var(--tcg-intensity));
+  background:
+    radial-gradient(
+      circle at var(--tcg-pointer-x) var(--tcg-pointer-y),
+      white 0 2%,
+      transparent 15%
+    ),
+    conic-gradient(
+      from 210deg at var(--tcg-pointer-x) var(--tcg-pointer-y),
+      #ff477e,
+      #f5b942,
+      #48d6c5,
+      #5575f6,
+      #c56cf0,
+      #ff477e
+    );
+  background-size:
+    180% 180%,
+    160% 160%;
+  filter: saturate(1.4) contrast(1.08);
+}
+
+.bookmark-tcg-card--effect-galaxy .bookmark-tcg-card__sparkles,
+.bookmark-tcg-card--effect-prism .bookmark-tcg-card__sparkles {
+  opacity: calc(0.55 * var(--tcg-intensity));
+  background-image:
+    radial-gradient(circle, white 0 1px, transparent 1.5px),
+    radial-gradient(circle, #ffe78a 0 1px, transparent 1.7px);
+  background-position:
+    0 0,
+    13px 17px;
+  background-size:
+    23px 23px,
+    31px 31px;
+  animation: bookmark-tcg-sparkle 4s linear infinite;
+}
+
+@keyframes bookmark-tcg-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bookmark-tcg-sparkle {
+  from {
+    transform: translate3d(-8px, -5px, 0);
+  }
+  to {
+    transform: translate3d(12px, 10px, 0);
+  }
+}
+
+@media (max-height: 720px) {
+  .bookmark-tcg-card__artwork {
+    height: 138px;
+  }
+  .bookmark-tcg-card__description {
+    -webkit-line-clamp: 2;
+  }
+  .bookmark-tcg-card__summary p {
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 420px) {
+  .bookmark-collectible-grid {
+    gap: 18px;
+  }
+  .bookmark-tcg-card--collection {
+    height: 560px;
+  }
+  .bookmark-tcg-card--collection .bookmark-tcg-card__artwork {
+    height: 150px;
+  }
+}
+
+@media (hover: none) {
+  .bookmark-tcg-preview {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bookmark-tcg-preview,
+  .bookmark-tcg-card,
+  .bookmark-tcg-card__sparkles,
+  .tag-heat-card__effect,
+  .tag-heat-card__sparkles,
+  .bookmark-collectible-grid--shuffle-gather .bookmark-collectible-item,
+  .bookmark-collectible-grid--shuffle-deal .bookmark-collectible-item {
+    animation: none;
+    transition: none;
+  }
+
+  .bookmark-collectible-grid--shuffle-gather .bookmark-collectible-item,
+  .bookmark-collectible-grid--shuffle-gather.is-active .bookmark-collectible-item,
+  .bookmark-collectible-grid--shuffle-deal .bookmark-collectible-item,
+  .bookmark-collectible-grid--shuffle-deal.is-active .bookmark-collectible-item {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bookmark-dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.5;
+  }
+  40% {
+    transform: translateY(-8px) scale(1.2);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200; /* 使用统一的模态框层级 */
+  padding: 1rem;
+  background: transparent;
+  border: none;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+}
+
+.modal::backdrop {
+  background: oklch(0 0 0 / 0.5);
+  backdrop-filter: blur(4px);
+}
+
+[data-theme='dark'] .modal::backdrop {
+  background: oklch(0 0 0 / 0.7);
+}
+
+.modal-box {
+  position: relative;
+  background: var(--card);
+  border-radius: calc(var(--radius) * 2);
+  padding: 2.5rem 2rem 2rem;
+  box-shadow:
+    0 25px 50px -12px oklch(0 0 0 / 0.25),
+    0 10px 20px -5px oklch(0 0 0 / 0.1);
+  border: 1px solid var(--border);
+  max-width: 28rem;
+  width: 100%;
+  animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme='dark'] .modal-box {
+  box-shadow:
+    0 25px 50px -12px oklch(0 0 0 / 0.5),
+    0 10px 20px -5px oklch(0 0 0 / 0.3);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.modal-action {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* 隐藏滚动条但保持滚动功能 */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: transparent;
+}
+
+/* Firefox 隐藏滚动条 */
+* {
+  scrollbar-width: none;
+}
+
+/* 通用隐藏滚动条类 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* 主题滚动条（用于局部需要显示滚动条的容器） */
+.scrollbar-theme {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.scrollbar-theme::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scrollbar-theme::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-theme::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.scrollbar-theme::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}
+
+/* Agent 通用交互，接入页的视觉由页面样式管理。 */
+.agent-access-tabs,
+.agent-code-block,
+.agent-feature-card,
+.agent-endpoint-card {
+  box-shadow: 0 18px 42px -36px color-mix(in srgb, var(--foreground) 38%, transparent);
+}
+
+.agent-feature-card,
+.agent-endpoint-card {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.agent-feature-icon {
+  box-shadow: 0 12px 26px -20px color-mix(in srgb, var(--primary) 85%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .agent-feature-card:hover,
+  .agent-endpoint-card:hover {
+    border-color: color-mix(in srgb, var(--primary) 36%, var(--border));
+    background: color-mix(in srgb, var(--card) 96%, var(--primary) 4%);
+    box-shadow: 0 24px 48px -36px color-mix(in srgb, var(--primary) 48%, transparent);
+    transform: translateY(-2px);
+  }
+}
+
+.agent-access-page button,
+.agent-access-page a,
+.agent-chat-page button,
+.agent-chat-page a,
+.agent-chat-page textarea {
+  touch-action: manipulation;
+}
+
+/* 站内 Agent：沿用主题令牌，避免固定色板破坏用户选择的界面风格。 */
+.agent-chat-page::before {
+  position: absolute;
+  z-index: -1;
+  top: 4rem;
+  left: 50%;
+  width: min(78vw, 58rem);
+  height: 22rem;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  filter: blur(90px);
+  transform: translateX(-50%);
+  content: '';
+  pointer-events: none;
+}
+
+.agent-chat-hero {
+  background:
+    radial-gradient(
+      circle at 8% 0%,
+      color-mix(in srgb, var(--primary) 16%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--card) 94%, var(--primary) 6%),
+      color-mix(in srgb, var(--card) 94%, var(--secondary) 6%)
+    );
+}
+
+.agent-chat-sidebar {
+  box-shadow: 0 18px 45px -34px color-mix(in srgb, var(--foreground) 45%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.agent-chat-shell {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--primary) 5%, transparent),
+      transparent 42%
+    ),
+    var(--card);
+  box-shadow:
+    0 24px 60px -42px color-mix(in srgb, var(--foreground) 55%, transparent),
+    0 1px 0 color-mix(in srgb, var(--primary) 12%, transparent) inset;
+}
+
+.agent-chat-composer {
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.agent-chat-prompt {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    transform 120ms ease;
+}
+
+.agent-chat-prompt:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.agent-chat-message,
+.agent-chat-approval-card {
+  animation: agentChatMessageIn 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.agent-chat-approval-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.agent-chat-approval-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--warning);
+  content: '';
+}
+
+.agent-chat-approval-card.is-destructive::before {
+  background: var(--error);
+}
+
+.agent-chat-orb {
+  animation: agentChatOrbIn 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  box-shadow: 0 16px 36px -24px color-mix(in srgb, var(--primary) 75%, transparent);
+}
+
+@keyframes agentChatMessageIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes agentChatOrbIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-feature-card,
+  .agent-endpoint-card {
+    transition: none;
+  }
+
+  .agent-feature-card:hover,
+  .agent-endpoint-card:hover {
+    transform: none;
+  }
+
+  .agent-chat-message,
+  .agent-chat-approval-card,
+  .agent-chat-orb {
+    animation: none;
+  }
+
+  .agent-chat-prompt {
+    transition: none;
+  }
+}
+
+/* 页头版本状态：默认是低调的版本号胶囊，有更新时改用主题色提醒 */
+.version-status {
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  background-color: var(--card);
+}
+
+.version-status[data-has-update='true'] {
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+/* 插件中心：状态徽标、图标底板、筛选分段按钮与卡片标记，列表与详情共用。
+   只用设计变量，界面主题与紧凑管理界面都沿用；紧凑界面的尺寸在 management.css 里收紧。 */
+.plugins-status {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.625rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+.plugins-status__dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* 文字保持前景色以保证对比度，状态靠圆点和边框颜色区分 */
+.plugins-status[data-status='running'] {
+  border-color: color-mix(in srgb, var(--success) 40%, var(--border));
+  color: var(--foreground);
+}
+
+.plugins-status[data-status='running'] .plugins-status__dot {
+  background: var(--success);
+  opacity: 1;
+}
+
+.plugins-status:is([data-status='waiting'], [data-status='pending-authorization']) {
+  border-color: color-mix(in srgb, var(--warning) 45%, var(--border));
+  color: var(--foreground);
+}
+
+.plugins-status:is([data-status='waiting'], [data-status='pending-authorization'])
+  .plugins-status__dot {
+  background: var(--warning);
+  opacity: 1;
+}
+
+.plugins-status:is([data-status='failed'], [data-status='unavailable']) {
+  border-color: color-mix(in srgb, var(--destructive) 40%, var(--border));
+  color: var(--destructive);
+}
+
+.plugins-status:is([data-status='failed'], [data-status='unavailable']) .plugins-status__dot {
+  opacity: 1;
+}
+
+.plugins-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius);
+  background: var(--muted);
+  color: var(--muted-foreground);
+}
+
+.plugins-icon--large {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.plugins-icon--large,
+.plugin-card[data-enabled='true'] .plugins-icon {
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  color: var(--primary);
+}
+
+.plugins-segmented {
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  max-width: 100%;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--muted);
+}
+
+.plugins-segmented > button {
+  min-height: 2.125rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+}
+
+.plugins-segmented > button:hover {
+  color: var(--foreground);
+}
+
+.plugins-segmented > button[aria-pressed='true'] {
+  background: var(--card);
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.plugins-segmented > button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.plugins-select {
+  max-width: 100%;
+  font-size: 0.875rem;
+}
+
+.plugins-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+
+/* 插件 ID 只在放不下时断行，不把版本号拆开 */
+.plugin-card-id {
+  overflow-wrap: anywhere;
+}
+
+.plugin-card-meta {
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--border);
+}
+
+.plugin-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plugins-segmented > button {
+    transition: none;
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "nav": {
+    "label": "Agent Access"
+  },
+  "hero": {
+    "eyebrow": "YOUR KNOWLEDGE. CONNECTED.",
+    "title": "Let AI safely read and manage your bookmark knowledge base",
+    "description": "Connect your collection to AI. With a Skill, API, or MCP, your Agent can find answers and organize bookmarks — with you in control of every write.",
+    "readWrite": "Scoped read/write",
+    "mcp": "MCP tools",
+    "version": "Stable API v1",
+    "apiKey": "API Key auth",
+    "primaryAuthenticated": "Open in-app Agent",
+    "primaryGuest": "Sign in to use Agent",
+    "manageKeys": "Manage API Keys",
+    "secondary": "Copy setup prompt",
+    "titleLead": "Your knowledge,",
+    "titleAccent": "in good company.",
+    "extension": "Browser extension",
+    "extensionHint": "Get it in Settings"
+  },
+  "health": {
+    "title": "Service status",
+    "checking": "Checking Agent API",
+    "online": "Agent API is available",
+    "offline": "Agent API is currently unavailable",
+    "hintChecking": "Checking the public capability index without reading private data.",
+    "hintOnline": "The public index responded; private data still requires an API Key.",
+    "hintOffline": "Documentation remains available. Retry the service connection later."
+  },
+  "summary": {
+    "scopeTitle": "Data scope",
+    "scopeValue": "Query, create, and organize bookmarks and tags",
+    "authTitle": "Authentication",
+    "authValue": "X-API-Key header",
+    "limitTitle": "Default limit",
+    "limitValue": "60 requests/minute"
+  },
+  "tabs": {
+    "label": "Agent integration documentation",
+    "skill": "Agent Skill",
+    "api": "REST API",
+    "mcp": "MCP",
+    "security": "Security"
+  },
+  "copy": {
+    "copy": "Copy",
+    "copied": "Copied",
+    "failed": "Copy failed. Please copy manually."
+  },
+  "skill": {
+    "title": "Use MarkVault as an Agent Skill",
+    "description": "Copy this prompt to your coding Agent so it downloads the Skill, reference, and zero-dependency client with the correct directory structure.",
+    "promptLabel": "Install prompt",
+    "installPrompt": "Install and use the MarkVault Skill from {{origin}}/markvault/SKILL.md. Also download agents/openai.yaml, references/api.md, and scripts/markvault-client.mjs using their relative paths. Reads may run directly. Before creating, updating, or deleting data, show me the exact action and obtain explicit confirmation. Read MARKVAULT_BASE_URL and MARKVAULT_API_KEY from local environment variables, and never ask me to paste the full key into the conversation.",
+    "environmentTitle": "Local environment variables",
+    "environmentDescription": "Keep the key in the Agent's local runtime. Do not commit it or place it in chat history.",
+    "stepsTitle": "Connect in three steps",
+    "steps": {
+      "keyTitle": "Create a dedicated key",
+      "keyDescription": "Choose READ_ONLY, BASIC, or FULL for the intended use and grant write permissions only when needed.",
+      "envTitle": "Configure the local environment",
+      "envDescription": "Set the instance URL and API Key without putting the secret in CLI arguments or URLs.",
+      "verifyTitle": "Verify the permission boundary",
+      "verifyDescription": "Call me first to inspect permissions, and reconfirm every write before execution."
+    },
+    "clientLabel": "Node.js 22 client example"
+  },
+  "api": {
+    "title": "Stable read/write REST API",
+    "description": "Use /api/v1/agent/* for long-lived integrations. The legacy /api/tab/* routes are not part of the public stable contract.",
+    "endpointsTitle": "Endpoints",
+    "endpoints": {
+      "index": "Capability, version, and documentation index",
+      "me": "Validate the key and read account stats",
+      "search": "Search bookmark fields and tag names",
+      "bookmarks": "List or create bookmarks",
+      "bookmark": "Read, update, or move a bookmark to trash",
+      "tags": "List or create tags",
+      "tag": "Read, update, or delete a tag"
+    },
+    "curlTitle": "curl search example",
+    "resourcesTitle": "Machine-readable resources",
+    "resourcesDescription": "Provide these directly to Agents, API clients, or documentation generators.",
+    "resourceOpenApi": "OpenAPI 3.1",
+    "resourceLlms": "llms.txt",
+    "resourceSkill": "SKILL.md",
+    "resourceReference": "API reference"
+  },
+  "mcp": {
+    "title": "Stateless Streamable HTTP MCP",
+    "description": "MCP clients discover and call MarkVault capabilities through a standard tool protocol. The server hides tools that the current API Key cannot use.",
+    "items": {
+      "transportTitle": "Standard HTTP endpoint",
+      "transportDescription": "Connect to {{origin}}/api/mcp with JSON or text/event-stream responses.",
+      "permissionTitle": "Dynamic tool list",
+      "permissionDescription": "tools/list returns only the read and write tools allowed by the current key.",
+      "confirmTitle": "Writes require confirmation",
+      "confirmDescription": "Every MCP write tool requires confirm=true after the user explicitly approves it."
+    },
+    "exampleTitle": "MCP initialize example",
+    "toolsTitle": "13 built-in tools",
+    "toolsDescription": "Covers account details, search, and bookmark/tag reads, creates, updates, soft deletion, and restoration. Bookmark deletion only moves items to trash."
+  },
+  "security": {
+    "title": "Least privilege and human approval work together",
+    "description": "Reads, external automation, and the in-app chat share one tool layer while API Key permissions and human approval independently protect writes.",
+    "items": {
+      "permissionTitle": "Fine-grained write permissions",
+      "permissionDescription": "Create, update, delete, and tag assignment are checked separately; a READ_ONLY key cannot invoke writes.",
+      "leastPrivilegeTitle": "Keys can expire or be revoked",
+      "leastPrivilegeDescription": "Create one key per Agent, grant only required permissions, and retain rate limits and usage records.",
+      "mcpTitle": "MCP confirmation gate",
+      "mcpDescription": "Even a write-enabled key is rejected unless an MCP write tool receives confirm=true.",
+      "chatTitle": "In-app human approval",
+      "chatDescription": "The model produces a pending action and the UI shows its arguments. No database change occurs before approval."
+    },
+    "boundaryTitle": "Current safety boundary",
+    "boundaryDescription": "Bookmark deletion is recoverable soft deletion. Permanent deletion, sharing settings, account settings, and arbitrary database actions are not exposed. Third-party model keys are encrypted with an instance-level secret."
+  },
+  "chat": {
+    "eyebrow": "MARKVAULT AGENT",
+    "title": "In-app Agent",
+    "description": "Search and organize bookmarks in natural language. Every write action waits for your confirmation.",
+    "statusChecking": "Checking setup",
+    "statusReady": "Ready",
+    "statusSetupRequired": "Setup required",
+    "settings": "AI settings",
+    "clear": "Clear chat",
+    "settingsLoadFailed": "Failed to load AI settings",
+    "sendFailed": "Failed to send message",
+    "confirmFailed": "Failed to confirm action",
+    "cancelFailed": "Failed to cancel action",
+    "actionCancelled": "Cancelled “{{action}}”.",
+    "notConfiguredTitle": "The in-app Agent is not configured",
+    "notConfiguredDescription": "Choose an AI provider, enter its API key, and enable the in-app Agent. The third-party secret is encrypted on this instance.",
+    "configureNow": "Open AI settings",
+    "connectionTitle": "Current connection",
+    "provider": "Provider",
+    "model": "Model",
+    "safetyTitle": "Write protection",
+    "safetyDescription": "Reads can run immediately. Create, update, and delete actions produce a confirmation card and cannot change data without approval.",
+    "examplesTitle": "Suggested prompts",
+    "privateSession": "Private session for this account",
+    "pendingCount": "{{count}} pending",
+    "messageList": "Agent conversation",
+    "welcomeTitle": "I can help manage your bookmarks",
+    "welcomeDescription": "Search and summarize bookmarks, or create, update, and move them to trash. No write action runs until you confirm it.",
+    "examples": [
+      "Find my latest Docker bookmarks",
+      "Create a tag named Read later",
+      "Make my React bookmarks public"
+    ],
+    "destructiveHint": "This changes data. Deleted bookmarks go to trash; deleting a tag removes its associations.",
+    "confirmHint": "This write action runs only after confirmation.",
+    "approvalRequired": "Human approval required",
+    "actionDetails": "Review submitted arguments",
+    "confirming": "Running",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "thinking": "Agent is working…",
+    "inputLabel": "Message to the in-app Agent",
+    "placeholder": "Ask a question or request an action…",
+    "placeholderPending": "Confirm or cancel the pending action first",
+    "placeholderDisabled": "Enable the in-app Agent in settings first",
+    "send": "Send",
+    "inputHint": "Press Enter to send or Shift + Enter for a new line. Write actions ask for separate confirmation.",
+    "resolvePendingHint": "Resolve the confirmation card above before continuing so stale actions cannot run."
+  },
+  "questions": {
+    "title": "Try asking your Agent",
+    "description": "These questions map to query tools, while write requests produce a confirmation card first.",
+    "items": [
+      "Find the Docker Compose bookmarks I have saved",
+      "List the 20 most recently updated bookmarks tagged Design",
+      "What tags do I have, and how many bookmarks are in each?",
+      "Show my total bookmarks, pinned bookmarks, and tag count",
+      "Create a tag named Read later",
+      "Make a specific bookmark public and ask me before applying it"
+    ]
+  },
+  "scene": {
+    "description": "An ASCII ocean of sharks and fish with a terminal boot sequence and diagonal reveal",
+    "live": "Exploring the knowledge ocean",
+    "still": "Still frame",
+    "unavailable": "ASCII ocean",
+    "play": "Resume animation",
+    "pause": "Pause animation",
+    "replay": "Replay intro"
+  }
+}

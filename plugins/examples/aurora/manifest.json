@@ -1,0 +1,30 @@
+{
+  "id": "examples.aurora",
+  "version": "1.0.0",
+  "api": "^1.0.0",
+  "name": "极光配色 / Aurora",
+  "description": "通过设计变量接入的示例主题。",
+  "author": "MarkVault",
+  "permissions": [],
+  "contributes": [
+    {
+      "id": "aurora",
+      "kind": "theme",
+      "title": "极光 / Aurora",
+      "tokens": {
+        "--primary": "#7c3aed",
+        "--ring": "#7c3aed"
+      }
+    },
+    {
+      "id": "gentle",
+      "kind": "motion",
+      "title": "柔和入场 / Gentle motion",
+      "animation": {
+        "target": "cards",
+        "effect": "rise",
+        "duration": 240
+      }
+    }
+  ]
+}
