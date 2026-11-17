@@ -1,27 +1,39 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MarkVault · 可自托管的书签、标签页组与网页快照管理工具</title>
+    <title>MarkVault · Self-hosted bookmarks, tab groups and web page snapshots</title>
     <meta
       name="description"
-      content="MarkVault 把书签、标签页组和网页快照保存在你自己的服务器上：一个 Go 程序、一个容器即可运行，附带浏览器扩展、公开分享，以及面向 AI Agent 的 REST API 和 MCP 接口。"
+      content="MarkVault keeps your bookmarks, tab groups and web page snapshots on your own server. One Go program in one container, with a browser extension, public sharing, and a REST API and MCP endpoint for AI agents."
     />
     <meta name="theme-color" content="#2563eb" />
     <link rel="canonical" href="https://xinmang.github.io/MarkVault/" />
+    <link rel="alternate" hreflang="en" href="https://xinmang.github.io/MarkVault/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://xinmang.github.io/MarkVault/zh/" />
+    <link rel="alternate" hreflang="x-default" href="https://xinmang.github.io/MarkVault/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="MarkVault" />
-    <meta property="og:title" content="MarkVault · 可自托管的书签、标签页组与网页快照管理工具" />
+    <meta property="og:title" content="MarkVault · Self-hosted bookmarks, tab groups and web page snapshots" />
     <meta
       property="og:description"
-      content="把书签、标签页组和网页快照保存在自己的服务器上。一个 Go 程序、一个容器即可运行。"
+      content="Keep your bookmarks, tab groups and web page snapshots on your own server. One Go program, one container."
     />
     <meta property="og:url" content="https://xinmang.github.io/MarkVault/" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://xinmang.github.io/MarkVault/assets/img/og.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <script>
+      // 站点默认英文。访客此前在页头选过中文时，直接带到中文页的同一位置；中文页不做反向跳转
+      ;(function () {
+        try {
+          if (localStorage.getItem('markvault-docs-lang') === 'zh') {
+            location.replace('zh/' + location.search + location.hash)
+          }
+        } catch (error) {}
+      })()
       // 在样式加载前确定主题，避免暗色模式下先闪一下白底
       ;(function () {
         var root = document.documentElement
@@ -39,23 +51,24 @@
     <link rel="stylesheet" href="assets/site.css" />
   </head>
   <body>
-    <a class="skip-link" href="#main">跳到正文</a>
+    <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header">
       <div class="container">
-        <a class="brand" href="./" aria-label="MarkVault 首页">
+        <a class="brand" href="./" aria-label="MarkVault home">
           <svg viewBox="0 0 32 32" aria-hidden="true">
             <rect width="32" height="32" rx="8" fill="#3b82f6" />
             <path d="M9 8h14v17l-7-4.5-7 4.5z" fill="#ffffff" />
           </svg>
           <span>MarkVault</span>
         </a>
-        <nav class="nav" aria-label="站点导航">
-          <a href="./" aria-current="page">介绍</a>
-          <a href="api.html">接口文档</a>
-          <a href="https://github.com/xinmang/MarkVault">GitHub</a>
+        <nav class="nav" aria-label="Site">
+          <a href="./" aria-current="page">Overview</a>
+          <a href="api.html">API docs</a>
+          <a class="nav-github" href="https://github.com/xinmang/MarkVault">GitHub</a>
         </nav>
-        <button class="theme-toggle" type="button" aria-label="切换明暗模式">
+        <a class="lang-switch" href="zh/" lang="zh-CN" hreflang="zh-CN" title="切换到中文">中文</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle light and dark mode">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <circle cx="12" cy="12" r="4" />
             <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
@@ -70,16 +83,17 @@
     <main id="main">
       <section class="hero">
         <div class="container">
-          <span class="eyebrow">自托管 · 单容器 · 源码公开</span>
-          <h1>把书签、标签页组和网页快照保存在自己的服务器上</h1>
+          <span class="eyebrow">Self-hosted · Single container · Source available</span>
+          <h1>Keep your bookmarks, tab groups and web page snapshots on your own server</h1>
           <p class="lead">
-            MarkVault 是可自托管的书签管理工具。REST API、SQLite 数据库、本地对象存储和网页界面都由一个 Go
-            程序提供，一个容器即可运行，不需要外部数据库或对象存储服务。
+            MarkVault is a self-hosted bookmark manager. One Go program serves the REST API, the SQLite database, local
+            object storage and the web interface, so a single container is enough. It needs no external database or
+            object storage service.
           </p>
           <div class="cta">
-            <a class="btn btn-primary" href="#quickstart">快速开始</a>
-            <a class="btn btn-ghost" href="api.html">接口文档</a>
-            <a class="btn btn-ghost" href="https://github.com/xinmang/MarkVault">在 GitHub 查看</a>
+            <a class="btn btn-primary" href="#quickstart">Quick start</a>
+            <a class="btn btn-ghost" href="api.html">API docs</a>
+            <a class="btn btn-ghost" href="https://github.com/xinmang/MarkVault">View on GitHub</a>
           </div>
           <figure class="hero-media">
             <div class="frame">
@@ -87,7 +101,7 @@
                 <source src="media/markvault-intro.mp4" type="video/mp4" />
               </video>
             </div>
-            <figcaption>15 秒介绍：书签、界面主题、标签页组与统计</figcaption>
+            <figcaption>A 15-second tour: bookmarks, interface themes, tab groups and statistics</figcaption>
           </figure>
         </div>
       </section>
@@ -96,20 +110,20 @@
         <div class="container">
           <div class="cards">
             <div class="card">
-              <h3>一个容器就能运行</h3>
-              <p>Go 单程序内置 API、SQLite、对象存储和前端，不依赖 Cloudflare、外部数据库或对象存储服务。</p>
+              <h3>Runs in one container</h3>
+              <p>A single Go program includes the API, SQLite, object storage and the frontend. It does not depend on Cloudflare, an external database or an object storage service.</p>
             </div>
             <div class="card">
-              <h3>数据在自己手里</h3>
-              <p>全部数据集中在一个目录，停止服务后复制目录就是完整备份；另有 JSON 导入导出。</p>
+              <h3>Your data stays with you</h3>
+              <p>All data lives in one directory. Stop the service and copy the directory for a full backup. JSON import and export are also available.</p>
             </div>
             <div class="card">
-              <h3>浏览器扩展</h3>
-              <p>Chromium 扩展连接自己的实例，收藏网页、保存标签页组和带版本的网页快照。</p>
+              <h3>Browser extension</h3>
+              <p>A Chromium extension connects to your own instance to save pages, tab groups and versioned web page snapshots.</p>
             </div>
             <div class="card">
-              <h3>给 AI Agent 的接口</h3>
-              <p>细粒度权限的 API Key、稳定的 REST API 和 MCP 接口，写操作需要确认。</p>
+              <h3>An API for AI agents</h3>
+              <p>API keys with fine-grained permissions, a stable REST API and an MCP endpoint. Write actions need confirmation.</p>
             </div>
           </div>
         </div>
@@ -118,37 +132,38 @@
       <section class="section" id="bookmarks">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">书签与标签</p>
-            <h2>收藏、整理、再找回来</h2>
-            <p>搜索、筛选、置顶、批量整理、点击统计和回收站，都在一个页面里完成。</p>
+            <p class="kicker">Bookmarks and tags</p>
+            <h2>Save, organise and find things again</h2>
+            <p>Search, filters, pinning, batch organising, click counts and a trash, all on one page.</p>
           </div>
           <div class="feature">
             <div class="feature-text">
               <ul>
-                <li><strong>搜索与筛选</strong>：按关键词搜索标题、描述和网址，叠加多个标签缩小范围。</li>
-                <li><strong>置顶与批量整理</strong>：置顶、归档、改标签和删除都可以多选后一次完成。</li>
-                <li><strong>回收站</strong>：删除的书签先进回收站，可以恢复。</li>
-                <li><strong>网页快照</strong>：配合扩展为书签保存带版本的网页快照，原网页失效后仍能查看。</li>
+                <li><strong>Search and filters</strong>: search titles, descriptions and URLs by keyword, and combine several tags to narrow the results.</li>
+                <li><strong>Pinning and batch organising</strong>: pin, archive, retag or delete many selected bookmarks in one step.</li>
+                <li><strong>Trash</strong>: deleted bookmarks go to the trash first and can be restored.</li>
+                <li><strong>Web page snapshots</strong>: with the extension, save versioned snapshots of a bookmarked page, so it stays readable after the original goes offline.</li>
               </ul>
             </div>
             <figure class="shot">
               <a href="assets/img/home-light.webp" data-zoom>
-                <img src="assets/img/home-light.webp" width="1440" height="900" alt="明亮模式下的书签首页：左侧是标签栏，右侧是书签卡片" />
+                <img src="assets/img/home-light.webp" width="1440" height="900" alt="The bookmark home page in light mode: the tag sidebar on the left and bookmark cards on the right" />
               </a>
-              <figcaption><strong>书签首页</strong>　左侧标签栏显示每个标签的书签数量，右侧是卡片视图。</figcaption>
+              <figcaption><strong>Bookmark home.</strong> The tag sidebar shows how many bookmarks each tag has; the card view is on the right.</figcaption>
             </figure>
           </div>
           <div class="feature feature--flip">
             <div class="feature-text">
               <p>
-                明亮与暗色模式可以随时切换，也可以跟随系统。界面提供中文和英文两种语言。
+                Switch between light and dark mode at any time, or follow the system setting. The interface is available
+                in English and Simplified Chinese; the screenshots on this page show the Chinese interface.
               </p>
             </div>
             <figure class="shot">
               <a href="assets/img/home-dark.webp" data-zoom>
-                <img src="assets/img/home-dark.webp" width="1440" height="900" loading="lazy" decoding="async" alt="暗色模式下的书签首页" />
+                <img src="assets/img/home-dark.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The bookmark home page in dark mode" />
               </a>
-              <figcaption><strong>暗色模式</strong></figcaption>
+              <figcaption><strong>Dark mode</strong></figcaption>
             </figure>
           </div>
         </div>
@@ -157,37 +172,37 @@
       <section class="section section-soft" id="views">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">视图</p>
-            <h2>同一批书签，换一种看法</h2>
+            <p class="kicker">Views</p>
+            <h2>The same bookmarks, seen another way</h2>
             <p>
-              除了卡片、列表、极简和标题视图，画廊、时间线、站点分组和专注视图以内置插件的形式提供，在「设置 →
-              布局视图」里开启。
+              Besides the card, list, minimal and title views, the gallery, timeline, site groups and focus views ship as
+              built-in plugins. Turn them on under Settings → Layouts &amp; views.
             </p>
           </div>
           <div class="gallery gallery--2">
             <figure class="shot">
               <a href="assets/img/view-list.webp" data-zoom>
-                <img src="assets/img/view-list.webp" width="1440" height="900" loading="lazy" decoding="async" alt="列表视图：每个书签一行，带网址和备注" />
+                <img src="assets/img/view-list.webp" width="1440" height="900" loading="lazy" decoding="async" alt="List view: one row per bookmark, with its URL and note" />
               </a>
-              <figcaption><strong>列表视图</strong>　每个书签一行，带网址和备注。</figcaption>
+              <figcaption><strong>List view.</strong> One row per bookmark, with its URL and note.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/view-gallery.webp" data-zoom>
-                <img src="assets/img/view-gallery.webp" width="1440" height="900" loading="lazy" decoding="async" alt="画廊视图：封面或网站截图铺成磁贴" />
+                <img src="assets/img/view-gallery.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Gallery view: covers or page screenshots laid out as tiles" />
               </a>
-              <figcaption><strong>画廊视图</strong>　封面或网站截图铺成磁贴，悬停查看备注与标签。</figcaption>
+              <figcaption><strong>Gallery view.</strong> Covers or page screenshots as tiles; hover to see notes and tags.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/view-timeline.webp" data-zoom>
-                <img src="assets/img/view-timeline.webp" width="1440" height="900" loading="lazy" decoding="async" alt="时间线视图：按时间分段的书签列表" />
+                <img src="assets/img/view-timeline.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Timeline view: a bookmark list split into time periods" />
               </a>
-              <figcaption><strong>时间线视图</strong>　按今天、昨天、近 7 天和月份分段浏览。</figcaption>
+              <figcaption><strong>Timeline view.</strong> Grouped by today, yesterday, the last 7 days and month.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/view-domains.webp" data-zoom>
-                <img src="assets/img/view-domains.webp" width="1440" height="900" loading="lazy" decoding="async" alt="站点分组视图：同一网站的书签收在一个分组里" />
+                <img src="assets/img/view-domains.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Site groups view: bookmarks from the same site collected in one group" />
               </a>
-              <figcaption><strong>站点分组视图</strong>　同一网站的书签收进可折叠的分组。</figcaption>
+              <figcaption><strong>Site groups view.</strong> Bookmarks from the same site share a collapsible group.</figcaption>
             </figure>
           </div>
         </div>
@@ -196,46 +211,46 @@
       <section class="section" id="themes">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">界面主题</p>
-            <h2>五套界面主题，外加一片 ASCII 海洋</h2>
-            <p>主题、配色和页面版式在「设置 → 界面与配色」里切换，背景动画在「动画与背景」里设置。</p>
+            <p class="kicker">Interface themes</p>
+            <h2>Five interface themes, plus an ASCII ocean</h2>
+            <p>Themes, colors and page layouts are switched under Settings → Interface &amp; colors. Background animation is set under Animation &amp; backgrounds.</p>
           </div>
           <div class="gallery gallery--2">
             <figure class="shot">
               <a href="assets/img/theme-vibehub.webp" data-zoom>
-                <img src="assets/img/theme-vibehub.webp" width="1440" height="900" loading="lazy" decoding="async" alt="VibeHub 主题下的书签首页" />
+                <img src="assets/img/theme-vibehub.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The bookmark home page in the VibeHub theme" />
               </a>
-              <figcaption><strong>VibeHub</strong>　清晰边框、分栏工作区与快速交互反馈。</figcaption>
+              <figcaption><strong>VibeHub.</strong> Crisp borders, a split workspace and fast interaction feedback.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/theme-uiux.webp" data-zoom>
-                <img src="assets/img/theme-uiux.webp" width="1440" height="900" loading="lazy" decoding="async" alt="UI/UX Pro 主题下的书签首页" />
+                <img src="assets/img/theme-uiux.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The bookmark home page in the UI/UX Pro theme" />
               </a>
-              <figcaption><strong>UI/UX Pro</strong>　柔和表面、克制阴影与更鲜明的视觉层次。</figcaption>
+              <figcaption><strong>UI/UX Pro.</strong> Soft surfaces, restrained shadows and a stronger visual hierarchy.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/theme-ascii.webp" data-zoom>
-                <img src="assets/img/theme-ascii.webp" width="1440" height="900" loading="lazy" decoding="async" alt="ASCII 终端主题下的书签首页" />
+                <img src="assets/img/theme-ascii.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The bookmark home page in the ASCII terminal theme" />
               </a>
-              <figcaption><strong>ASCII 终端</strong>　边框、按钮、背景与动画都用 ASCII 字符绘制，带启动序列。</figcaption>
+              <figcaption><strong>ASCII terminal.</strong> Borders, buttons, background and motion are drawn with ASCII characters, with a boot sequence.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/theme-glass.webp" data-zoom>
-                <img src="assets/img/theme-glass.webp" width="1440" height="900" loading="lazy" decoding="async" alt="液态玻璃主题下的书签首页" />
+                <img src="assets/img/theme-glass.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The bookmark home page in the Liquid Glass theme" />
               </a>
-              <figcaption><strong>液态玻璃</strong>　半透明的玻璃材质界面，按钮与指针水滴靠近时互相吸附、融合。</figcaption>
+              <figcaption><strong>Liquid Glass.</strong> A translucent glass interface; buttons and the pointer droplet attract and fuse when close.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/ocean.webp" data-zoom>
-                <img src="assets/img/ocean.webp" width="1440" height="900" loading="lazy" decoding="async" alt="开启海洋背景的暗色书签首页，背景是 ASCII 字符组成的海洋生物" />
+                <img src="assets/img/ocean.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The dark bookmark home page with the ocean background on: sea creatures drawn with ASCII characters" />
               </a>
-              <figcaption><strong>海洋背景</strong>　ASCII 字符组成的鲨鱼、海豚或两者混合，带轻量动画。</figcaption>
+              <figcaption><strong>Ocean background.</strong> Sharks, dolphins or both, drawn with ASCII characters and lightly animated.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/settings.webp" data-zoom>
-                <img src="assets/img/settings.webp" width="1440" height="900" loading="lazy" decoding="async" alt="设置页的界面与配色分区，列出可选的界面主题" />
+                <img src="assets/img/settings.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The Interface &amp; colors section of the settings page, listing the available interface themes" />
               </a>
-              <figcaption><strong>设置页</strong>　经典、VibeHub、UI/UX Pro、ASCII 终端和液态玻璃五套主题在这里切换。</figcaption>
+              <figcaption><strong>Settings page.</strong> Switch between the Classic, VibeHub, UI/UX Pro, ASCII terminal and Liquid Glass themes here.</figcaption>
             </figure>
           </div>
         </div>
@@ -244,36 +259,38 @@
       <section class="section section-soft" id="layouts">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">页面版式</p>
-            <h2>连整页的排法也能换</h2>
+            <p class="kicker">Page layouts</p>
+            <h2>Rearrange the whole page</h2>
             <p>
-              视图只替换书签列表这一块，页面版式则接管整页排版：标签、工具栏、列表和侧栏放在哪里。首页有顶栏、起始页、三栏、标签看板和无限画布五种版式。
+              A view replaces only the bookmark list. A page layout takes over the whole page: where the tags, toolbar,
+              list and side panel go. The home page has five layouts: top bar, start page, three panes, tag board and
+              infinite canvas.
             </p>
           </div>
           <div class="gallery gallery--2">
             <figure class="shot">
               <a href="assets/img/layout-canvas.webp" data-zoom>
-                <img src="assets/img/layout-canvas.webp" width="1440" height="900" loading="lazy" decoding="async" alt="首页无限画布版式：标签和书签铺在画布上" />
+                <img src="assets/img/layout-canvas.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The infinite canvas home layout: tags and bookmarks spread over a canvas" />
               </a>
-              <figcaption><strong>无限画布</strong>　标签和书签铺在可以平移、缩放的画布上，不受屏幕大小限制。</figcaption>
+              <figcaption><strong>Infinite canvas.</strong> Tags and bookmarks sit on a canvas you can pan and zoom, not limited by the screen size.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/layout-reader.webp" data-zoom>
-                <img src="assets/img/layout-reader.webp" width="1440" height="900" loading="lazy" decoding="async" alt="首页三栏版式：左边标签，中间列表，右边书签详情" />
+                <img src="assets/img/layout-reader.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The three panes home layout: tags on the left, a list in the middle and bookmark details on the right" />
               </a>
-              <figcaption><strong>三栏</strong>　左边标签、中间紧凑列表、右边是选中书签的详情。</figcaption>
+              <figcaption><strong>Three panes.</strong> Tags on the left, a compact list in the middle and the selected bookmark's details on the right.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/layout-launchpad.webp" data-zoom>
-                <img src="assets/img/layout-launchpad.webp" width="1440" height="900" loading="lazy" decoding="async" alt="首页起始页版式：居中的搜索框和常用标签" />
+                <img src="assets/img/layout-launchpad.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The start page home layout: a centered search box and frequent tags" />
               </a>
-              <figcaption><strong>起始页</strong>　像浏览器起始页：居中的搜索框、常用标签和快捷访问，下面是全部书签。</figcaption>
+              <figcaption><strong>Start page.</strong> Like a browser start page: a centered search box, frequent tags and quick access, with all bookmarks below.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/layout-tagboard.webp" data-zoom>
-                <img src="assets/img/layout-tagboard.webp" width="1440" height="900" loading="lazy" decoding="async" alt="首页标签看板版式：每个标签一列" />
+                <img src="assets/img/layout-tagboard.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The tag board home layout: one column per tag" />
               </a>
-              <figcaption><strong>标签看板</strong>　每个标签一列，横向滚动，按主题总览收藏。</figcaption>
+              <figcaption><strong>Tag board.</strong> One column per tag, scrolled sideways, for an overview of your collection by topic.</figcaption>
             </figure>
           </div>
         </div>
@@ -282,44 +299,44 @@
       <section class="section" id="tab-groups">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">标签页组</p>
-            <h2>把一窗口的标签页收起来，之后再打开</h2>
-            <p>保存与整理多个网页，支持分组、待办和恢复。</p>
+            <p class="kicker">Tab groups</p>
+            <h2>Put a window of tabs away and open it again later</h2>
+            <p>Save and organise sets of pages, with groups, to-dos and restore.</p>
           </div>
           <div class="feature">
             <div class="feature-text">
               <ul>
-                <li><strong>分组与文件夹</strong>：标签页组可以放进文件夹，分层整理。</li>
-                <li><strong>待办</strong>：把还没处理的标签页标成待办，集中查看。</li>
-                <li><strong>回收站</strong>：删除的分组可以恢复。</li>
-                <li><strong>分享</strong>：单个分组可以生成分享链接，并设置有效期。</li>
+                <li><strong>Groups and folders</strong>: tab groups can go into folders for layered organisation.</li>
+                <li><strong>To-dos</strong>: mark tabs you have not dealt with yet as to-dos and review them in one place.</li>
+                <li><strong>Trash</strong>: deleted groups can be restored.</li>
+                <li><strong>Sharing</strong>: create a share link for a single group, with an optional expiry date.</li>
               </ul>
             </div>
             <figure class="shot">
               <a href="assets/img/tabs.webp" data-zoom>
-                <img src="assets/img/tabs.webp" width="1440" height="900" loading="lazy" decoding="async" alt="标签页组页面：左侧分组列表，中间是各组的标签页，右侧是待办事项" />
+                <img src="assets/img/tabs.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The tab groups page: the group list on the left, each group's tabs in the middle and to-dos on the right" />
               </a>
-              <figcaption><strong>标签页组</strong>　左侧是分组，中间是每组收纳的标签页，右侧是待办事项。</figcaption>
+              <figcaption><strong>Tab groups.</strong> Groups on the left, the tabs saved in each group in the middle and to-dos on the right.</figcaption>
             </figure>
           </div>
           <div class="gallery">
             <figure class="shot">
               <a href="assets/img/tabs-wall.webp" data-zoom>
-                <img src="assets/img/tabs-wall.webp" width="1440" height="900" loading="lazy" decoding="async" alt="标签页组卡片墙版式" />
+                <img src="assets/img/tabs-wall.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The card wall layout for tab groups" />
               </a>
-              <figcaption><strong>卡片墙</strong>　全部分组铺成多列卡片，标签页可在卡片之间拖动。</figcaption>
+              <figcaption><strong>Card wall.</strong> All groups as cards in several columns; tabs can be dragged between cards.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/tabs-canvas.webp" data-zoom>
-                <img src="assets/img/tabs-canvas.webp" width="1440" height="900" loading="lazy" decoding="async" alt="标签页组无限画布版式" />
+                <img src="assets/img/tabs-canvas.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The infinite canvas layout for tab groups" />
               </a>
-              <figcaption><strong>无限画布</strong>　每个分组是画布上的一张卡片，可以平移、缩放和自由摆放。</figcaption>
+              <figcaption><strong>Infinite canvas.</strong> Each group is a card on a canvas that you can pan, zoom and arrange freely.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/tab-stats.webp" data-zoom>
-                <img src="assets/img/tab-stats.webp" width="1440" height="900" loading="lazy" decoding="async" alt="标签页组使用统计：分组、标签页、分享数量和热门域名" />
+                <img src="assets/img/tab-stats.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Tab group usage statistics: numbers of groups, tabs and shares, and the top domains" />
               </a>
-              <figcaption><strong>使用统计</strong>　分组、标签页和分享的数量，以及收纳最多的域名。</figcaption>
+              <figcaption><strong>Usage statistics.</strong> Numbers of groups, tabs and shares, and the domains saved most often.</figcaption>
             </figure>
           </div>
         </div>
@@ -329,19 +346,19 @@
         <div class="container">
           <div class="feature feature--flip">
             <div class="feature-text">
-              <p class="kicker">数据统计</p>
-              <h2>看看自己到底在用哪些收藏</h2>
+              <p class="kicker">Statistics</p>
+              <h2>See which bookmarks you actually use</h2>
               <ul>
-                <li>书签与标签的点击趋势、排行和访问时段分布。</li>
-                <li>按日、周、月查看，可以自选时间范围，也可以只看某个标签。</li>
-                <li>另有一页「Agent 与 MCP」：外部调用的次数、成功率与耗时。只记录调用元数据，不保存请求参数和返回内容。</li>
+                <li>Click trends, rankings and time-of-day distribution for bookmarks and tags.</li>
+                <li>View by day, week or month, pick your own date range, or look at a single tag.</li>
+                <li>A separate Agent &amp; MCP page shows the number of external calls, their success rate and latency. Only call metadata is recorded; request parameters and returned content are not stored.</li>
               </ul>
             </div>
             <figure class="shot">
               <a href="assets/img/stats.webp" data-zoom>
-                <img src="assets/img/stats.webp" width="1440" height="900" loading="lazy" decoding="async" alt="数据统计页面：时间范围选择、点击汇总和点击趋势图" />
+                <img src="assets/img/stats.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The statistics page: date range selection, click totals and a click trend chart" />
               </a>
-              <figcaption><strong>点击统计</strong>　书签点击、标签点击、活跃天数和点击趋势。</figcaption>
+              <figcaption><strong>Click statistics.</strong> Bookmark clicks, tag clicks, active days and the click trend.</figcaption>
             </figure>
           </div>
         </div>
@@ -350,24 +367,25 @@
       <section class="section" id="sharing">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">公开分享</p>
-            <h2>挑一部分书签，做成公开页面</h2>
+            <p class="kicker">Public sharing</p>
+            <h2>Turn a selection of bookmarks into a public page</h2>
             <p>
-              把书签标记为公开，它们就会出现在你的分享页上。链接后缀、页面标题和描述都可以自己定；关闭分享后，分享页不再可访问。
+              Mark bookmarks as public and they appear on your share page. You choose the link suffix, page title and
+              description. Once sharing is turned off, the share page is no longer accessible.
             </p>
           </div>
           <div class="gallery gallery--2">
             <figure class="shot">
               <a href="assets/img/share-settings.webp" data-zoom>
-                <img src="assets/img/share-settings.webp" width="1440" height="900" loading="lazy" decoding="async" alt="设置页的公开分享分区：开关、链接后缀、页面标题和描述" />
+                <img src="assets/img/share-settings.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The Public sharing section of the settings page: the switch, link suffix, page title and description" />
               </a>
-              <figcaption><strong>分享设置</strong>　开关、链接后缀、页面标题和描述。</figcaption>
+              <figcaption><strong>Share settings.</strong> The switch, link suffix, page title and description.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/share-public.webp" data-zoom>
-                <img src="assets/img/share-public.webp" width="1440" height="900" loading="lazy" decoding="async" alt="访客看到的公开分享页：标签栏和公开书签列表" />
+                <img src="assets/img/share-public.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The public share page as visitors see it: the tag sidebar and the list of public bookmarks" />
               </a>
-              <figcaption><strong>分享页</strong>　访客不用登录就能浏览公开书签，并按标签筛选。</figcaption>
+              <figcaption><strong>Share page.</strong> Visitors browse the public bookmarks and filter them by tag without signing in.</figcaption>
             </figure>
           </div>
         </div>
@@ -376,47 +394,48 @@
       <section class="section section-soft" id="agent">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">Agent 与 MCP</p>
-            <h2>让 AI 读写你的书签，写入由你确认</h2>
+            <p class="kicker">Agent and MCP</p>
+            <h2>Let AI read and write your bookmarks, with writes confirmed by you</h2>
             <p>
-              实例自带接入指南页，外部 Agent 可以通过 Skill、REST API 或 MCP 连接。参数、权限和示例见
-              <a href="api.html">接口文档</a>。
+              Every instance includes an integration guide page. External agents can connect through the Skill, the REST
+              API or MCP. Parameters, permissions and examples are in the
+              <a href="api.html">API docs</a>.
             </p>
           </div>
           <div class="feature">
             <div class="feature-text">
               <ul>
-                <li><strong>细粒度 API Key</strong>：按用途选只读、基础或完整模板，也可以逐项授权；可撤销、可设置过期时间。</li>
-                <li><strong>REST API</strong>：<code>/api/v1/agent/*</code> 提供书签、标签和搜索接口，附带 OpenAPI 3.1 契约。</li>
-                <li><strong>MCP</strong>：<code>POST /api/mcp</code> 提供 13 个内置工具，工具列表按 Key 的权限过滤，写工具必须带 <code>confirm: true</code>。</li>
-                <li><strong>站内 Agent</strong>：配置模型后可以用自然语言查询和整理书签，写操作先出确认卡片，确认前不改数据。</li>
+                <li><strong>Fine-grained API keys</strong>: choose the read-only, basic or full template to suit the purpose, or grant permissions one by one. Keys can be revoked and given an expiry time.</li>
+                <li><strong>REST API</strong>: <code>/api/v1/agent/*</code> provides bookmark, tag and search endpoints, with an OpenAPI 3.1 contract.</li>
+                <li><strong>MCP</strong>: <code>POST /api/mcp</code> provides 13 built-in tools. The tool list is filtered by the key's permissions, and write tools must be called with <code>confirm: true</code>.</li>
+                <li><strong>In-app agent</strong>: once a model is configured, query and organise bookmarks in natural language. Write actions show a confirmation card first, and no data changes until you confirm.</li>
               </ul>
             </div>
             <figure class="shot">
               <a href="assets/img/agent.webp" data-zoom>
-                <img src="assets/img/agent.webp" width="1440" height="654" loading="lazy" decoding="async" alt="实例内的 Agent 接入页首屏" />
+                <img src="assets/img/agent.webp" width="1440" height="654" loading="lazy" decoding="async" alt="The top of the Agent access page inside an instance" />
               </a>
-              <figcaption><strong>接入指南页</strong>　每个实例的 <code>/agent</code> 页面。</figcaption>
+              <figcaption><strong>Integration guide page.</strong> The <code>/agent</code> page of every instance.</figcaption>
             </figure>
           </div>
           <div class="gallery">
             <figure class="shot">
               <a href="assets/img/agent-api.webp" data-zoom>
-                <img src="assets/img/agent-api.webp" width="1440" height="816" loading="lazy" decoding="async" alt="接入指南页的 REST API 分页：端点列表、curl 示例和机器可读资源" />
+                <img src="assets/img/agent-api.webp" width="1440" height="816" loading="lazy" decoding="async" alt="The REST API tab of the integration guide page: the endpoint list, curl examples and machine-readable resources" />
               </a>
-              <figcaption><strong>REST API</strong>　端点列表、curl 示例和机器可读资源。</figcaption>
+              <figcaption><strong>REST API.</strong> The endpoint list, curl examples and machine-readable resources.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/agent-mcp.webp" data-zoom>
-                <img src="assets/img/agent-mcp.webp" width="1440" height="684" loading="lazy" decoding="async" alt="接入指南页的 MCP 分页：连接说明和 initialize 示例" />
+                <img src="assets/img/agent-mcp.webp" width="1440" height="684" loading="lazy" decoding="async" alt="The MCP tab of the integration guide page: connection notes and an initialize example" />
               </a>
-              <figcaption><strong>MCP</strong>　连接说明、initialize 示例和内置工具。</figcaption>
+              <figcaption><strong>MCP.</strong> Connection notes, an initialize example and the built-in tools.</figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/api-keys.webp" data-zoom>
-                <img src="assets/img/api-keys.webp" width="1440" height="900" loading="lazy" decoding="async" alt="设置页的 API 与外部访问分区：功能开关和 API Key 列表" />
+                <img src="assets/img/api-keys.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The API &amp; external access section of the settings page: feature switches and the API key list" />
               </a>
-              <figcaption><strong>API Key 管理</strong>　在「设置 → API 与外部访问」创建和撤销。</figcaption>
+              <figcaption><strong>API key management.</strong> Create and revoke keys under Settings → API &amp; external access.</figcaption>
             </figure>
           </div>
         </div>
@@ -426,22 +445,26 @@
         <div class="container">
           <div class="feature feature--flip">
             <div class="feature-text">
-              <p class="kicker">插件</p>
-              <h2>内置功能按需开关，还能装第三方插件</h2>
+              <p class="kicker">Plugins</p>
+              <h2>Switch built-in features on as needed, and install third-party plugins</h2>
               <p>
-                界面主题、配色、页面版式、各种视图、海洋背景、图床、通行密钥和外部 MCP 连接等内置功能，都在设置页对应的分区里开关和配置。
+                Built-in features such as interface themes, color palettes, page layouts, the various views, the ocean
+                background, image hosting, passkeys and external MCP connections are switched on and configured in the
+                matching section of the settings page.
               </p>
               <p>
-                第三方插件在「设置 → 自定义插件」管理：管理员可以通过离线目录、ZIP 或固定的 GitHub Release
-                资产安装，安装后每个用户再单独授权。插件出问题时，打开 <code>/plugins?safe=1</code> 会跳过可选插件，方便停用。
+                Third-party plugins are managed under Settings → Custom plugins. Administrators can install them from
+                the offline catalog, a ZIP file or a pinned GitHub Release asset; each user then grants permissions
+                separately. If a plugin misbehaves, opening <code>/plugins?safe=1</code> skips optional plugins so that
+                it can be turned off.
               </p>
-              <p><a href="https://github.com/xinmang/MarkVault/blob/main/docs/plugins.md">插件开发与部署文档 →</a></p>
+              <p><a href="https://github.com/xinmang/MarkVault/blob/main/docs/plugins.md">Plugin development and deployment guide →</a></p>
             </div>
             <figure class="shot">
               <a href="assets/img/plugins.webp" data-zoom>
-                <img src="assets/img/plugins.webp" width="1440" height="900" loading="lazy" decoding="async" alt="自定义插件页面：插件市场里的官方示例和管理员安装入口" />
+                <img src="assets/img/plugins.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The Custom plugins page: official examples in the plugin catalog and the administrator's install options" />
               </a>
-              <figcaption><strong>自定义插件</strong>　插件市场里有随版本提供的官方示例，可以离线安装。</figcaption>
+              <figcaption><strong>Custom plugins.</strong> The plugin catalog has official examples bundled with each version, which can be installed offline.</figcaption>
             </figure>
           </div>
         </div>
@@ -451,21 +474,21 @@
         <div class="container">
           <div class="feature">
             <div class="feature-text">
-              <p class="kicker">数据与备份</p>
-              <h2>一个目录装下全部数据</h2>
+              <p class="kicker">Data and backup</p>
+              <h2>One directory holds all the data</h2>
               <ul>
-                <li>SQLite 数据库、对象文件（快照、图片、截图）和实例密钥都在同一个数据目录里。</li>
-                <li><strong>完整备份</strong>：停止服务，复制整个目录。</li>
-                <li><strong>JSON 导入导出</strong>：导出书签、标签和标签页组，兼容旧版 TMarks 的 JSON。它只含业务数据，不含快照文件、图片和实例密钥，不能用来恢复整个实例。</li>
-                <li>快照保留数量在设置里调整；文件存储的总容量上限由部署配置 <code>STORAGE_MAX_TOTAL_BYTES</code> 决定，默认约 7 GiB。</li>
+                <li>The SQLite database, stored objects (snapshots, images, screenshots) and the instance keys are all in the same data directory.</li>
+                <li><strong>Full backup</strong>: stop the service and copy the whole directory.</li>
+                <li><strong>JSON import and export</strong>: export bookmarks, tags and tab groups, compatible with legacy TMarks JSON. It contains business data only, without snapshot files, images or instance keys, and cannot restore a full instance.</li>
+                <li>The number of snapshots to keep is adjusted in the settings. The total file storage limit is set by the deployment option <code>STORAGE_MAX_TOTAL_BYTES</code> and defaults to about 7 GiB.</li>
               </ul>
-              <p><a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md">备份与恢复步骤见部署指南 →</a></p>
+              <p><a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md">Backup and restore steps are in the deployment guide →</a></p>
             </div>
             <figure class="shot">
               <a href="assets/img/import-export.webp" data-zoom>
-                <img src="assets/img/import-export.webp" width="1440" height="900" loading="lazy" decoding="async" alt="设置页的数据与快照分区：快照保留策略、文件存储用量和导入数据" />
+                <img src="assets/img/import-export.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The Data &amp; snapshots section of the settings page: snapshot retention, file storage usage and data import" />
               </a>
-              <figcaption><strong>数据与快照</strong>　快照保留策略、存储用量和导入导出。</figcaption>
+              <figcaption><strong>Data &amp; snapshots.</strong> Snapshot retention, storage usage, and import and export.</figcaption>
             </figure>
           </div>
         </div>
@@ -475,25 +498,26 @@
         <div class="container">
           <div class="feature feature--flip">
             <div class="feature-text">
-              <p class="kicker">浏览器扩展</p>
-              <h2>在浏览器里一键收进自己的实例</h2>
+              <p class="kicker">Browser extension</p>
+              <h2>Save to your own instance in one click from the browser</h2>
               <p>
-                Chromium 扩展连接你自己的实例：收藏网页、一键保存标签页组、保存带版本的网页快照，并把
-                X、linux.do 等站点的帖子生成图文卡片。适用于 Chrome、Edge、Brave 等 Chromium 内核浏览器。
+                The Chromium extension connects to your own instance. It saves pages, saves tab groups in one click,
+                saves versioned web page snapshots, and turns posts from X, linux.do and similar sites into image cards.
+                It works in Chrome, Edge, Brave and other Chromium-based browsers.
               </p>
               <ol>
-                <li>在实例的「浏览器」页面或扩展仓库的最新 Release 下载 <code>markvault-extension-chrome.zip</code>。</li>
-                <li>解压后打开 <code>chrome://extensions/</code>，开启开发者模式，选择「加载已解压的扩展程序」。</li>
-                <li>在 MarkVault 的设置里创建权限合适的 API Key，在扩展中填写实例地址和 Key。</li>
-                <li>扩展请求带跨域来源时，把 <code>chrome-extension://&lt;扩展 ID&gt;</code> 加入 <code>CORS_ALLOWED_ORIGINS</code> 后重启服务。</li>
+                <li>Download <code>markvault-extension-chrome.zip</code> from the Browser page of your instance or from the latest release of the extension repository.</li>
+                <li>Unzip it, open <code>chrome://extensions/</code>, turn on developer mode and choose "Load unpacked".</li>
+                <li>Create an API key with suitable permissions in the MarkVault settings, then enter the instance URL and the key in the extension.</li>
+                <li>If the extension's requests carry a cross-origin <code>Origin</code>, add <code>chrome-extension://&lt;extension-id&gt;</code> to <code>CORS_ALLOWED_ORIGINS</code> and restart the service.</li>
               </ol>
-              <p><a href="https://github.com/xinmang/markvault-extension">扩展在 markvault-extension 仓库独立维护 →</a></p>
+              <p><a href="https://github.com/xinmang/markvault-extension">The extension is maintained separately in the markvault-extension repository →</a></p>
             </div>
             <figure class="shot">
               <a href="assets/img/extension.webp" data-zoom>
-                <img src="assets/img/extension.webp" width="1440" height="900" loading="lazy" decoding="async" alt="实例内的浏览器插件页面：下载入口和支持的浏览器" />
+                <img src="assets/img/extension.webp" width="1440" height="900" loading="lazy" decoding="async" alt="The browser extension page inside an instance: download links and supported browsers" />
               </a>
-              <figcaption><strong>浏览器插件页</strong>　实例内的下载入口和安装指南。</figcaption>
+              <figcaption><strong>Browser extension page.</strong> The download links and install guide inside an instance.</figcaption>
             </figure>
           </div>
         </div>
@@ -502,28 +526,28 @@
       <section class="section section-soft" id="mobile">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">手机</p>
-            <h2>手机浏览器里也能用</h2>
-            <p>界面是响应式的。窄屏下底部导航在书签、标签页和 Agent 之间切换。</p>
+            <p class="kicker">Mobile</p>
+            <h2>Works in a phone browser too</h2>
+            <p>The interface is responsive. On narrow screens a bottom navigation bar switches between bookmarks, tab groups and the agent.</p>
           </div>
           <div class="phones">
             <figure class="shot">
               <a href="assets/img/mobile-home.webp" data-zoom>
-                <img src="assets/img/mobile-home.webp" width="780" height="1688" loading="lazy" decoding="async" alt="手机上的书签首页" />
+                <img src="assets/img/mobile-home.webp" width="780" height="1688" loading="lazy" decoding="async" alt="The bookmark home page on a phone" />
               </a>
-              <figcaption><strong>书签</strong></figcaption>
+              <figcaption><strong>Bookmarks</strong></figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/mobile-dark.webp" data-zoom>
-                <img src="assets/img/mobile-dark.webp" width="780" height="1688" loading="lazy" decoding="async" alt="手机上暗色模式的书签首页" />
+                <img src="assets/img/mobile-dark.webp" width="780" height="1688" loading="lazy" decoding="async" alt="The bookmark home page in dark mode on a phone" />
               </a>
-              <figcaption><strong>暗色模式</strong></figcaption>
+              <figcaption><strong>Dark mode</strong></figcaption>
             </figure>
             <figure class="shot">
               <a href="assets/img/mobile-tabs.webp" data-zoom>
-                <img src="assets/img/mobile-tabs.webp" width="780" height="1688" loading="lazy" decoding="async" alt="手机上的标签页组页面" />
+                <img src="assets/img/mobile-tabs.webp" width="780" height="1688" loading="lazy" decoding="async" alt="The tab groups page on a phone" />
               </a>
-              <figcaption><strong>标签页组</strong></figcaption>
+              <figcaption><strong>Tab groups</strong></figcaption>
             </figure>
           </div>
         </div>
@@ -532,29 +556,29 @@
       <section class="section" id="quickstart">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">快速开始</p>
-            <h2>用 Docker Compose 部署</h2>
-            <p>需要 Docker Engine 24+ 与 Docker Compose v2。部署方案面向单机、单容器，不支持多个副本共享同一个数据目录。</p>
+            <p class="kicker">Quick start</p>
+            <h2>Deploy with Docker Compose</h2>
+            <p>Requires Docker Engine 24+ and Docker Compose v2. The deployment targets one host and one container; multiple replicas sharing a data directory are not supported.</p>
           </div>
           <pre><code>git clone https://github.com/xinmang/MarkVault.git
 cd MarkVault
-cp .env.example .env      # PowerShell 用 Copy-Item .env.example .env
-mkdir -p data/go &amp;&amp; sudo chown 1000:1000 data/go   # 仅 Linux，必须在首次启动前完成
+cp .env.example .env      # PowerShell: Copy-Item .env.example .env
+mkdir -p data/go &amp;&amp; sudo chown 1000:1000 data/go   # Linux only, before the first start
 docker compose pull app
 docker compose up -d --no-build --wait</code></pre>
           <p>
-            打开 <strong>http://localhost:8787</strong> 注册账号。<code>curl http://localhost:8787/api/v1/health</code>
-            可以检查服务是否正常。
+            Open <strong>http://localhost:8787</strong> and register. <code>curl http://localhost:8787/api/v1/health</code>
+            checks that the service is up.
           </p>
           <ul>
-            <li>首个注册的账号成为管理员，随后自动关闭注册；管理员可以在设置里重新开放。</li>
-            <li>容器以 UID/GID <code>1000:1000</code> 运行。Linux 上新建的数据目录要像上面那样先交给该用户，否则容器无法写入 <code>/data</code>。</li>
-            <li>端口默认只绑定 <code>127.0.0.1</code>（<code>APP_BIND</code>）。公网访问请在前面放一个提供 HTTPS 的反向代理。</li>
-            <li>默认镜像是 <code>ghcr.io/xinmang/markvault:latest</code>。生产环境请在 <code>.env</code> 里用 <code>MARKVAULT_IMAGE</code> 固定版本标签或镜像摘要。</li>
+            <li>The first account to register becomes the administrator, and registration is then closed automatically. The administrator can reopen it in the settings.</li>
+            <li>The container runs as UID/GID <code>1000:1000</code>. On Linux, a newly created data directory must be handed to that user first, as shown above; otherwise the container cannot write to <code>/data</code>.</li>
+            <li>By default the port is bound to <code>127.0.0.1</code> only (<code>APP_BIND</code>). For public access, put a reverse proxy with HTTPS in front of it.</li>
+            <li>The default image is <code>ghcr.io/xinmang/markvault:latest</code>. For production, pin a version tag or image digest with <code>MARKVAULT_IMAGE</code> in <code>.env</code>.</li>
           </ul>
           <p>
-            配置项、HTTPS、源码构建、更新和故障排查见
-            <a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md">部署指南</a>。
+            Configuration, HTTPS, building from source, updates and troubleshooting are covered in the
+            <a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md">deployment guide</a>.
           </p>
         </div>
       </section>
@@ -562,33 +586,34 @@ docker compose up -d --no-build --wait</code></pre>
       <section class="section section-soft" id="docs">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">文档</p>
-            <h2>接着往下读</h2>
+            <p class="kicker">Documentation</p>
+            <h2>Read on</h2>
+            <p>The guides in the repository are currently written in Chinese.</p>
           </div>
           <ul class="link-list">
             <li>
-              <a href="api.html"><strong>接口文档</strong><span>鉴权、权限、Agent REST API、MCP 和应用接口。</span></a>
+              <a href="api.html"><strong>API docs</strong><span>Authentication, permissions, the Agent REST API, MCP and the app API.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md"><strong>部署指南</strong><span>配置项、HTTPS、备份恢复、数据目录权限、故障排查。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/DEPLOYMENT.md"><strong>Deployment guide</strong><span>Configuration, HTTPS, backup and restore, data directory permissions, troubleshooting.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/GO-DEPLOYMENT.md"><strong>Go 部署与迁移</strong><span>旧实例迁移、离线预构建。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/GO-DEPLOYMENT.md"><strong>Go deployment and migration</strong><span>Migrating a legacy instance, offline prebuilt image.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/plugins.md"><strong>插件</strong><span>内置功能、自定义插件的开发与部署。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/plugins.md"><strong>Plugins</strong><span>Built-in features, developing and deploying custom plugins.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/image-hosting.md"><strong>图床</strong><span>把封面、截图和快照图片托管到外部图床。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/image-hosting.md"><strong>Image hosting</strong><span>Host covers, screenshots and snapshot images on an external image host.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/passkeys-and-registration.md"><strong>注册控制与通行密钥</strong><span>开放或关闭注册，使用通行密钥登录。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/docs/passkeys-and-registration.md"><strong>Registration and passkeys</strong><span>Open or close registration, and sign in with passkeys.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/SECURITY.md"><strong>安全说明</strong><span>漏洞报告、已实施的防护、部署边界。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/SECURITY.md"><strong>Security</strong><span>Reporting vulnerabilities, implemented protections, deployment boundaries.</span></a>
             </li>
             <li>
-              <a href="https://github.com/xinmang/MarkVault/blob/main/CONTRIBUTING.md"><strong>参与贡献</strong><span>开发约定、验证命令、版本号与发布。</span></a>
+              <a href="https://github.com/xinmang/MarkVault/blob/main/CONTRIBUTING.md"><strong>Contributing</strong><span>Development conventions, verification commands, versioning and releases.</span></a>
             </li>
           </ul>
         </div>
@@ -597,21 +622,24 @@ docker compose up -d --no-build --wait</code></pre>
       <section class="section" id="license">
         <div class="container">
           <div class="section-head">
-            <p class="kicker">致谢与许可证</p>
-            <h2>来源与使用条件</h2>
+            <p class="kicker">Acknowledgements and license</p>
+            <h2>Origins and terms of use</h2>
           </div>
           <ul>
             <li>
-              MarkVault 基于 <a href="https://github.com/ai-tmarks/tmarks">TMarks</a>（作者 TMarks Team）改造：后端改为 Go
-              单程序、本地 SQLite 与对象存储，并扩展了数据迁移、Agent / MCP 接入和界面偏好。MarkVault 是独立修改版本，不代表上游项目。
+              MarkVault is adapted from <a href="https://github.com/ai-tmarks/tmarks">TMarks</a> by the TMarks Team: the
+              backend became a single Go program with local SQLite and object storage, and data migration, Agent / MCP
+              access and interface preferences were extended. MarkVault is an independent modified version and does not
+              represent the upstream project.
             </li>
             <li>
-              ASCII 海洋背景的鱼群模拟和字符渲染改编自
-              <a href="https://github.com/stackedlol/ascii-sharks">ascii-sharks</a>（MIT）。
+              The fish simulation and character rendering of the ASCII ocean background are adapted from
+              <a href="https://github.com/stackedlol/ascii-sharks">ascii-sharks</a> (MIT).
             </li>
             <li>
-              源代码以 <strong>CC BY-NC 4.0</strong> 提供，不允许商业用途。使用、修改和分发时请遵守
-              <a href="https://github.com/xinmang/MarkVault/blob/main/LICENSE">LICENSE</a>，其中保留了 TMarks Team 的署名。
+              The source code is provided under <strong>CC BY-NC 4.0</strong>, which does not permit commercial use.
+              Follow the <a href="https://github.com/xinmang/MarkVault/blob/main/LICENSE">LICENSE</a> when using,
+              modifying or distributing it; the TMarks Team attribution is preserved there.
             </li>
           </ul>
         </div>
@@ -620,11 +648,11 @@ docker compose up -d --no-build --wait</code></pre>
 
     <footer class="site-footer">
       <div class="container">
-        <span>MarkVault · 源代码以 CC BY-NC 4.0 提供</span>
-        <nav aria-label="页脚导航">
-          <a href="api.html">接口文档</a>
+        <span>MarkVault · Source code provided under CC BY-NC 4.0</span>
+        <nav aria-label="Footer">
+          <a href="api.html">API docs</a>
           <a href="https://github.com/xinmang/MarkVault">GitHub</a>
-          <a href="https://github.com/xinmang/MarkVault/issues">问题反馈</a>
+          <a href="https://github.com/xinmang/MarkVault/issues">Issues</a>
         </nav>
       </div>
     </footer>

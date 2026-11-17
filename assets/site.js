@@ -1,18 +1,55 @@
-// MarkVault 文档站脚本：主题切换、代码复制、截图放大、接口文档目录。
+// MarkVault 文档站脚本：语言切换、主题切换、代码复制、截图放大、接口文档目录。
 // 页面在禁用脚本时也能完整阅读，这里只做增强。
 ;(function () {
   'use strict'
 
   var root = document.documentElement
   var THEME_KEY = 'markvault-docs-theme'
+  var LANG_KEY = 'markvault-docs-lang'
+
+  // 脚本生成的界面文字。页面默认是英文，中文页在 zh/ 目录下，按 <html lang> 区分
+  var isChinese = (root.getAttribute('lang') || '').toLowerCase().indexOf('zh') === 0
+  var text = isChinese
+    ? {
+        toLight: '切换到明亮模式',
+        toDark: '切换到暗色模式',
+        copy: '复制',
+        copied: '已复制',
+        copyFailed: '复制失败',
+        zoom: '截图放大',
+        close: '关闭',
+      }
+    : {
+        toLight: 'Switch to light mode',
+        toDark: 'Switch to dark mode',
+        copy: 'Copy',
+        copied: 'Copied',
+        copyFailed: 'Copy failed',
+        zoom: 'Enlarged screenshot',
+        close: 'Close',
+      }
+
+  // 语言切换：链接本身指向另一种语言的同一页。这里只做两件事：
+  // 记住这次选择（英文页的 <head> 脚本据此把选过中文的访客带回中文页），并保留当前锚点
+  var langSwitch = document.querySelector('.lang-switch')
+  if (langSwitch) {
+    langSwitch.addEventListener('click', function () {
+      try {
+        localStorage.setItem(LANG_KEY, isChinese ? 'en' : 'zh')
+      } catch (error) {
+        // 无法保存时只是不记住选择，链接照常跳转
+      }
+      if (location.hash) langSwitch.hash = location.hash
+    })
+  }
 
   // 主题切换：初始主题由 <head> 里的内联脚本设置，这里只处理点击
   var toggle = document.querySelector('.theme-toggle')
   function describeToggle() {
     if (!toggle) return
     var dark = root.getAttribute('data-theme') === 'dark'
-    toggle.setAttribute('aria-label', dark ? '切换到明亮模式' : '切换到暗色模式')
-    toggle.setAttribute('title', dark ? '切换到明亮模式' : '切换到暗色模式')
+    toggle.setAttribute('aria-label', dark ? text.toLight : text.toDark)
+    toggle.setAttribute('title', dark ? text.toLight : text.toDark)
   }
   if (toggle) {
     describeToggle()
@@ -58,19 +95,19 @@
     var button = document.createElement('button')
     button.type = 'button'
     button.className = 'copy'
-    button.textContent = '复制'
+    button.textContent = text.copy
     button.addEventListener('click', function () {
       copyText(pre.textContent.replace(/\n$/, '')).then(
         function () {
-          button.textContent = '已复制'
+          button.textContent = text.copied
           setTimeout(function () {
-            button.textContent = '复制'
+            button.textContent = text.copy
           }, 1600)
         },
         function () {
-          button.textContent = '复制失败'
+          button.textContent = text.copyFailed
           setTimeout(function () {
-            button.textContent = '复制'
+            button.textContent = text.copy
           }, 1600)
         }
       )
@@ -83,11 +120,11 @@
   if (zoomLinks.length && typeof HTMLDialogElement === 'function') {
     var dialog = document.createElement('dialog')
     dialog.className = 'lightbox'
-    dialog.setAttribute('aria-label', '截图放大')
+    dialog.setAttribute('aria-label', text.zoom)
     var close = document.createElement('button')
     close.type = 'button'
     close.className = 'lightbox-close'
-    close.setAttribute('aria-label', '关闭')
+    close.setAttribute('aria-label', text.close)
     close.textContent = '×'
     var image = document.createElement('img')
     image.alt = ''

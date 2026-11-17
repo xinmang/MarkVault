@@ -234,6 +234,28 @@ pre {
   font-weight: 600;
 }
 
+/* 语言切换是普通链接，指向另一种语言的同一页，禁用脚本时也能用 */
+.lang-switch {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--text-soft);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.lang-switch:hover {
+  color: var(--text);
+  border-color: var(--text-faint);
+  text-decoration: none;
+}
+
 /* 主题切换依赖脚本，禁用脚本时不显示按钮 */
 .theme-toggle {
   display: none;
@@ -273,9 +295,29 @@ pre {
   display: block;
 }
 
+/* 窄屏放不下全部页头内容：先隐藏 GitHub 链接（页脚里还有），再隐藏品牌文字 */
+@media (max-width: 560px) {
+  .nav-github {
+    display: none;
+  }
+}
+
 @media (max-width: 420px) {
   .brand span {
     display: none;
+  }
+
+  .site-header .container {
+    gap: 6px;
+  }
+
+  .nav a {
+    padding: 6px 7px;
+    font-size: 14px;
+  }
+
+  .lang-switch {
+    padding: 0 8px;
   }
 }
 
