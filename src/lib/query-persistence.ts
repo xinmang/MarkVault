@@ -19,6 +19,8 @@ const NON_PERSISTED_QUERY_KEYS = new Set([
   'auth-options',
   'registration-settings',
   'passkeys',
+  // 备注可能随时被 Agent 追加，每次打开弹窗都重新读取
+  'notes',
 ])
 
 /**

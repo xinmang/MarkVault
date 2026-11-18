@@ -99,8 +99,8 @@
       "confirmDescription": "Every MCP write tool requires confirm=true after the user explicitly approves it."
     },
     "exampleTitle": "MCP initialize example",
-    "toolsTitle": "13 built-in tools",
-    "toolsDescription": "Covers account details, search, and bookmark/tag reads, creates, updates, soft deletion, and restoration. Bookmark deletion only moves items to trash."
+    "toolsTitle": "18 built-in tools",
+    "toolsDescription": "Covers account details, search, and bookmark/tag reads, creates, updates, soft deletion, and restoration, plus reading tab groups and reading or appending notes on bookmarks and tabs. Bookmark deletion only moves items to trash."
   },
   "security": {
     "title": "Least privilege and human approval work together",

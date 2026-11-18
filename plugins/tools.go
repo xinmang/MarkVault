@@ -75,6 +75,16 @@ func RunTool(name string, args object) (plugin.BusinessRequest, error) {
 		operation = "updateTag"
 	case "markvault_delete_tag":
 		operation = "deleteTag"
+	case "markvault_list_bookmark_notes", "markvault_list_tab_groups", "markvault_list_tab_notes":
+		// 分页参数走查询串，与 REST 接口一致。
+		for key, value := range body {
+			query.Set(key, fmt.Sprint(value))
+		}
+		operation = map[string]string{"markvault_list_bookmark_notes": "listBookmarkNotes", "markvault_list_tab_groups": "listGroups", "markvault_list_tab_notes": "listTabNotes"}[name]
+	case "markvault_add_bookmark_note":
+		operation = "createBookmarkNote"
+	case "markvault_add_tab_note":
+		operation = "createTabNote"
 	default:
 		return plugin.BusinessRequest{}, errors.New("未知工具")
 	}

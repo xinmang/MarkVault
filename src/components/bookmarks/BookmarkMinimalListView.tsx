@@ -140,7 +140,7 @@ function MinimalRow({
         <BookmarkUrlText value={bookmark.url} />
       </a>
       
-      {/* 备注 - 移动端隐藏 */}
+      {/* 描述 - 移动端隐藏 */}
       <span className="hidden sm:block text-xs text-base-content/70 truncate min-w-0" title={bookmark.description || undefined}>
         {bookmark.description || t('view.noDescription')}
       </span>
@@ -150,6 +150,7 @@ function MinimalRow({
         <BookmarkMediaButtons
           bookmark={bookmark}
           onOpenScreenshot={() => screenshotLightbox.open(bookmark)}
+          readOnly={readOnly}
           buttonClassName="w-8 h-8"
           iconClassName="w-4 h-4"
         />

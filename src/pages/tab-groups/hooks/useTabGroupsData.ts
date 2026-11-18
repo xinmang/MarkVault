@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { sortTabGroupsForView, type SortOption } from '@/components/tab-groups/sortUtils'
 import { useTabGroupsQuery } from '@/hooks/useTabGroupsQuery'
 import { searchInFields } from '@/lib/search-utils'
+import { noteSearchText } from '@/components/notes/note-utils'
 import type { TabGroup } from '@/lib/types'
 
 interface UseTabGroupsDataProps {
@@ -77,7 +78,7 @@ export function useTabGroupsData({
       }
 
       const matchingItems = group.items.filter((item) =>
-        searchInFields([item.title, item.url], query)
+        searchInFields([item.title, item.url, noteSearchText(item.notes)], query)
       )
 
       if (matchingItems.length > 0) {

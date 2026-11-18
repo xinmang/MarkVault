@@ -1,11 +1,13 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { NotebookPen } from 'lucide-react'
 import { useTags } from '@/hooks/useTags'
 import type { Bookmark } from '@/lib/types'
 import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { Z_INDEX } from '@/lib/constants/z-index'
 import { useDeleteScreenshot } from '@/hooks/useBookmarks'
 import { useToastStore } from '@/stores/toastStore'
+import { useNotesStore } from '@/stores/notesStore'
 import { useBookmarkForm } from './useBookmarkForm'
 import { TagSelector } from './TagSelector'
 import { ScreenshotLightbox } from './ScreenshotLightbox'
@@ -210,6 +212,9 @@ export function BookmarkForm({ bookmark, onClose, onSuccess }: BookmarkFormProps
             {/* 网站截图（仅编辑已有书签时展示，截图由浏览器插件上传） */}
             {isEditing && bookmark?.screenshot && <ScreenshotRow bookmark={bookmark} />}
 
+            {/* 备注（仅编辑已有书签时展示）：与描述分开保存，在独立弹窗里查看和追加 */}
+            {isEditing && bookmark && <NotesRow bookmark={bookmark} />}
+
             {/* 标签选择 */}
             <TagSelector
               tagInput={tagInput}
@@ -300,6 +305,29 @@ export function BookmarkForm({ bookmark, onClose, onSuccess }: BookmarkFormProps
         onConfirm={handleConfirmDelete}
         onCancel={() => setShowDeleteConfirm(false)}
       />
+    </div>
+  )
+}
+
+/** 编辑书签时的备注入口。表单里的 bookmark 是打开时的快照，这里不显示可能过期的数量。 */
+function NotesRow({ bookmark }: { bookmark: Bookmark }) {
+  const { t } = useTranslation('common')
+  const openNotes = useNotesStore((state) => state.open)
+
+  return (
+    <div>
+      <span className="block text-xs font-medium mb-1.5 text-foreground">{t('notes.title')}</span>
+      <div className="flex items-center gap-3">
+        <span className="notes-dialog__muted text-xs min-w-0 flex-1">{t('notes.formHint')}</span>
+        <button
+          type="button"
+          onClick={() => openNotes({ kind: 'bookmark', id: bookmark.id, title: bookmark.title })}
+          className="btn btn-sm btn-outline flex-shrink-0"
+        >
+          <NotebookPen className="w-4 h-4" />
+          {t('notes.open')}
+        </button>
+      </div>
     </div>
   )
 }

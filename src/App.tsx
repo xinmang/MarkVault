@@ -5,6 +5,7 @@ import { AppRouter } from '@/routes'
 import { useAuthStore } from '@/stores/authStore'
 import { ToastContainer } from '@/components/common/Toast'
 import { DialogHost } from '@/components/common/DialogHost'
+import { NotesDialogHost } from '@/components/notes/NotesDialog'
 import { useToastStore } from '@/stores/toastStore'
 import { queryClient } from '@/lib/query-client'
 import { logger } from '@/lib/logger'
@@ -106,6 +107,7 @@ function App() {
                 </PageSpeedProvider>
                 <ToastContainer toasts={toasts} onClose={removeToast} />
                 <DialogHost />
+                <NotesDialogHost />
               </ExperimentalAppExperience>
             </PluginProvider>
           </BrowserRouter>

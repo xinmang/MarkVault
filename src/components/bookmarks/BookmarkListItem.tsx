@@ -13,6 +13,7 @@ import { BookmarkMediaButtons } from './shared/BookmarkMediaButtons'
 import { ScreenshotLightbox } from './ScreenshotLightbox'
 import { bookmarkLinkAttributes } from './TagLinkage'
 import { BatchCheckbox } from './shared/BookmarkActions'
+import { NotesPreview } from '@/components/notes/NotesButton'
 
 export interface BookmarkListItemProps {
   bookmark: Bookmark
@@ -185,6 +186,7 @@ export const BookmarkListItem = memo(function BookmarkListItem({
               <BookmarkMediaButtons
                 bookmark={bookmark}
                 onOpenScreenshot={() => screenshotLightbox.open(bookmark)}
+                readOnly={readOnly}
                 buttonClassName="w-5 h-5"
               />
             </div>
@@ -196,6 +198,15 @@ export const BookmarkListItem = memo(function BookmarkListItem({
           <p className="text-sm text-base-content/70 line-clamp-2 leading-relaxed">
             {bookmark.description}
           </p>
+        )}
+
+        {/* 备注预览：只读页面的数据里没有备注 */}
+        {!readOnly && (
+          <NotesPreview
+            target={{ kind: 'bookmark', id: bookmark.id, title: bookmark.title }}
+            notes={bookmark.notes}
+            count={bookmark.note_count}
+          />
         )}
 
         {/* 第三行：标签和快照（占据整个宽度），与其他视图共用以支持标签联动 */}

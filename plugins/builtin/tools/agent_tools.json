@@ -15,7 +15,7 @@
   {
     "name": "markvault_search",
     "title": "搜索书签",
-    "description": "按标题、描述、网址或标签名搜索书签和标签。",
+    "description": "按标题、描述、网址、备注或标签名搜索书签和标签。返回的书签带有备注预览 notes 和备注数量 note_count。",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -43,7 +43,7 @@
   {
     "name": "markvault_list_bookmarks",
     "title": "列出书签",
-    "description": "分页列出书签，可按关键词、标签、置顶状态和排序方式筛选。",
+    "description": "分页列出书签，可按关键词、标签、置顶状态和排序方式筛选；关键词同时匹配备注。返回的书签带有备注预览 notes 和备注数量 note_count。",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -91,7 +91,7 @@
   {
     "name": "markvault_get_bookmark",
     "title": "读取书签详情",
-    "description": "按书签 ID 读取完整信息与标签。",
+    "description": "按书签 ID 读取完整信息、标签和备注（置顶在前，其余按时间倒序，最多 50 条）。",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -426,5 +426,168 @@
     "requiredPermission": "tags.delete",
     "write": true,
     "destructive": true
+  },
+  {
+    "name": "markvault_list_bookmark_notes",
+    "title": "读取书签备注",
+    "description": "分页读取一个书签的全部备注。备注是对该网站的评价和记录（是否需要登录、反爬情况、签到结果等），置顶的排在最前，其余按时间倒序。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "书签 ID"
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 30
+        },
+        "page_cursor": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_add_bookmark_note",
+    "title": "添加书签备注",
+    "description": "给书签追加一条备注，用于记录对该网站的评价、访问要求或操作结果。备注只追加，不会覆盖书签描述和已有备注。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "书签 ID"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "备注正文。写清楚事实和日期，例如“2026-11-18 签到成功，获得 5 积分”。"
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "description": "置顶后排在最前面，适合长期有效的结论，例如“必须登录”“反爬严格”。"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "content",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "bookmarks.note",
+    "write": true,
+    "destructive": false
+  },
+  {
+    "name": "markvault_list_tab_groups",
+    "title": "列出标签页组",
+    "description": "分页列出标签页组及其中的标签页。每个标签页带有 ID、备注预览 notes 和备注数量 note_count。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 30
+        },
+        "page_cursor": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requiredPermission": "tab_groups.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_list_tab_notes",
+    "title": "读取标签页备注",
+    "description": "分页读取标签页组中一个标签页的全部备注，置顶的排在最前，其余按时间倒序。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "标签页 ID，来自标签页组的 items[].id"
+        },
+        "page_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 30
+        },
+        "page_cursor": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tab_groups.read",
+    "write": false,
+    "destructive": false
+  },
+  {
+    "name": "markvault_add_tab_note",
+    "title": "添加标签页备注",
+    "description": "给标签页组中的一个标签页追加一条备注，用于记录对该网站的评价、访问要求或操作结果。",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "标签页 ID，来自标签页组的 items[].id"
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "备注正文。写清楚事实和日期，例如“2026-11-18 签到成功，获得 5 积分”。"
+        },
+        "is_pinned": {
+          "type": "boolean",
+          "description": "置顶后排在最前面，适合长期有效的结论，例如“必须登录”“反爬严格”。"
+        },
+        "confirm": {
+          "type": "boolean",
+          "const": true,
+          "description": "只有在用户明确确认本次写操作后才能设为 true。"
+        }
+      },
+      "required": [
+        "id",
+        "content",
+        "confirm"
+      ],
+      "additionalProperties": false
+    },
+    "requiredPermission": "tab_groups.note",
+    "write": true,
+    "destructive": false
   }
 ]

@@ -9,13 +9,14 @@ import {
   BookmarkFavicon,
   InlineBatchCheckbox,
   InlineEditButton,
+  InlineNotesButton,
   bookmarkHost,
   useBookmarkEntry,
   type BookmarkEntryProps,
   type BookmarkLayoutViewProps,
 } from '../layouts/shared'
 
-/** 画廊视图：封面或网站截图铺满磁贴，悬停时浮出备注与标签。 */
+/** 画廊视图：封面或网站截图铺满磁贴，悬停时浮出描述与标签。 */
 export function BookmarkGalleryView({ bookmarks, selectedIds = [], ...rest }: BookmarkLayoutViewProps) {
   return (
     <div className="layout-gallery">
@@ -82,6 +83,7 @@ function GalleryTile(props: BookmarkEntryProps & { index: number }) {
       )}
       <div className="layout-gallery__corner">
         <InlineBatchCheckbox {...props} />
+        <InlineNotesButton {...props} />
         <InlineEditButton {...props} />
       </div>
     </article>

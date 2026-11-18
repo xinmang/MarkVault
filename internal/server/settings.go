@@ -109,12 +109,16 @@ func (s *Server) updatePreferences(w http.ResponseWriter, r *http.Request) error
 
 var permissionTemplates = map[string][]string{
 	"READ_ONLY": {"bookmarks.read", "tags.read", "user.read"},
-	"BASIC":     {"bookmarks.create", "bookmarks.read", "tags.create", "tags.read", "tags.assign", "user.read"},
+	"BASIC":     {"bookmarks.create", "bookmarks.read", "bookmarks.note", "tags.create", "tags.read", "tags.assign", "user.read"},
 	"FULL":      {"bookmarks.*", "tags.*", "tab_groups.*", "ai.suggest", "user.read"},
 }
 
 func validPermission(v string) bool {
 	if v == "user.read" || v == "user.preferences.read" || v == "ai.suggest" || v == "tags.assign" {
+		return true
+	}
+	// note 是追加备注的权限，不能修改或删除已有内容。
+	if v == "bookmarks.note" || v == "tab_groups.note" {
 		return true
 	}
 	parts := strings.Split(v, ".")

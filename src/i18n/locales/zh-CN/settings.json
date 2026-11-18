@@ -96,6 +96,7 @@
     "bookmarksCreate": "创建书签",
     "bookmarksRead": "读取书签",
     "bookmarksUpdate": "更新书签",
+    "bookmarksNote": "追加书签备注",
     "bookmarksDelete": "删除书签",
     "bookmarksAll": "所有书签权限",
     "tagsCreate": "创建标签",
@@ -107,6 +108,7 @@
     "tabGroupsCreate": "创建收纳",
     "tabGroupsRead": "读取收纳",
     "tabGroupsUpdate": "更新收纳",
+    "tabGroupsNote": "追加标签页备注",
     "tabGroupsDelete": "删除收纳",
     "tabGroupsAll": "所有收纳权限",
     "aiSuggest": "AI 智能建议",
@@ -116,7 +118,7 @@
       "readOnly": "只读",
       "readOnlyDesc": "仅查看数据，不能修改",
       "basic": "基础使用",
-      "basicDesc": "可以添加书签和标签，但不能删除",
+      "basicDesc": "可以添加书签、标签和书签备注，但不能删除",
       "full": "完整权限",
       "fullDesc": "拥有所有操作权限"
     }

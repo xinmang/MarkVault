@@ -208,6 +208,34 @@
     "openMenu": "Open Menu",
     "more": "More"
   },
+  "notes": {
+    "title": "Notes",
+    "add": "Add note",
+    "view": "View notes ({{total}})",
+    "open": "Open notes",
+    "formHint": "Your assessment and records for this site, e.g. login requirements, anti-scraping behavior, check-in results.",
+    "placeholder": "Record what you know about this site, e.g. login required, strict anti-scraping, check-in succeeded today…",
+    "hint": "Notes record your assessment of a site and the results of what you did there, separately from the description. Agents can read and append notes. Notes never appear on public share pages or share links.",
+    "pinOnAdd": "Pin this note",
+    "shortcut": "Ctrl+Enter to submit",
+    "loading": "Loading notes…",
+    "loadFailed": "Failed to load notes",
+    "empty": "No notes yet",
+    "emptyHint": "Login requirements, anti-scraping behavior and check-in results all belong here.",
+    "total": "{{total}} in total",
+    "sourceUser": "Me",
+    "sourceAssistant": "Assistant",
+    "sourceAgent": "Agent · {{name}}",
+    "pinned": "Pinned",
+    "pin": "Pin",
+    "unpin": "Unpin",
+    "edited": "Edited",
+    "editedAt": "Edited {{time}}",
+    "deleteConfirm": "Delete this note?",
+    "addFailed": "Failed to add note",
+    "updateFailed": "Failed to update note",
+    "deleteFailed": "Failed to delete note"
+  },
   "brand": {
     "defaultDescription": "Smart bookmark management"
   }

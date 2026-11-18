@@ -208,6 +208,34 @@
     "openMenu": "打开菜单",
     "more": "更多"
   },
+  "notes": {
+    "title": "备注",
+    "add": "添加备注",
+    "view": "查看备注（{{total}} 条）",
+    "open": "打开备注",
+    "formHint": "对这个网站的评价和记录，例如登录要求、反爬情况、签到结果。",
+    "placeholder": "记下这个网站的情况，例如：必须登录、反爬严格、今天签到成功…",
+    "hint": "备注用来记录对网站的评价和操作结果，和描述分开保存。Agent 可以读取并追加备注；公开分享页和分享链接不会显示备注。",
+    "pinOnAdd": "置顶这条",
+    "shortcut": "Ctrl+Enter 提交",
+    "loading": "正在加载备注…",
+    "loadFailed": "备注加载失败",
+    "empty": "还没有备注",
+    "emptyHint": "登录要求、反爬情况、签到结果都可以记在这里。",
+    "total": "共 {{total}} 条",
+    "sourceUser": "我",
+    "sourceAssistant": "站内助手",
+    "sourceAgent": "Agent · {{name}}",
+    "pinned": "置顶",
+    "pin": "置顶",
+    "unpin": "取消置顶",
+    "edited": "已编辑",
+    "editedAt": "修改于 {{time}}",
+    "deleteConfirm": "删除这条备注？",
+    "addFailed": "添加备注失败",
+    "updateFailed": "修改备注失败",
+    "deleteFailed": "删除备注失败"
+  },
   "brand": {
     "defaultDescription": "智能书签管理"
   }

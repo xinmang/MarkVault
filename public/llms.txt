@@ -19,7 +19,10 @@
 - `/api/v1/agent/bookmarks/:id/restore`：恢复书签。
 - `/api/v1/agent/tags`：读取和创建标签。
 - `/api/v1/agent/tags/:id`：读取、修改和删除标签。
-- `POST /api/mcp`：无状态 Streamable HTTP MCP，提供 13 个按权限过滤的工具。
+- `GET /api/v1/agent/tab-groups`：从 `data.tab_groups[].items[].id` 找到单个标签页。
+- `GET/POST /api/v1/agent/bookmarks/:id/notes`、`GET/POST /api/v1/agent/tab-groups/items/:id/notes`：分页读取或追加私人备注，与网站描述独立，不随公开链接分享。
+- `PATCH/DELETE /api/v1/agent/notes/:id`：修改、置顶或删除自己的备注；仅有追加权限不能改写历史。
+- `POST /api/mcp`：无状态 Streamable HTTP MCP，提供 18 个按权限过滤的工具。
 - 登录后的「数据统计 → Agent 与 MCP」提供调用量、结果、耗时与工具排行；仅记录调用元数据，从升级后开始累积。
 
 ## 安全边界

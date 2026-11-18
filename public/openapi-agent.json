@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "MarkVault Agent API",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "summary": "面向 AI Agent 的 MarkVault 稳定读写接口",
     "description": "使用 X-API-Key 查询和整理当前账户的书签与标签。每个端点都校验细粒度权限；建议由 Agent 在执行写请求前取得用户明确确认。插件停用时对应能力不可用。第三方工具还需要用户开放及 API Key 精确工具授权，既有 Key 不自动获得新工具权限。"
   },
@@ -71,7 +71,7 @@
         "tags": ["Agent"],
         "operationId": "searchAgentBookmarks",
         "summary": "搜索书签与标签",
-        "description": "搜索书签标题、描述、网址和标签名，并返回名称匹配的标签。需要 bookmarks.read 权限。",
+        "description": "搜索书签标题、描述、网址、私人备注和标签名，并返回名称匹配的标签。需要 bookmarks.read 权限。",
         "parameters": [
           {
             "name": "q",
@@ -119,7 +119,7 @@
           {
             "name": "keyword",
             "in": "query",
-            "description": "搜索标题、描述和网址",
+            "description": "搜索标题、描述、网址和私人备注",
             "schema": { "type": "string" }
           },
           {
@@ -305,6 +305,358 @@
           "403": { "$ref": "#/components/responses/Forbidden" },
           "404": { "$ref": "#/components/responses/NotFound" },
           "429": { "$ref": "#/components/responses/RateLimited" }
+        }
+      }
+    },
+    "/api/v1/agent/tab-groups": {
+      "get": {
+        "tags": ["Agent"],
+        "operationId": "listAgentTabGroups",
+        "summary": "分页读取标签页组和条目",
+        "description": "需要 tab_groups.read；条目 ID 来自 data.tab_groups[].items[].id，不是组 ID。",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          {
+            "name": "page_cursor",
+            "in": "query",
+            "description": "上一页 data.meta.next_cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页读取标签页组和条目",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TabGroupListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/agent/bookmarks/{id}/notes": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "书签 ID",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Agent"],
+        "operationId": "listAgentBookmarkNotes",
+        "summary": "分页读取书签备注",
+        "description": "需要 bookmarks.read；置顶优先，组内按创建时间倒序。",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          {
+            "name": "page_cursor",
+            "in": "query",
+            "description": "上一页 data.meta.next_cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页读取书签备注",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Agent"],
+        "operationId": "addAgentBookmarkNote",
+        "summary": "追加书签备注",
+        "description": "需要 bookmarks.note；若没有 bookmarks.read，仅返回 data.note.id。每个目标最多 1000 条。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "追加书签备注",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteWriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/agent/tab-groups/items/{id}/notes": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "标签页 ID（items[].id）",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Agent"],
+        "operationId": "listAgentTabItemNotes",
+        "summary": "分页读取标签页备注",
+        "description": "需要 tab_groups.read；置顶优先，组内按创建时间倒序。",
+        "parameters": [
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 30
+            }
+          },
+          {
+            "name": "page_cursor",
+            "in": "query",
+            "description": "上一页 data.meta.next_cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页读取标签页备注",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteListResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Agent"],
+        "operationId": "addAgentTabItemNote",
+        "summary": "追加标签页备注",
+        "description": "需要 tab_groups.note；若没有 tab_groups.read，仅返回 data.note.id。每个目标最多 1000 条。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "追加标签页备注",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteWriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      }
+    },
+    "/api/v1/agent/notes/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "备注 ID",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "patch": {
+        "tags": ["Agent"],
+        "operationId": "updateAgentNote",
+        "summary": "修改备注内容或置顶状态",
+        "description": "需要所属目标的 bookmarks.update 或 tab_groups.update。没有对应读取权限时只返回 data.note.id。",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateNoteRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "修改备注内容或置顶状态",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoteWriteResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Agent"],
+        "operationId": "deleteAgentNote",
+        "summary": "永久删除一条备注",
+        "description": "需要所属目标的 bookmarks.update 或 tab_groups.update。",
+        "responses": {
+          "204": {
+            "description": "永久删除一条备注"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/RateLimited"
+          }
         }
       }
     },
@@ -542,12 +894,236 @@
         "required": ["id", "url", "width", "height", "file_size", "mime_type", "created_at"],
         "properties": {
           "id": { "type": "string" },
-          "url": { "type": "string", "description": "带签名的相对地址，有效期 1–2 小时，每次读取书签时重新签发" },
+          "url": {
+            "type": "string",
+            "description": "带签名的相对地址，有效期 1–2 小时，每次读取书签时重新签发"
+          },
           "width": { "type": "integer", "minimum": 1 },
           "height": { "type": "integer", "minimum": 1 },
           "file_size": { "type": "integer", "minimum": 1 },
           "mime_type": { "type": "string", "enum": ["image/webp", "image/png", "image/jpeg"] },
           "created_at": { "type": "string" }
+        }
+      },
+      "Note": {
+        "type": "object",
+        "required": [
+          "id",
+          "content",
+          "source",
+          "source_name",
+          "is_pinned",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "去除首尾空白后，最多 2000 个 Unicode 码点。"
+          },
+          "source": {
+            "enum": ["user", "agent"]
+          },
+          "source_name": {
+            "type": "string"
+          },
+          "is_pinned": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "bookmark_id": {
+            "type": "string"
+          },
+          "tab_item_id": {
+            "type": "string"
+          },
+          "truncated": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateNoteRequest": {
+        "type": "object",
+        "required": ["content"],
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "去除首尾空白后，最多 2000 个 Unicode 码点。"
+          },
+          "is_pinned": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateNoteRequest": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000,
+            "description": "去除首尾空白后，最多 2000 个 Unicode 码点。"
+          },
+          "is_pinned": {
+            "type": "boolean"
+          }
+        },
+        "minProperties": 1,
+        "additionalProperties": false
+      },
+      "NoteWriteResponse": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["note"],
+            "properties": {
+              "note": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/Note"
+                  },
+                  {
+                    "type": "object",
+                    "required": ["id"],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "NotePageMeta": {
+        "type": "object",
+        "required": ["page_size", "count", "has_more"],
+        "properties": {
+          "page_size": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "next_cursor": {
+            "type": "string"
+          }
+        }
+      },
+      "NoteListResponse": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["notes", "meta"],
+            "properties": {
+              "notes": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Note"
+                }
+              },
+              "meta": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/NotePageMeta"
+                  },
+                  {
+                    "type": "object",
+                    "required": ["total"],
+                    "properties": {
+                      "total": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "TabGroupListResponse": {
+        "type": "object",
+        "required": ["data"],
+        "properties": {
+          "data": {
+            "type": "object",
+            "required": ["tab_groups", "meta"],
+            "properties": {
+              "tab_groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["id", "title", "items"],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": ["id", "title", "url", "note_count", "notes"],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "note_count": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "notes": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/components/schemas/Note"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "meta": {
+                "$ref": "#/components/schemas/NotePageMeta"
+              }
+            }
+          }
         }
       },
       "Bookmark": {
@@ -579,6 +1155,12 @@
           "last_clicked_at": { "type": ["string", "null"] },
           "has_snapshot": { "type": "boolean" },
           "latest_snapshot_at": { "type": ["string", "null"] },
+          "notes": {
+            "type": "array",
+            "description": "列表最多 3 条预览，每条超过 200 个字符会截断；详情最多 50 条完整备注。",
+            "items": { "$ref": "#/components/schemas/Note" }
+          },
+          "note_count": { "type": "integer", "minimum": 0 },
           "snapshot_count": { "type": "integer", "minimum": 0 },
           "screenshot": {
             "oneOf": [{ "$ref": "#/components/schemas/BookmarkScreenshot" }, { "type": "null" }]

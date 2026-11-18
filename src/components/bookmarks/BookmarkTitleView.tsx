@@ -160,6 +160,7 @@ function TitleOnlyCard({
             <BookmarkMediaButtons
               bookmark={bookmark}
               onOpenScreenshot={() => screenshotLightbox.open(bookmark)}
+              readOnly={readOnly}
             />
           </div>
         </div>

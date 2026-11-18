@@ -85,6 +85,7 @@
     "bookmarksCreate": "Create bookmarks",
     "bookmarksRead": "Read bookmarks",
     "bookmarksUpdate": "Update bookmarks",
+    "bookmarksNote": "Add bookmark notes",
     "bookmarksDelete": "Delete bookmarks",
     "bookmarksAll": "All bookmark permissions",
     "tagsCreate": "Create tags",
@@ -96,6 +97,7 @@
     "tabGroupsCreate": "Create tab groups",
     "tabGroupsRead": "Read tab groups",
     "tabGroupsUpdate": "Update tab groups",
+    "tabGroupsNote": "Add tab notes",
     "tabGroupsDelete": "Delete tab groups",
     "tabGroupsAll": "All tab group permissions",
     "aiSuggest": "AI suggestions",
@@ -105,7 +107,7 @@
       "readOnly": "Read Only",
       "readOnlyDesc": "View data only, cannot modify",
       "basic": "Basic",
-      "basicDesc": "Can add bookmarks and tags, but cannot delete",
+      "basicDesc": "Can add bookmarks, tags and bookmark notes, but cannot delete",
       "full": "Full Access",
       "fullDesc": "Has all operation permissions"
     }

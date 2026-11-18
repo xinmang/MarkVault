@@ -99,8 +99,8 @@
       "confirmDescription": "所有 MCP 写工具都要求在用户明确同意后传入 confirm=true。"
     },
     "exampleTitle": "MCP initialize 示例",
-    "toolsTitle": "13 个内置工具",
-    "toolsDescription": "覆盖账户概况、搜索、书签与标签的读取、创建、修改、软删除和恢复。删除书签只会进入回收站。"
+    "toolsTitle": "18 个内置工具",
+    "toolsDescription": "覆盖账户概况、搜索、书签与标签的读取、创建、修改、软删除和恢复，以及标签页组的读取和书签、标签页备注的读取与追加。删除书签只会进入回收站。"
   },
   "security": {
     "title": "最小权限与人工确认同时生效",

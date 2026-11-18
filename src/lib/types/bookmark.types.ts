@@ -1,3 +1,5 @@
+import type { Note } from './note.types'
+
 export interface Tag {
   id: string
   user_id?: string
@@ -44,6 +46,10 @@ export interface Bookmark {
   /** 旧服务端或旧缓存可能没有该字段，undefined 与 null 等价 */
   screenshot?: BookmarkScreenshot | null
   ai_summary?: string | null
+  /** 备注预览：置顶在前、最多 3 条，过长内容被截断；详情接口返回完整备注 */
+  notes?: Note[]
+  /** 备注总数；公开分享页和旧缓存没有该字段 */
+  note_count?: number
   created_at: string
   updated_at: string
   deleted_at?: string | null

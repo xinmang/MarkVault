@@ -40,6 +40,8 @@ export const Z_INDEX = {
   SHARE_DIALOG: 200,
   MOVE_TO_FOLDER_DIALOG: 200,
   TAG_FORM_MODAL: 210,
+  // 备注弹窗可以从书签编辑表单里打开，必须盖在表单之上
+  NOTES_DIALOG: 220,
   
   // 全局提示层 (300-399)
   TOAST: 300,

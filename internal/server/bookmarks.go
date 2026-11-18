@@ -39,7 +39,7 @@ func (s *Server) bookmark(r *http.Request, db database.Queryer, bid string) (obj
 	if err != nil {
 		return nil, err
 	}
-	if err := s.decorateBookmarks(r, db, []object{row}); err != nil {
+	if err := s.decorateOwnedBookmarks(r, db, []object{row}, noteDetailCount, 0); err != nil {
 		return nil, err
 	}
 	return row, nil
@@ -54,11 +54,19 @@ func (s *Server) bookmarkWriteResult(r *http.Request, bid string) (object, error
 }
 
 func (s *Server) decorateBookmarks(r *http.Request, db database.Queryer, rows []object) error {
+	return s.decorateOwnedBookmarks(r, db, rows, notePreviewCount, notePreviewRunes)
+}
+
+func (s *Server) decorateOwnedBookmarks(r *http.Request, db database.Queryer, rows []object, limit, clip int) error {
 	if err := s.decorateBookmarkData(r, db, rows); err != nil {
 		return err
 	}
 	s.signBookmarkImages(userID(r), rows, "owner")
-	return s.attachScreenshots(r, db, userID(r), rows, "owner")
+	if err := s.attachScreenshots(r, db, userID(r), rows, "owner"); err != nil {
+		return err
+	}
+	// 备注只随本人的读取接口返回，公开分享页不经过这里。
+	return s.attachNotes(r, db, bookmarkNotes, rows, limit, clip)
 }
 
 // 导出只装饰业务数据，临时图片签名不进入备份或数据库。
@@ -136,9 +144,9 @@ func (s *Server) listBookmarks(w http.ResponseWriter, r *http.Request) error {
 		if utf8.RuneCountInString(raw) > 500 {
 			return problem(400, "搜索词过长")
 		}
-		where += ` AND (b.title LIKE ? ESCAPE '!' OR b.url LIKE ? ESCAPE '!' OR b.description LIKE ? ESCAPE '!')`
+		where += ` AND (b.title LIKE ? ESCAPE '!' OR b.url LIKE ? ESCAPE '!' OR b.description LIKE ? ESCAPE '!' OR EXISTS(SELECT 1 FROM notes n WHERE n.bookmark_id=b.id AND n.user_id=b.user_id AND n.content LIKE ? ESCAPE '!'))`
 		pattern := escapeLike(raw)
-		args = append(args, pattern, pattern, pattern)
+		args = append(args, pattern, pattern, pattern, pattern)
 	}
 	selectedTags := []string{}
 	if raw := q.Get("tags"); raw != "" {

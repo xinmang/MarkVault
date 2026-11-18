@@ -18,6 +18,7 @@ import { SnapshotViewer } from './SnapshotViewer'
 import { hasBookmarkSnapshot } from './bookmark-utils'
 import { useExperimentalFeatures } from '@/contexts/ExperimentalFeaturesContext'
 import { bookmarkLinkAttributes } from './TagLinkage'
+import { NotesButton, NotesPreview } from '@/components/notes/NotesButton'
 
 interface BookmarkCardViewProps {
   bookmarks: Bookmark[]
@@ -119,6 +120,14 @@ function BookmarkCard({
     </div>
   )
 
+  // 备注胶囊固定在封面右下角；没有备注时悬停才出现，只读页面不显示
+  const noteTarget = { kind: 'bookmark' as const, id: bookmark.id, title: bookmark.title }
+  const coverNotesChip = !readOnly && (
+    <div className="absolute bottom-2 right-2 flex items-center" onClick={(e) => e.stopPropagation()}>
+      <NotesButton target={noteTarget} count={bookmark.note_count ?? 0} variant="chip" />
+    </div>
+  )
+
   const radiusStyle = { borderTopLeftRadius: 'calc(var(--radius) * 1.5)', borderTopRightRadius: 'calc(var(--radius) * 1.5)' }
   const title = bookmark.title?.trim()
   const titleIsUrl = !title || title === bookmark.url || /^https?:\/\//i.test(title)
@@ -174,6 +183,7 @@ function BookmarkCard({
           </button>
           {snapshotChip}
           </div>
+          {coverNotesChip}
         </div>
       ) : hasAnyIcon ? (
         <div
@@ -201,11 +211,13 @@ function BookmarkCard({
             </div>
           ) : null}
           {coverSnapshotChip}
+          {coverNotesChip}
         </div>
       ) : (
         <div className="relative h-24 sm:h-20 overflow-hidden flex-shrink-0 flex items-center justify-center bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5" style={radiusStyle}>
           <DefaultBookmarkIconComponent icon={defaultIcon} />
           {coverSnapshotChip}
+          {coverNotesChip}
         </div>
       )}
 
@@ -225,6 +237,8 @@ function BookmarkCard({
         {bookmark.description && (
           <p className="text-sm sm:text-xs text-base-content/70 line-clamp-3 leading-relaxed">{bookmark.description}</p>
         )}
+
+        {!readOnly && <NotesPreview target={noteTarget} notes={bookmark.notes} count={bookmark.note_count} />}
 
         {bookmark.ai_summary && (
           <div className="bg-primary/5 border border-primary/10 rounded-lg p-2.5 sm:p-2 mt-0.5">

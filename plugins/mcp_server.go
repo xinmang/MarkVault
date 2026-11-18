@@ -6,7 +6,7 @@ import (
 )
 
 func AgentCapabilities(origin string) object {
-	return object{"name": "MarkVault Agent API", "version": "1.1.0", "mode": "read-write", "authentication": "X-API-Key", "documentation": origin + "/agent", "openapi": origin + "/openapi-agent.json", "skill": origin + "/markvault/SKILL.md", "mcp": origin + "/api/mcp", "endpoints": object{"me": "/api/v1/agent/me", "search": "/api/v1/agent/search", "bookmarks": "/api/v1/agent/bookmarks", "bookmark": "/api/v1/agent/bookmarks/:id", "restore_bookmark": "/api/v1/agent/bookmarks/:id/restore", "tags": "/api/v1/agent/tags", "tag": "/api/v1/agent/tags/:id", "chat": "/api/v1/agent/chat"}, "safety": object{"rest": "写操作需要对应的 API Key 权限。", "mcp": "写工具必须明确设置 confirm=true。", "chat": "写操作必须由用户在站内确认。"}}
+	return object{"name": "MarkVault Agent API", "version": "1.2.0", "mode": "read-write", "authentication": "X-API-Key", "documentation": origin + "/agent", "openapi": origin + "/openapi-agent.json", "skill": origin + "/markvault/SKILL.md", "mcp": origin + "/api/mcp", "endpoints": object{"me": "/api/v1/agent/me", "search": "/api/v1/agent/search", "bookmarks": "/api/v1/agent/bookmarks", "bookmark": "/api/v1/agent/bookmarks/:id", "restore_bookmark": "/api/v1/agent/bookmarks/:id/restore", "bookmark_notes": "/api/v1/agent/bookmarks/:id/notes", "tab_groups": "/api/v1/agent/tab-groups", "tab_notes": "/api/v1/agent/tab-groups/items/:id/notes", "note": "/api/v1/agent/notes/:id", "tags": "/api/v1/agent/tags", "tag": "/api/v1/agent/tags/:id", "chat": "/api/v1/agent/chat"}, "safety": object{"rest": "写操作需要对应的 API Key 权限。", "mcp": "写工具必须明确设置 confirm=true。", "chat": "写操作必须由用户在站内确认。"}}
 }
 func rpcError(id any, code int, message string) object {
 	return object{"jsonrpc": "2.0", "id": id, "error": object{"code": code, "message": message}}
@@ -50,7 +50,7 @@ func MCP(raw any, host plugin.MCPHost) (any, int, error) {
 			if version != "2025-06-18" && version != "2025-03-26" && version != "2024-11-05" {
 				version = "2025-06-18"
 			}
-			response = rpcResult(identifier, object{"protocolVersion": version, "capabilities": object{"tools": object{"listChanged": false}}, "serverInfo": object{"name": "markvault", "title": "MarkVault", "version": "1.1.0"}, "instructions": "读取工具可直接调用；写操作需要用户明确确认并设置 confirm=true。"})
+			response = rpcResult(identifier, object{"protocolVersion": version, "capabilities": object{"tools": object{"listChanged": false}}, "serverInfo": object{"name": "markvault", "title": "MarkVault", "version": "1.2.0"}, "instructions": "读取工具可直接调用；写操作需要用户明确确认并设置 confirm=true。书签和标签页带有备注（notes），记录了网站的访问要求和历史操作结果；操作某个网站前先读它的备注，得到新结论后用备注工具追加记录。"})
 		case "ping":
 			response = rpcResult(identifier, object{})
 		case "tools/list":

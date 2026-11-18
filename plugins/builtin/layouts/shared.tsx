@@ -12,6 +12,7 @@ import { BookmarkTagList } from '@/components/bookmarks/shared/BookmarkTagList'
 import { BookmarkUrlText } from '@/components/bookmarks/shared/BookmarkUrlText'
 import { useBookmarkHoverCard } from '@/components/bookmarks/shared/BookmarkHoverCard'
 import { useFaviconFallback } from '@/components/bookmarks/shared/useFaviconFallback'
+import { NotesButton } from '@/components/notes/NotesButton'
 import { motionIndexStyle } from '@/lib/motion'
 import { bookmarkHost } from './grouping'
 import './style.css'
@@ -107,6 +108,17 @@ export function InlineBatchCheckbox({ bookmark, isSelected, batchMode, onToggleS
   )
 }
 
+export function InlineNotesButton({ bookmark, readOnly, batchMode }: BookmarkEntryProps) {
+  if (readOnly || batchMode) return null
+  return (
+    <NotesButton
+      target={{ kind: 'bookmark', id: bookmark.id, title: bookmark.title }}
+      count={bookmark.note_count}
+      className="w-7 h-7 bookmark-screenshot-button--floating"
+    />
+  )
+}
+
 export function InlineEditButton({ bookmark, onEdit, readOnly, batchMode }: BookmarkEntryProps) {
   const { t } = useTranslation('bookmarks')
   if (!onEdit || readOnly || batchMode) return null
@@ -168,6 +180,7 @@ export function BookmarkRow({ view, index = 0, meta, showHost = true, ...entryPr
         </div>
       )}
       {meta && <span className="layout-row__meta">{meta}</span>}
+      <InlineNotesButton {...entryProps} />
       <InlineEditButton {...entryProps} />
     </div>
   )

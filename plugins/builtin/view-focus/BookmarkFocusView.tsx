@@ -9,6 +9,7 @@ import {
   BookmarkFavicon,
   InlineBatchCheckbox,
   InlineEditButton,
+  InlineNotesButton,
   bookmarkHost,
   useBookmarkEntry,
   type BookmarkEntryProps,
@@ -117,6 +118,7 @@ function FocusCard(props: BookmarkEntryProps) {
           <InlineBatchCheckbox {...props} />
           <BookmarkFavicon bookmark={bookmark} />
           <BookmarkUrlText value={bookmarkHost(bookmark.url)} />
+          <InlineNotesButton {...props} />
           <InlineEditButton {...props} />
         </div>
         <h3 className="layout-focus__title" title={entry.tooltip}>

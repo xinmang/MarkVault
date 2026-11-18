@@ -1,3 +1,5 @@
+import type { Note } from './note.types'
+
 export interface TabGroupItem {
   id: string
   group_id: string
@@ -9,6 +11,9 @@ export interface TabGroupItem {
   is_pinned?: boolean
   is_todo?: boolean
   is_archived?: boolean
+  /** 备注预览：置顶在前、最多 3 条；分享链接不包含备注 */
+  notes?: Note[]
+  note_count?: number
 }
 
 export interface TabGroup {

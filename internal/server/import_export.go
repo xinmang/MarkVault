@@ -78,6 +78,10 @@ func (s *Server) exportData(w http.ResponseWriter, r *http.Request) error {
 					return err
 				}
 			}
+			// 备份包含全部备注，不做条数和长度截断。
+			if err = s.attachNotes(r, tx, bookmarkNotes, bookmarks, 0, 0); err != nil {
+				return err
+			}
 			exported := []object{}
 			for _, row := range bookmarks {
 				item := copyFields(row, "id", "title", "url", "description", "cover_image", "cover_image_id", "favicon", "is_pinned", "is_archived", "is_public", "created_at", "updated_at", "deleted_at", "has_snapshot", "latest_snapshot_at", "snapshot_count")
@@ -88,6 +92,7 @@ func (s *Server) exportData(w http.ResponseWriter, r *http.Request) error {
 					}
 				}
 				item["tags"] = names
+				item["notes"] = exportNotes(row)
 				if queryBool(r, "include_stats", false) {
 					item["click_count"] = row["click_count"]
 					item["last_clicked_at"] = row["last_clicked_at"]
@@ -121,9 +126,16 @@ func (s *Server) exportData(w http.ResponseWriter, r *http.Request) error {
 					return err
 				}
 			}
+			if err = s.attachItemNotes(r, tx, groups, 0, 0); err != nil {
+				return err
+			}
 			for _, g := range groups {
 				delete(g, "user_id")
 				bools(g, "is_folder", "is_deleted")
+				for _, item := range g["items"].([]object) {
+					item["notes"] = exportNotes(item)
+					delete(item, "note_count")
+				}
 			}
 			result["tab_groups"] = groups
 		}
@@ -385,6 +397,9 @@ func (s *Server) importData(w http.ResponseWriter, r *http.Request) error {
 				if err = s.setTags(r, tx, bid, tags); err != nil {
 					return err
 				}
+				if err = s.importNotes(r, tx, bookmarkNotes, bid, raw["notes"], preserve); err != nil {
+					return err
+				}
 			}
 		}
 		if groupsEnabled {
@@ -487,7 +502,11 @@ func (s *Server) importData(w http.ResponseWriter, r *http.Request) error {
 							invalid("tab_group_item", j, err)
 							continue
 						}
-						if err = s.insertItems(r, tx, gid, []object{item}); err != nil {
+						inserted, err := s.insertItems(r, tx, gid, []object{item})
+						if err != nil {
+							return err
+						}
+						if err = s.importNotes(r, tx, tabNotes, inserted[0], rawItem["notes"], preserve); err != nil {
 							return err
 						}
 						is.Created++

@@ -1,10 +1,12 @@
-import { ExternalLink, Trash2, Edit2, Pin, CheckSquare, Check, X, GripVertical, FolderInput, MoreVertical } from 'lucide-react'
+import { ExternalLink, Trash2, Edit2, Pin, CheckSquare, Check, X, GripVertical, FolderInput, MoreVertical, NotebookPen } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import type { TabGroupItem } from '@/lib/types'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useIsMobile } from '@/hooks/useMediaQuery'
 import { DropdownMenu } from '@/components/common/DropdownMenu'
+import { NotesButton, NotesPreview } from '@/components/notes/NotesButton'
+import { useNotesStore } from '@/stores/notesStore'
 
 interface TabItemProps {
   item: TabGroupItem
@@ -69,6 +71,12 @@ export function TabItem({
   }
 
   const isEditing = editingItemId === item.id
+
+  // 备注：对这个网页的评价和记录，Agent 也能读取和追加
+  const openNotes = useNotesStore((state) => state.open)
+  const noteTarget = { kind: 'tab' as const, id: item.id, title: item.title }
+  const noteCount = item.note_count ?? 0
+  const notesLabel = noteCount > 0 ? t('common:notes.view', { total: noteCount }) : t('common:notes.add')
 
   return (
     <div
@@ -161,10 +169,16 @@ export function TabItem({
               {item.is_todo && (
                 <CheckSquare className="w-3 h-3 text-accent flex-shrink-0" />
               )}
+              {noteCount > 0 && !batchMode && (
+                <NotesButton target={noteTarget} count={noteCount} className="w-5 h-5 flex-shrink-0" iconClassName="w-3 h-3" />
+              )}
             </div>
             <p className="text-xs text-muted-foreground truncate">
               {compact ? extractDomain(item.url) || item.url : item.url}
             </p>
+            {!compact && !batchMode && (
+              <NotesPreview target={noteTarget} notes={item.notes} count={noteCount} className="mt-1" />
+            )}
           </>
         )}
       </div>
@@ -217,6 +231,11 @@ export function TabItem({
                   label: item.is_todo ? t('menu.unmarkTodo') : t('menu.markTodo'),
                   icon: <CheckSquare className="w-4 h-4" />,
                   onClick: () => onToggleTodo(groupId, item.id, item.is_todo || false),
+                },
+                {
+                  label: notesLabel,
+                  icon: <NotebookPen className="w-4 h-4" />,
+                  onClick: () => openNotes(noteTarget),
                 },
                 ...(onMoveItem ? [{
                   label: t('menu.moveToOtherGroup'),
@@ -271,6 +290,14 @@ export function TabItem({
                 title={item.is_todo ? t('menu.unmarkTodo') : t('menu.markTodo')}
               >
                 <CheckSquare className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => openNotes(noteTarget)}
+                className="p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
+                title={notesLabel}
+                aria-label={notesLabel}
+              >
+                <NotebookPen className="w-4 h-4" />
               </button>
               {onMoveItem && (
                 <button

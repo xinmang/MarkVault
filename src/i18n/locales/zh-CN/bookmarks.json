@@ -53,7 +53,7 @@
     "header": {
       "title": "标题",
       "url": "网址",
-      "note": "备注",
+      "note": "描述",
       "aiSummary": "AI 摘要"
     },
     "noDescription": "—",

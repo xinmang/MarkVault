@@ -38,6 +38,21 @@
 
 保存快照需要 `bookmarks.create`；如果达到保留上限、需要淘汰旧版本，还必须具备 `bookmarks.update`。仅有创建权限的 Key 不会触发删除旧快照。
 
+## 私人备注
+
+以下路径前缀均为 `/api/v1/agent`。书签或单个标签页各自拥有独立的备注历史，公开书签页和标签页组分享不返回备注或数量。
+
+| 接口 | 权限 | 用途 |
+| --- | --- | --- |
+| `GET /tab-groups` | `tab_groups.read` | 读取 `data.tab_groups[].items[].id`（标签页 ID，不是组 ID） |
+| `GET /bookmarks/:id/notes`、`GET /tab-groups/items/:id/notes` | 对应的 `bookmarks.read` / `tab_groups.read` | 读取 `data.notes` 和 `data.meta.total` |
+| 同路径 `POST` | 对应的 `bookmarks.note` / `tab_groups.note` | 追加 `{ "content": "必须登录", "is_pinned": true }`，`is_pinned` 可省略 |
+| `PATCH /notes/:id`、`DELETE /notes/:id` | 对应的 `bookmarks.update` / `tab_groups.update` | 修改内容、置顶或永久删除单条备注 |
+
+备注和标签页组支持 `page_size`（默认 30，最多 100）及 `page_cursor`。备注置顶优先，其余按创建时间倒序。每个目标最多 1000 条，每条最多 2000 个 Unicode 码点。列表随目标附带 `note_count` 和最多 3 条预览（正文超过 200 字符会截断）；书签详情最多附带 50 条完整备注。用备注列表读取其余内容。
+
+追加（201）或修改（200）返回 `data.note`：有对应读取权限时包含正文、`source`（`user` 或 `agent`）、`source_name`、时间和置顶状态；否则只返回 `id`。删除成功返回 204，无响应体。
+
 ## 书签请求示例
 
 创建：
@@ -72,7 +87,7 @@
 
 | 参数          | 说明                                            |
 | ------------- | ----------------------------------------------- |
-| `keyword`     | 搜索书签标题、描述和网址                        |
+| `keyword`     | 搜索书签标题、描述、网址和私人备注                        |
 | `tags`        | 逗号分隔的标签 ID；多个 ID 表示同时包含全部标签 |
 | `sort`        | `created`、`updated`、`pinned` 或 `popular`     |
 | `pinned`      | `true` 或 `false`                               |
@@ -92,7 +107,7 @@ MCP 使用无状态 Streamable HTTP：
 - 工具列表会按当前 Key 权限过滤
 - 所有写工具必须在用户明确确认后传入 `confirm: true`
 
-内置工具共 13 个，覆盖账户概况、搜索、书签和标签的读取、创建与修改，书签的软删除与恢复，以及不可恢复的标签删除。
+新增 `markvault_list_tab_groups`、`markvault_list_bookmark_notes`、`markvault_list_tab_notes`、`markvault_add_bookmark_note` 和 `markvault_add_tab_note`。内置工具现共 18 个，覆盖账户概况、搜索、书签和标签的读取、创建与修改，书签的软删除与恢复，以及不可恢复的标签删除。
 
 ## 通用响应与错误
 

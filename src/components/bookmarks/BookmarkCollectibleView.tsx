@@ -269,6 +269,7 @@ function BookmarkCollectibleItem({
       <BookmarkMediaButtons
         bookmark={bookmark}
         onOpenScreenshot={() => screenshotLightbox.open(bookmark)}
+        readOnly={readOnly}
         className="bookmark-media-group--floating absolute bottom-3 right-3 z-10 gap-1"
         buttonClassName="w-8 h-8 shadow-md"
         iconClassName="w-4 h-4"

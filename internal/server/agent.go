@@ -190,7 +190,8 @@ func (s *Server) executeTool(r *http.Request, name string, args object, confirme
 		}
 		s.recordAgentUsage(r, source, "tool", operation, started, succeeded)
 	}()
-	result, err := s.runAgentTool(r, name, args, confirmed)
+	// 标记为 Agent 发起，站内助手写入的备注据此与本人手写的区分开。
+	result, err := s.runAgentTool(r.WithContext(context.WithValue(r.Context(), agentCallKey{}, true)), name, args, confirmed)
 	succeeded = err == nil
 	return result, err
 }
@@ -222,7 +223,8 @@ func (s *Server) runAgentTool(r *http.Request, name string, args object, confirm
 	if request.Operation == "createBookmark" {
 		return s.saveBookmark(r, request.Body, true)
 	}
-	operations := map[string]handler{"me": s.me, "search": s.search, "listBookmarks": s.listBookmarks, "getBookmark": s.getBookmark, "updateBookmark": s.updateBookmark, "deleteBookmark": s.deleteBookmark, "restoreBookmark": s.restoreBookmark, "listTags": s.listTags, "getTag": s.getTag, "createTag": s.createTag, "updateTag": s.updateTag, "deleteTag": s.deleteTag}
+	operations := map[string]handler{"me": s.me, "search": s.search, "listBookmarks": s.listBookmarks, "getBookmark": s.getBookmark, "updateBookmark": s.updateBookmark, "deleteBookmark": s.deleteBookmark, "restoreBookmark": s.restoreBookmark, "listTags": s.listTags, "getTag": s.getTag, "createTag": s.createTag, "updateTag": s.updateTag, "deleteTag": s.deleteTag,
+		"listBookmarkNotes": s.listNotes(bookmarkNotes), "createBookmarkNote": s.createNote(bookmarkNotes), "listGroups": s.listGroups, "listTabNotes": s.listNotes(tabNotes), "createTabNote": s.createNote(tabNotes)}
 	h := operations[request.Operation]
 	if h == nil {
 		return nil, problem(400, "未知业务操作")
@@ -256,7 +258,7 @@ func (s *Server) search(w http.ResponseWriter, r *http.Request) error {
 		limit = n
 	}
 	pattern := escapeLike(q)
-	bookmarks, err := all(r, s.db, `SELECT b.* FROM bookmarks b WHERE b.user_id=? AND b.deleted_at IS NULL AND (b.title LIKE ? ESCAPE '!' OR b.description LIKE ? ESCAPE '!' OR b.url LIKE ? ESCAPE '!' OR EXISTS(SELECT 1 FROM bookmark_tags bt JOIN tags t ON t.id=bt.tag_id AND t.user_id=bt.user_id WHERE bt.bookmark_id=b.id AND bt.user_id=b.user_id AND t.deleted_at IS NULL AND t.name LIKE ? ESCAPE '!')) ORDER BY b.is_pinned DESC,b.created_at DESC,b.id DESC LIMIT ?`, userID(r), pattern, pattern, pattern, pattern, limit)
+	bookmarks, err := all(r, s.db, `SELECT b.* FROM bookmarks b WHERE b.user_id=? AND b.deleted_at IS NULL AND (b.title LIKE ? ESCAPE '!' OR b.description LIKE ? ESCAPE '!' OR b.url LIKE ? ESCAPE '!' OR EXISTS(SELECT 1 FROM notes n WHERE n.bookmark_id=b.id AND n.user_id=b.user_id AND n.content LIKE ? ESCAPE '!') OR EXISTS(SELECT 1 FROM bookmark_tags bt JOIN tags t ON t.id=bt.tag_id AND t.user_id=bt.user_id WHERE bt.bookmark_id=b.id AND bt.user_id=b.user_id AND t.deleted_at IS NULL AND t.name LIKE ? ESCAPE '!')) ORDER BY b.is_pinned DESC,b.created_at DESC,b.id DESC LIMIT ?`, userID(r), pattern, pattern, pattern, pattern, pattern, limit)
 	if err != nil {
 		return err
 	}

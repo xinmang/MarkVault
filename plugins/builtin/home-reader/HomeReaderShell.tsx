@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Check, Copy, ExternalLink, Pencil, Pin } from 'lucide-react'
+import { NotesButton } from '@/components/notes/NotesButton'
 import type { Bookmark } from '@/lib/types'
 import { BookmarkTagList } from '@/components/bookmarks/shared/BookmarkTagList'
 import { BookmarkUrlText } from '@/components/bookmarks/shared/BookmarkUrlText'
@@ -25,7 +26,7 @@ import {
 
 /**
  * 三栏版式：像邮件客户端。左边是窄的标签列表，中间是紧凑的书签列表，
- * 右边是选中书签的详情（封面、备注、摘要、标签和操作），适合整理和回顾收藏。
+ * 右边是选中书签的详情（封面、描述、摘要、标签和操作），适合整理和回顾收藏。
  */
 export function HomeReaderShell(shell: HomeShellProps) {
   const { t } = useTranslation('plugins')
@@ -203,7 +204,7 @@ function ReaderPreview({ shell, bookmark }: { shell: HomeShellProps; bookmark: B
   }
 
   return (
-    <article className="pshell-reader__preview">
+    <article className="pshell-reader__preview group">
       {image && !imageFailed && (
         <div className="pshell-reader__media">
           <img src={image} alt="" onError={() => setImageFailed(true)} />
@@ -223,6 +224,13 @@ function ReaderPreview({ shell, bookmark }: { shell: HomeShellProps; bookmark: B
           <ExternalLink size={14} aria-hidden="true" />
           {t('shells.open')}
         </button>
+        {!shell.readOnly && (
+          <NotesButton
+            target={{ kind: 'bookmark', id: bookmark.id, title: bookmark.title }}
+            count={bookmark.note_count}
+            className="w-8 h-8"
+          />
+        )}
         {shell.onEdit && !shell.readOnly && (
           <button
             type="button"

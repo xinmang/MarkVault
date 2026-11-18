@@ -132,6 +132,14 @@ func pendingAction(call plugin.ModelCall, definition plugin.Tool) object {
 			destructive = true
 		}
 	}
+	// 备注正文直接展示在卡片上，用户确认的是将要写入的原文。
+	if content, ok := args["content"].(string); ok && content != "" {
+		text := []rune(content)
+		if len(text) > 120 {
+			text = append(text[:120], '…')
+		}
+		changes = append(changes, "备注内容："+string(text))
+	}
 	summary := definition.Title + "：" + firstNonempty(str(args["title"]), str(args["name"]), str(args["id"]), str(args["url"]))
 	if len(changes) > 0 {
 		summary += "（" + strings.Join(changes, "、") + "）"

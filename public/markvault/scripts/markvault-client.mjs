@@ -18,6 +18,11 @@ const HELP = `MarkVault Agent 客户端
             [--sort created|updated|pinned|popular]
             [--pinned true|false] [--page-size 20]
             [--page-cursor 游标]
+  tab-groups [--page-size 30] [--page-cursor 游标]
+  notes <bookmark|tab> <目标ID> [--page-size 30] [--page-cursor 游标]
+  add-note <bookmark|tab> <目标ID> <内容> [--pinned true|false] --confirm
+  update-note <备注ID> [--content 内容] [--pinned true|false] --confirm
+  delete-note <备注ID> --confirm
   get-bookmark <书签ID>
   create-bookmark <标题> <网址> [--description 描述] [--tags 标签1,标签2]
                   [--tag-ids id1,id2] [--pinned true|false]
@@ -126,6 +131,40 @@ function createRequest(command, argv) {
     assertAllowedOptions(options, [])
     if (positionals.length > 0) throw new ClientError(`${command} 命令不接受位置参数`)
     return { method: 'GET', path: command }
+  }
+
+  if (command === 'tab-groups' || command === 'notes' || command === 'add-note') {
+    const append = command === 'add-note'
+    assertAllowedOptions(options, append ? ['pinned', 'confirm'] : ['page-size', 'page-cursor'])
+    let path = 'tab-groups'
+    if (command === 'tab-groups') {
+      if (positionals.length) throw new ClientError('tab-groups 命令不接受位置参数')
+    } else {
+      const [kind, id, content] = positionals
+      if (!['bookmark', 'tab'].includes(kind) || !id || positionals.length !== (append ? 3 : 2)) {
+        throw new ClientError(`用法：${command} <bookmark|tab> <目标ID>${append ? ' <内容> --confirm' : ''}`)
+      }
+      path = `${kind === 'bookmark' ? 'bookmarks' : 'tab-groups/items'}/${encodeURIComponent(id)}/notes`
+      if (append) {
+        requireConfirmation(options)
+        const pinned = parseBooleanOption(options, 'pinned')
+        return { method: 'POST', path, body: { content, is_pinned: pinned } }
+      }
+    }
+    setOptionalParam(params, options, 'page-size', 'page_size')
+    setOptionalParam(params, options, 'page-cursor', 'page_cursor')
+    return { method: 'GET', path, params }
+  }
+
+  if (command === 'update-note' || command === 'delete-note') {
+    const remove = command === 'delete-note'
+    assertAllowedOptions(options, remove ? ['confirm'] : ['content', 'pinned', 'confirm'])
+    requireConfirmation(options)
+    if (positionals.length !== 1 || !positionals[0]) throw new ClientError(`${command} 命令需要备注 ID`)
+    const path = `notes/${encodeURIComponent(positionals[0])}`
+    if (remove) return { method: 'DELETE', path }
+    if (!options.has('content') && !options.has('pinned')) throw new ClientError('没有提供要修改的字段')
+    return { method: 'PATCH', path, body: { content: options.get('content'), is_pinned: parseBooleanOption(options, 'pinned') } }
   }
 
   if (command === 'search') {

@@ -27,7 +27,7 @@
     "passkey": "Sign in with fingerprints, facial recognition, device PINs, or security keys, and manage registered passkeys.",
     "browser-extension": "Download the browser extension and follow the installation guide to save pages and sync tabs.",
     "page-speed": "Show page load and route render times in the upper-right corner, with browser timing details.",
-    "view-gallery": "Adds a gallery view to bookmarks: covers or page screenshots as tiles, with notes and tags on hover.",
+    "view-gallery": "Adds a gallery view to bookmarks: covers or page screenshots as tiles, with descriptions and tags on hover.",
     "view-timeline": "Adds a timeline view to bookmarks, grouped by today, yesterday, the last 7 days and month.",
     "view-domains": "Adds a site groups view to bookmarks: bookmarks from the same site share a collapsible group.",
     "view-focus": "Adds a focus view to bookmarks: one bookmark at a time, browsed with the left and right arrow keys.",

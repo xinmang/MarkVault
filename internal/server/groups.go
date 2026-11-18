@@ -221,6 +221,9 @@ func (s *Server) groupResponse(w http.ResponseWriter, r *http.Request) error {
 	if err = s.groups(r, s.db, []object{row}); err != nil {
 		return err
 	}
+	if err = s.attachItemNotes(r, s.db, []object{row}, notePreviewCount, notePreviewRunes); err != nil {
+		return err
+	}
 	return success(w, object{"tab_group": row})
 }
 func (s *Server) listGroups(w http.ResponseWriter, r *http.Request) error {
@@ -244,23 +247,29 @@ func (s *Server) listGroups(w http.ResponseWriter, r *http.Request) error {
 	if err = s.groups(r, s.db, rows); err != nil {
 		return err
 	}
-	return success(w, pageResult("tab_groups", rows, size, offset))
-}
-func (s *Server) insertItems(r *http.Request, tx *sql.Tx, gid string, items []object) error {
-	var offset int
-	if err := tx.QueryRowContext(r.Context(), "SELECT COALESCE(MAX(position),-1)+1 FROM tab_group_items WHERE group_id=?", gid).Scan(&offset); err != nil {
+	if err = s.attachItemNotes(r, s.db, rows, notePreviewCount, notePreviewRunes); err != nil {
 		return err
 	}
+	return success(w, pageResult("tab_groups", rows, size, offset))
+}
+// insertItems 按顺序插入标签页，返回与 items 一一对应的新 ID。
+func (s *Server) insertItems(r *http.Request, tx *sql.Tx, gid string, items []object) ([]string, error) {
+	var offset int
+	if err := tx.QueryRowContext(r.Context(), "SELECT COALESCE(MAX(position),-1)+1 FROM tab_group_items WHERE group_id=?", gid).Scan(&offset); err != nil {
+		return nil, err
+	}
+	ids := []string{}
 	for i, fields := range items {
 		iid := auth.ID()
 		if _, err := tx.ExecContext(r.Context(), "INSERT INTO tab_group_items(id,group_id,title,url,favicon,position,created_at) VALUES(?,?,?,?,?,?,?)", iid, gid, fields["title"], fields["url"], fields["favicon"], offset+i, now()); err != nil {
-			return err
+			return nil, err
 		}
 		if _, err := updateFields(r, tx, "tab_group_items", fields, "id=?", iid); err != nil {
-			return err
+			return nil, err
 		}
+		ids = append(ids, iid)
 	}
-	return nil
+	return ids, nil
 }
 func (s *Server) createGroup(w http.ResponseWriter, r *http.Request) error {
 	if err := permit(r, "tab_groups.create"); err != nil {
@@ -285,7 +294,8 @@ func (s *Server) createGroup(w http.ResponseWriter, r *http.Request) error {
 		if _, err := updateFields(r, tx, "tab_groups", fields, "id=? AND user_id=?", gid, userID(r)); err != nil {
 			return err
 		}
-		return s.insertItems(r, tx, gid, items)
+		_, err := s.insertItems(r, tx, gid, items)
+		return err
 	})
 	if err != nil {
 		return err
@@ -298,6 +308,9 @@ func (s *Server) createGroup(w http.ResponseWriter, r *http.Request) error {
 		return created(w, object{"tab_group": copyFields(row, "id")})
 	}
 	if err = s.groups(r, s.db, []object{row}); err != nil {
+		return err
+	}
+	if err = s.attachItemNotes(r, s.db, []object{row}, notePreviewCount, notePreviewRunes); err != nil {
 		return err
 	}
 	return created(w, object{"tab_group": row})
@@ -442,7 +455,7 @@ func (s *Server) addGroupItems(w http.ResponseWriter, r *http.Request) error {
 		if _, err := one(r, tx, "SELECT id FROM tab_groups WHERE id=? AND user_id=? AND is_deleted=0 AND is_folder=0", id(r), userID(r)); err != nil {
 			return err
 		}
-		if err := s.insertItems(r, tx, id(r), items); err != nil {
+		if _, err := s.insertItems(r, tx, id(r), items); err != nil {
 			return err
 		}
 		_, err := tx.ExecContext(r.Context(), "UPDATE tab_groups SET updated_at=? WHERE id=? AND user_id=?", now(), id(r), userID(r))
@@ -461,6 +474,9 @@ func (s *Server) addGroupItems(w http.ResponseWriter, r *http.Request) error {
 	}
 	for _, row := range rows {
 		bools(row, "is_pinned", "is_todo", "is_archived")
+	}
+	if err = s.attachNotes(r, s.db, tabNotes, rows, notePreviewCount, notePreviewRunes); err != nil {
+		return err
 	}
 	return success(w, object{"message": "标签页已添加", "added_count": len(items), "total_items": len(rows), "items": rows})
 }
@@ -490,6 +506,9 @@ func (s *Server) updateGroupItem(w http.ResponseWriter, r *http.Request) error {
 		return success(w, object{"item": copyFields(row, "id")})
 	}
 	bools(row, "is_pinned", "is_todo", "is_archived")
+	if err = s.attachNotes(r, s.db, tabNotes, []object{row}, notePreviewCount, notePreviewRunes); err != nil {
+		return err
+	}
 	return success(w, object{"item": row})
 }
 func (s *Server) deleteGroupItem(w http.ResponseWriter, r *http.Request) error {
@@ -540,5 +559,8 @@ func (s *Server) moveGroupItem(w http.ResponseWriter, r *http.Request) error {
 		return success(w, object{"item": copyFields(row, "id")})
 	}
 	bools(row, "is_pinned", "is_todo", "is_archived")
+	if err = s.attachNotes(r, s.db, tabNotes, []object{row}, notePreviewCount, notePreviewRunes); err != nil {
+		return err
+	}
 	return success(w, object{"item": row})
 }

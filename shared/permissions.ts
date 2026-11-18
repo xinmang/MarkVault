@@ -12,6 +12,8 @@ export const PERMISSIONS = {
   BOOKMARKS_READ: 'bookmarks.read',
   BOOKMARKS_UPDATE: 'bookmarks.update',
   BOOKMARKS_DELETE: 'bookmarks.delete',
+  // 只能追加备注：不能读取、改写或删除已有备注
+  BOOKMARKS_NOTE: 'bookmarks.note',
   BOOKMARKS_ALL: 'bookmarks.*',
 
   // 标签权限
@@ -27,6 +29,7 @@ export const PERMISSIONS = {
   TAB_GROUPS_READ: 'tab_groups.read',
   TAB_GROUPS_UPDATE: 'tab_groups.update',
   TAB_GROUPS_DELETE: 'tab_groups.delete',
+  TAB_GROUPS_NOTE: 'tab_groups.note',
   TAB_GROUPS_ALL: 'tab_groups.*',
 
   // AI 权限
@@ -59,6 +62,7 @@ export const PERMISSION_TEMPLATES = {
     permissions: [
       PERMISSIONS.BOOKMARKS_CREATE,
       PERMISSIONS.BOOKMARKS_READ,
+      PERMISSIONS.BOOKMARKS_NOTE,
       PERMISSIONS.TAGS_CREATE,
       PERMISSIONS.TAGS_READ,
       PERMISSIONS.TAGS_ASSIGN,
@@ -113,6 +117,7 @@ const PERMISSION_I18N_KEYS: Record<string, string> = {
   'bookmarks.read': 'settings:permissions.bookmarksRead',
   'bookmarks.update': 'settings:permissions.bookmarksUpdate',
   'bookmarks.delete': 'settings:permissions.bookmarksDelete',
+  'bookmarks.note': 'settings:permissions.bookmarksNote',
   'bookmarks.*': 'settings:permissions.bookmarksAll',
   'tags.create': 'settings:permissions.tagsCreate',
   'tags.read': 'settings:permissions.tagsRead',
@@ -124,6 +129,7 @@ const PERMISSION_I18N_KEYS: Record<string, string> = {
   'tab_groups.read': 'settings:permissions.tabGroupsRead',
   'tab_groups.update': 'settings:permissions.tabGroupsUpdate',
   'tab_groups.delete': 'settings:permissions.tabGroupsDelete',
+  'tab_groups.note': 'settings:permissions.tabGroupsNote',
   'tab_groups.*': 'settings:permissions.tabGroupsAll',
   'ai.suggest': 'settings:permissions.aiSuggest',
   'user.read': 'settings:permissions.userRead',
@@ -187,6 +193,7 @@ export function getPermissionGroups(t?: (key: string) => string): Array<{
         { value: PERMISSIONS.BOOKMARKS_READ, label: getLabel(PERMISSIONS.BOOKMARKS_READ), labelKey: getPermissionI18nKey(PERMISSIONS.BOOKMARKS_READ) },
         { value: PERMISSIONS.BOOKMARKS_UPDATE, label: getLabel(PERMISSIONS.BOOKMARKS_UPDATE), labelKey: getPermissionI18nKey(PERMISSIONS.BOOKMARKS_UPDATE) },
         { value: PERMISSIONS.BOOKMARKS_DELETE, label: getLabel(PERMISSIONS.BOOKMARKS_DELETE), labelKey: getPermissionI18nKey(PERMISSIONS.BOOKMARKS_DELETE) },
+        { value: PERMISSIONS.BOOKMARKS_NOTE, label: getLabel(PERMISSIONS.BOOKMARKS_NOTE), labelKey: getPermissionI18nKey(PERMISSIONS.BOOKMARKS_NOTE) },
       ],
     },
     {
@@ -208,6 +215,7 @@ export function getPermissionGroups(t?: (key: string) => string): Array<{
         { value: PERMISSIONS.TAB_GROUPS_READ, label: getLabel(PERMISSIONS.TAB_GROUPS_READ), labelKey: getPermissionI18nKey(PERMISSIONS.TAB_GROUPS_READ) },
         { value: PERMISSIONS.TAB_GROUPS_UPDATE, label: getLabel(PERMISSIONS.TAB_GROUPS_UPDATE), labelKey: getPermissionI18nKey(PERMISSIONS.TAB_GROUPS_UPDATE) },
         { value: PERMISSIONS.TAB_GROUPS_DELETE, label: getLabel(PERMISSIONS.TAB_GROUPS_DELETE), labelKey: getPermissionI18nKey(PERMISSIONS.TAB_GROUPS_DELETE) },
+        { value: PERMISSIONS.TAB_GROUPS_NOTE, label: getLabel(PERMISSIONS.TAB_GROUPS_NOTE), labelKey: getPermissionI18nKey(PERMISSIONS.TAB_GROUPS_NOTE) },
       ],
     },
     {

@@ -1,6 +1,6 @@
 {
   "name": "markvault",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "可自托管的书签、标签页组与网页快照管理工具",
   "private": true,
   "license": "CC-BY-NC-4.0",
