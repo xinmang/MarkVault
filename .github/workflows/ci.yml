@@ -68,7 +68,12 @@ jobs:
         with:
           version: 9.7.1
       - name: 格式检查
-        run: test -z "$(gofmt -l ./cmd ./internal ./plugins)"
+        run: |
+          unformatted=$(gofmt -l ./cmd ./internal ./plugins)
+          if [ -n "$unformatted" ]; then
+            printf '以下 Go 文件需要运行 gofmt：\n%s\n' "$unformatted"
+            exit 1
+          fi
       - name: 安装隔离脚本运行时
         run: node scripts/install-deno.mjs
       - name: 编译

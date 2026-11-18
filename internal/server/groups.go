@@ -252,6 +252,7 @@ func (s *Server) listGroups(w http.ResponseWriter, r *http.Request) error {
 	}
 	return success(w, pageResult("tab_groups", rows, size, offset))
 }
+
 // insertItems 按顺序插入标签页，返回与 items 一一对应的新 ID。
 func (s *Server) insertItems(r *http.Request, tx *sql.Tx, gid string, items []object) ([]string, error) {
 	var offset int
